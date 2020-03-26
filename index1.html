@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<script src="https://cdn.bootcss.com/echarts/4.6.0/echarts.js" type="text/javascript" charset="utf-8"></script>
+	<body>
+		<div id="main" style="width:380px;height:200px;"></div>
+		<div id="main1" style="width:380px;height:200px;margin-top:20px;"></div>
+	</body>
+
+	<script type="text/javascript">
+		// 基于准备好的dom，初始化echarts实例
+		var myChart = echarts.init(document.getElementById('main'));
+
+		// 基于准备好的dom，初始化echarts实例
+		var myChart1 = echarts.init(document.getElementById('main1'));
+         
+		// 指定图表的配置项和数据
+		var option = {
+			// title: {
+			//     text: 'ECharts 入门示例'
+			// },
+			tooltip: {},
+			legend: {
+				show: false,
+				data: ['销量']
+			},
+			grid: {
+				show: false,
+				left: 80,
+				right: 10,
+				top: 30,
+				bottom: 30
+			},
+			backgroundColor: "#061a33",
+			xAxis: {
+				show: true,
+				type: "value",
+				axisLabel: {
+					color: "#fff"
+				},
+				axisTick: {
+					show: false
+				},
+				axisLine: {
+					show: false
+				},
+				splitLine: {
+					show: true,
+					lineStyle: {
+						// 使用深浅的间隔色
+						color: "rgba(255,255,255,0.9)",
+						width: 1,
+						type: "dashet"
+					}
+				},
+			},
+			yAxis: {
+				show: true,
+				type: "category",
+				name: "订阅次数",
+				data: ["实测数据", "分析预报", "专题信息分","地理信息", "地理"],
+				nameTextStyle: {
+					color: "#02d9db",
+					fontSize: 12,
+					lineHeight: 12
+				},
+				axisTick: {
+					alignWithLabel: true,
+					lineStyle: {
+						color: "#fff"
+					}
+				},
+				axisLine: {
+					show: true,
+					lineStyle: {
+						color: "#475b72",
+						width: 1,
+						type: "dashet"
+					}
+				},
+				axisLabel: {
+					color: "#02d9db",
+					interval: 0,
+					margin:40,
+					align:"center"
+				},
+				splitLine: {
+					show: false,
+				},
+			},
+			series: [{
+				name: '订阅次数',
+				type: 'bar',
+				data: [60, 30, 50, 60, 80],
+				barWidth: 15, //柱图宽度
+				itemStyle: {
+					color: {
+						type: 'linear',
+						x: 0,
+						y: 0,
+						x2: 1,
+						y2: 0,
+						colorStops: [{
+							offset: 0,
+							color: 'rgba(255,255,255,0.01) ' // 0% 处的颜色
+						}, {
+							offset: 1,
+							color: 'rgba(228,115,30,1)' // 100% 处的颜色
+						}],
+						global: false // 缺省为 false
+					},
+					barBorderRadius: [15, 15, 15, 15] //（顺时针左上，右上，右下，左下）
+				},
+			}]
+		};
+
+		// 指定图表的配置项和数据
+		var option1 = {
+			// title: {
+			//     text: 'ECharts 入门示例'
+			// },
+			tooltip: {},
+			legend: {
+				show: false,
+				data: ['销量']
+			},
+			grid: {
+				show: false,
+				left: 30,
+				right: 10,
+				top: 30,
+				bottom: 30
+			},
+			backgroundColor: "#061a33",
+			xAxis: {
+				show: true,
+				axisLine: {
+					show: true,
+					symbol: ['none'],
+					symbolSize: [15, 15],
+					symbolOffset: [10, 10],
+					lineStyle: {
+						color: "#475b72",
+						width: 1,
+						type: "dashet"
+					}
+				},
+				axisLabel: {
+					color: "#02d9db",
+				},
+				axisTick: {
+					alignWithLabel: true,
+					lineStyle: {
+						color: "#fff"
+					}
+				},
+				data: ["实测","分析预报","地理","专题信息","天气"]
+			},
+			yAxis: {
+				max: 80,
+				splitNumber: 4,
+				show: true,
+				type: "value",
+				name: "下载次数",
+				data: [0, 20, 40, 60, 80],
+				nameTextStyle: {
+					color: "#02d9db",
+					fontSize: 12,
+					lineHeight: 12
+				},
+				axisTick: {
+					show: false
+				},
+				axisLine: {
+					show: false
+				},
+				axisLabel: {
+					color: "#fff"
+				},
+				splitLine: {
+					show: true,
+					lineStyle: {
+						// 使用深浅的间隔色
+						color: "#ccc",
+						width: 1,
+						type: "dashet"
+					}
+				},
+			},
+			series: [{
+				name: '下载次数',
+				type: 'bar',
+				data: [60, 30, 50, 60, 70],
+				barWidth: 15, //柱图宽度
+				itemStyle: {
+					color: {
+						type: 'linear',
+						x: 0,
+						y: 0,
+						x2: 0,
+						y2: 1,
+						colorStops: [{
+							offset: 0,
+							color: 'rgba(25,132,204,1)' // 0% 处的颜色
+						}, {
+							offset: 1,
+							color: 'rgba(255,255,255,0.01) ' // 100% 处的颜色
+						}],
+						global: false // 缺省为 false
+					},
+					barBorderRadius: [15, 15, 10, 10] //（顺时针左上，右上，右下，左下）
+				},
+			}]
+		};
+
+		// 使用刚指定的配置项和数据显示图表。
+		myChart.setOption(option);
+		myChart.on('click', function (params) {
+		    console.log(params);
+		});
+		// myChart.dispatchAction({
+		//     type: 'dataZoom',
+		//     start: 20,
+		//     end: 30
+		// });
+		myChart1.setOption(option1)
+	</script>
+</html>
