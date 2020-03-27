@@ -131,5 +131,83 @@
 		}
 		var son = new Son('lm','20');
 		console.log(son);
+		
+		//bind 改变函数this指向
+		//bind()方法， 不会调用原来的函数，可以改变原函数的this指向
+		//2、返回的函数是this之后产生的新函数
+		//3、如果有的函数我们不需要立即调用，但是又想改变原函数的this指向此时用bind
+		var  o = {
+			name:'12'
+		}
+		
+		function fn(){
+			
+		}
+		var f = fn.bind(o);
+		console.log(f())
+		
+		
+		//闭包 一个作用域可以访问另一个函数内部的局部变量
+		var car = (function(){
+			var start = 13; //起步价
+			var total = 0   //总价
+			return {
+				price:function(){
+					return total;
+				},
+				yd:function(flag){
+					return flag;
+				}
+			}
+		})
+		//定义的变量可以调用函数里面return返回的函数
+		car.price();
+		car.yd();
+		
+		//递归：函数内部自己调用自己
+		//防止'栈溢出'  利用return可以退出
+		function fn1(){
+			fn1();
+		}
+		fn1();
+		
+		//浅拷贝和深拷贝
+		//浅拷贝只拷贝最外层 ，深层次的会把地址拷贝过去比如sh
+		Object.assign()
+		var obj = {
+			sh:{
+				
+			}
+		}
+		for (i in obj){
+			
+		}
+		//深拷贝 函数递归
+		function deepCopy(newobj,oldobj){
+			//判断我们的属性是哪种数据类型
+			//instanceof判断数据类型,数组Array必须放在前面因为数组也是object
+			for (let k in oldobj) {
+				let item = oldobj[k];
+				if(item instanceof Array){
+					newobj[k] = [];
+					deepCopy(newobj[k],item);
+				}else if(item instanceof Object){
+					newobj[k] = {};
+					deepCopy(newobj[k],item);
+				}else{
+					newobj[k] = item;
+				}
+			}
+		}
+		//正则
+		 //   /^ $/g ^开头 $结尾 g全局匹配 i 不区分大小写
+		 //   /abc/ 可以包含abc 检测为true
+		 //   /[^abc]/ 取a、b、c任何一个为true  [^]这个里面的^是取反的意思
+		 //   replace(/abc/g,'替换')  replace替换字符串
+		 
+		 //模板字符串
+		 var a = 12
+		 var str = `${a} 仲夏夜之梦`
+		 console.log(str);
 	</script>
 </html>
