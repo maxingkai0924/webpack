@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<h2>es6</h2>
+	</body>
+	<script type="text/javascript">
+		//创建类
+		class Star {
+			constructor(name, age) {
+				this.uname = name;
+				this.age = age;
+			}
+			sing(song) {
+				console.log(this.uname + song)
+			}
+		}
+		//先有类后有实例化
+		//2、利用类创建对象 new
+		var ldh = new Star('刘德华', 18);
+		var zxy = new Star('张学友', 16);
+		console.log(ldh.age);
+		console.log(zxy.age);
+		//1、类里面不需要写function
+		//2、多个函数方法之间不需要逗号分隔
+		ldh.sing('冰雨');
+		zxy.sing('李香兰');
+
+		//继承
+		class Father {
+			constructor(x, y) {
+				this.x = x;
+				this.y = y;
+			}
+			money() {
+				console.log(100);
+			}
+			sum() {
+				console.log(this.x + this.y)
+			}
+		}
+		class Son extends Father {
+			constructor(x, y) {
+				//super调用父类的构造函数constructor
+				//super 必须在子类this之前调取
+				super(x, y);
+				this.x = x;
+				this.y = y
+			}
+		}
+		//1、继承中，如果子类中函数名和父类名字相同，先执行子类函数
+		//2、如果想调取就用 super.函数名调取
+		var son = new Son(1, 2);
+		son.money();
+		son.sum();
+
+		//很多情况下，我们需要手动利用constructor这个属性，指回原来的构造函数
+		function Star1() {
+
+		}
+		//正常使用不用constructor指回
+		Star1().prototype.sing = function() {
+
+		}
+		Star1().prototype.song = function() {
+
+		}
+		//如果我们修改了原来的原型对象，给原来的原型对象赋值一个对象，则必须手动的利用constructor指回原来的构造函数
+		Star1.prototype = {
+			constructor: Star,
+			sing: function() {
+
+			},
+			song: function() {
+
+			},
+			// sex:'男'
+		}
+		Object.prototype.sex = '女'
+		//zmy上面存在一个__proto__对象和原型对象Star1.prototype等价(指向Star1.prototype)
+		//里面也Star1.prototype有一个__proto__对象,指向Object.prototype
+		//Object.prototype也有一个__proto__对象指向null(最顶级)
+		//原型链查找方式就近原则，先找本身，后找上级prototype
+		var zmy = new Star1();
+		//1、在构造函数中，里面的this指向是对象实例zmy
+		//2、原型对象函数里面的this指向是实例对象zmy
+		// zmy.sex = '女';
+		console.log(zmy.sex)
+		console.log(zmy.__proto__ == Star1.prototype) //true
+		console.log(zmy.__proto__)
+		
+		//注意：数组Array 和 字符串，不能用对象的形式追加方法
+		
+		//错误写法
+		Array.prototype = {
+			sing: function() {
+		
+			},
+			song: function() {
+		
+			},
+			// sex:'男'
+		}
+		//正确写法
+		Array.prototype.sum = function(){
+			
+		}
+		
+		//借用父构造函数的继承属性
+		//父构造函数
+		function Father1(username,ages){
+			//this指向本身构造函数
+			this.username = username;
+			this.ages = ages;
+		}
+		Father1.prototype.exam ={
+			
+		}
+		//继承父构造函数的方法，这样赋值是继承了一个对象，所以需要改回原来的构造函数
+		Son2.prototype =  new Father1();
+		//利用constructor指回,这样就继承了父构造函数
+		Son2.prototype.constructor = Son;
+		//子构造函数
+		function Son2(username,ages){
+			//this指向本身构造函数
+			//利用call改变Father1构造函数的this指向
+			Father1.call(this,username,ages);
+		}
+		var son = new Son('lm','20');
+		console.log(son);
+	</script>
+</html>
