@@ -1,0 +1,15 @@
+.box{
+    width: 100px;
+    height: 100px;
+    background:#000;
+}
+.box1{
+    width: 100px;
+    height: 200px;
+}
+.index1 {
+  color: yellow;
+}
+.index2 {
+  color: green;
+}
