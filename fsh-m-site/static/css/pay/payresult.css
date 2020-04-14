@@ -1,0 +1,27 @@
+body {
+	background: #fff;
+}
+
+.header {
+	border-bottom: 2px solid #f4f2f3;
+}
+
+.img {
+	width: 1.6rem;
+	height: 1.6rem;
+}
+
+.content {
+	margin-top: 3.6rem;
+	text-align: center;
+}
+
+.content p {
+	font-size: 0.4rem;
+	color: #666;
+	margin-top: 0.733rem;
+}
+
+.back img {
+	margin-top: 2.267rem;
+}

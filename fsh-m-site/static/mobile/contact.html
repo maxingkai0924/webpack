@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>来福魔方——快递入户神器</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="keywords" content="来福魔方,家庭智能快递柜,电子猫眼快递柜,智能快递箱，快递收发柜,智能快递签收箱">
+    <meta name="description" content="来福魔方家庭智能快递柜，来福魔方集快递收发与电子猫眼等其他功能为一体，为解决亿万家庭的快递送货上门及家庭安全问题而生。">
+    <script>
+        (function (doc, win, undefined) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (clientWidth === undefined) return;
+                    docEl.style.fontSize = (clientWidth / 37.5) + 'px';
+                };
+            if (doc.addEventListener === undefined) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            //doc.addEventListener('DOMContentLoaded', recalc, false)
+            recalc();
+        })(document, window);
+    </script>
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <link rel="stylesheet" href="../css/build/wap.css?v=1.0.1">
+</head>
+<body>
+<div class="header">
+    <i class="iconfont icon-caidan" id="menu-btn"></i>
+    <img src="../img/wap/logo.jpg">
+</div>
+<ul class="wap-menu clearfix" id="menu">
+    <li><a href="index.html">主页</a></li>
+    <li><a href="about.html">关于我们</a></li>
+    <li class="active"><a href="javascript:void(0);">联系我们</a></li>
+</ul>
+<div class="mf-content clearfix">
+    <div class="contact">
+        <div class="item">
+            <h4 class="sub-line">联系方式</h4>
+            <p>联系地址：山东省济南市高新区工业南路44号丁豪广场6-2-610</p>
+            <p>售后电话： <a href="tel:400-063-6658 " class="link-primary">400-063-6658 </a></p>
+            <p>邮箱： <span class="link-primary">laifumofang@163.com</span></p>
+        </div>
+        <!--地图-->
+        <a href="https://map.baidu.com/mobile/webapp/search/search/qt=inf&uid=30da87bd40c7afd73417dc2d&wd=%E7%A6%A7%E6%82%A6%E4%B8%9C%E6%96%B9%E9%85%92%E5%BA%97-%E5%95%86%E5%8A%A1%E4%B8%AD%E5%BF%83&all=1&c=288&newmap=1&from=alamap&tpl=map_singlepoint&vt=map">
+            <img src="../img/map.jpg">
+        </a>
+        <div class="item">
+            <h4 class="sub-line">售后服务</h4>
+            <p>联系地址：山东省济南市高新区工业南路44号丁豪广场6-2-610</p>
+            <p>售后电话： <a href="tel:400-063-6658 " class="link-primary">400-063-6658 </a></p>
+            <p>邮箱： <span class="link-primary">laifumofang@163.com</span></p>
+        </div>
+        <div class="item">
+            <h4 class="sub-line">商务合作</h4>
+            <p>联系地址：山东省济南市高新区工业南路44号丁豪广场6-2-610</p>
+            <p>联系电话：<a href="tel:400-063-6658 " class="link-primary">400-063-6658 </a></p>
+            <p>邮箱： <span class="link-primary">laifumofang@163.com</span></p>
+        </div>
+    </div>
+    <div class="footer">
+        <p>
+            ©2018 laifumofang.com All right reserved 来福魔方
+        </p>
+        <p>
+            鲁ICP备16033703号-2
+        </p>
+    </div>
+</div>
+
+<button class="btn-buy btn-buy-fixed" type="button" onclick="location.href='/mobile/detail.html'">立即购买</button>
+<script src="../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="../js/src/common-mobile.js"></script>
+<script>
+    $(function () {
+        $("#menu-btn").click(function () {
+            var $this = $(this);
+            if ($this.hasClass("icon-caidan")) {
+                // 展开
+                $this.removeClass("icon-caidan").addClass("icon-fork");
+                $("#menu").slideDown("fast");
+            } else {
+                $this.removeClass("icon-fork").addClass("icon-caidan");
+                $("#menu").slideUp("fast");
+            }
+        });
+    });
+</script>
+</body>
+</html>

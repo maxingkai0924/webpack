@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>修改地址</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script>
+        (function (doc, win, undefined) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (clientWidth === undefined) return;
+                    docEl.style.fontSize = (clientWidth / 37.5) + 'px';
+                };
+            if (doc.addEventListener === undefined) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            //doc.addEventListener('DOMContentLoaded', recalc, false)
+            recalc();
+        })(document, window);
+    </script>
+    <link rel="stylesheet" href="../../font/iconfont.css">
+    <link rel="stylesheet" href="../../js/plugin/mui/css/mui.min.css">
+    <link rel="stylesheet" href="../../js/plugin/mui/picker/css/mui.picker.css"/>
+    <link rel="stylesheet" href="../../js/plugin/mui/picker/css/mui.poppicker.css"/>
+    <link rel="stylesheet" href="../../css/build/wap.css?v=1.0.1">
+</head>
+<body class="bg-fff">
+<header class="mui-bar mui-bar-nav">
+    <a href="javascript:history.back();" class="iconfont icon-fanhui1 mui-pull-left"></a>
+    <!--<a class="iconfont icon-wode mui-pull-right"></a>-->
+    <h1 class="mui-title">修改地址</h1>
+</header>
+<div class="mui-content bg-fff m-b-49">
+    <div class="address-form bg-fff">
+        <div class="item">
+            <input type="text" id="pop" readonly placeholder="省份、城市、区县">
+        </div>
+        <div class="item">
+            <input maxlength="30" type="text" id="address" placeholder="详细地址，如街道、楼牌号等">
+        </div>
+        <div class="item">
+            <input type="text" id="name" maxlength="10" placeholder="姓名">
+        </div>
+        <div class="item">
+            <input type="text" id="mobile" placeholder="手机号码">
+        </div>
+    </div>
+</div>
+<button class="btn-buy btn-buy-fixed" type="button" id="save">保存</button>
+<script src="../../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="../../js/plugin/mui/js/mui.min.js"></script>
+<script src="../../js/plugin/mui/picker/js/mui.picker.js"></script>
+<script src="../../js/plugin/mui/picker/js/mui.poppicker-address.js"></script>
+<script src="../../js/src/common-mobile.js"></script>
+<script>
+    $(function () {
+        var shippingAddressId = getUrlParam("shippingAddressId");
+        var provinceId = "";
+        var province = "";
+        var cityId = "";
+        var city = "";
+        var dstrictId = "";
+        var dstrict = "";
+        var cityPicker3 = new mui.PopPicker({
+            layer: 3
+        });
+
+
+        // 查询收货地址
+        ajax({
+            url: " /user/" + GLOBAL.VERSION + "/trade/getShippingAddressByUserId",
+            type: "get",
+            success: function (res) {
+                if (res.success && res.data && res.data.length > 0) {
+                    var defaultAddress = null;
+                    $.each(res.data, function (_, v) {
+                        if (v.shippingAddressId == shippingAddressId) {
+                            defaultAddress = v;
+                            return false;
+                        }
+                    });
+                    if (!defaultAddress) {
+                        return;
+                    }
+                    provinceId = defaultAddress.provinceId;
+                    province = defaultAddress.province;
+                    cityId = defaultAddress.cityId;
+                    city = defaultAddress.city;
+                    dstrictId = defaultAddress.dstrictId;
+                    dstrict = defaultAddress.dstrict;
+                    $("#pop").val(province + (city == province ? "" : city) + dstrict);
+                    $("#address").val(defaultAddress.address);
+                    $("#name").val(defaultAddress.name);
+                    $("#mobile").val(defaultAddress.mobile);
+                }
+            }
+        });
+
+        ajax({
+            url: "/user" + GLOBAL.VERSION + "/city/getProvinces",
+            type: "get",
+            async: false,
+            success: function (res) {
+                if (res.success && res.data) {
+                    $.each(res.data, function (_, v) {
+                        v.children = [];
+                        v.text = v.provinceName;
+                        v.value = v.provinceId;
+                    });
+                    cityPicker3.setData(res.data);
+                }
+            }
+        });
+
+        // 点击选择省市区
+        mui("#pop")[0].addEventListener('tap', openPicker, false);
+
+        // 保存
+        mui("#save")[0].addEventListener('tap', function (event) {
+            var formData = {
+                shippingAddressId: shippingAddressId,
+                provinceId: provinceId,
+                province: province,
+                cityId: cityId,
+                city: city,
+                dstrictId: dstrictId,
+                dstrict: dstrict,
+                address: $.trim($("#address").val()),
+                name: $.trim($("#name").val()),
+                mobile: $.trim($("#mobile").val()),
+                isDefault: 1
+            };
+            if (!provinceId) {
+                msg("请选择省市区");
+                openPicker();
+                return;
+            }
+            if (formData.address.length < 5) {
+                msg("请填写5字以上地址信息");
+                return;
+            }
+            if (!formData.name) {
+                msg("请输入姓名");
+                return;
+            }
+            if (!formData.mobile) {
+                msg("请输入电话");
+                return;
+            }
+            if (!REG.mobile.test(formData.mobile)) {
+                msg("请输入正确的手机号!");
+                return;
+            }
+            ajax({
+                url: '/user' + GLOBAL.VERSION + '/trade/modifyShippingAddressById',
+                data: JSON.stringify(formData),
+                async: false,
+                success: function (res) {
+                    if (res.success) {
+                        var number = getUrlParam("number");
+                        var orderNumber = getUrlParam("orderNumber");
+                        var serviceType = getUrlParam("serviceType");
+                        var description = getUrlParam("description");
+
+                        if (number) {
+                            location.href = "/mobile/order/confirm.html?number=" + number;
+                        } else if(orderNumber) {
+                            location.href = "/mobile/order/confirm.html?orderNumber=" + orderNumber + "&serviceType=" + serviceType + "&description=" + description;
+                        }else{
+                            location.href = "address.html";
+                        }
+                    }
+                }
+            });
+        }, false);
+
+        function openPicker() {
+            cityPicker3.show(function (items) {
+                provinceId = items[0].value;
+                province = items[0].text;
+                cityId = items[1].value;
+                city = items[1].text;
+                dstrictId = items[2].value;
+                dstrict = items[2].text;
+                $("#pop").val(province + (city == province ? "" : city) + dstrict);
+            });
+        }
+    });
+
+    function getPopItems(preItem, callBack) {
+        var children = [];
+        if (preItem.cityId) {
+            ajax({
+                url: "/user" + GLOBAL.VERSION + "/city/getDstricts",
+                type: "get",
+                data: {cityId: preItem.cityId},
+                async: false,
+                success: function (res) {
+                    if (res.success && res.data) {
+                        $.each(res.data, function (_, v) {
+                            v.children = [];
+                            v.text = v.dstrictName;
+                            v.value = v.dstrictId;
+                        });
+                        children = res.data;
+                    }
+                }
+            });
+        } else if (preItem.provinceId) {
+            ajax({
+                url: "/user" + GLOBAL.VERSION + "/city/getCitys",
+                type: "get",
+                data: {provinceId: preItem.provinceId},
+                async: false,
+                success: function (res) {
+                    if (res.success && res.data) {
+                        $.each(res.data, function (_, v) {
+                            v.children = [];
+                            v.text = v.cityName;
+                            v.value = v.cityId;
+                        });
+                        children = res.data;
+                    }
+                }
+            });
+        }
+        callBack(children);
+    }
+</script>
+</body>
+</html>

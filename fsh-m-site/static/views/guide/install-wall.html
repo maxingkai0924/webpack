@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>室外安装视频</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="keywords" content="来福魔方，电子猫眼快递箱，智能收发快递柜，智能防盗，快递签收">
+    <meta name="description" content="来福魔方家庭智能快递柜，集快递收发与电子猫眼等其他功能为一体，为解决亿万家庭的快递送货上门及家庭安全问题而生。">
+    <link rel="stylesheet" href="/font/iconfont.css">
+    <link rel="stylesheet" href="/js/plugin/video/video-js.css">
+    <link rel="stylesheet" href="/js/plugin/layer/theme/default/layer.css">
+    <link rel="stylesheet" href="/css/build/index.css?v=2.0.1">
+</head>
+<body>
+<!--header-->
+<div class="header clearfix" id="header"></div>
+<div class="guide-sub">
+    <div class="guide-wrap container">
+        <div class="guide-sub-left">
+            <ul>
+                <li><a href="video.html">产品视频</a></li>
+                <li><a href="install-door.html">入户门安装视频</a></li>
+                <li><a href="javascript:void(0);" class="active">室外安装视频</a></li>
+            </ul>
+        </div>
+        <div class="guide-sub-right">
+            <div class="title">室外安装视频</div>
+            <div class="video-wrap">
+                <video class="video-js" id="video" poster="/res/wall.png" width="830" height="466" controls="controls">
+                    <!--<source src="/res/wall.mp4">-->
+                    <source src="http://file1.laifumofang.com/%E5%AE%89%E8%A3%85%E8%A7%86%E9%A2%91-%E5%A2%99%E4%BD%93.mp4">
+                </video>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer container-full" id="footer"></div>
+<script src="/js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/video/video.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="/js/plugin/layer/layer.js"></script>
+<script src="/js/src/common.js?v=2.0.1"></script>
+<script>
+    $(function () {
+        var videoPlayer = videojs('video');
+    })
+</script>
+</body>
+</html>

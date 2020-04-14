@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>来福魔方——订单列表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script>
+        (function (doc, win, undefined) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (clientWidth === undefined) return;
+                    docEl.style.fontSize = (clientWidth / 37.5) + 'px';
+                };
+            if (doc.addEventListener === undefined) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            //doc.addEventListener('DOMContentLoaded', recalc, false)
+            recalc();
+        })(document, window);
+    </script>
+    <link rel="stylesheet" href="../../font/iconfont.css">
+    <link rel="stylesheet" href="../../js/plugin/mui/css/mui.min.css">
+    <link rel="stylesheet" href="../../css/build/wap.css?v=1.0.1">
+    <link rel="stylesheet" href="../../css/build/wap-myspace.css">
+    <style>
+        #pullrefresh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body class="bg-fff">
+<header class="mui-bar mui-bar-nav">
+    <a href="javascript:history.back();" class="iconfont icon-fanhui1 mui-pull-left"></a>
+    <h1 class="mui-title">我的订单</h1>
+</header>
+<!--<div class="mui-content bg-fff m-b-49">-->
+    <div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+        <div class="mui-scroll">
+            <div id="order-list">
+            </div>
+        </div>
+    </div>
+<!--</div>-->
+<script id="temp_order" type="text/html">
+    <%for(i=0; i< data.length ; i++){%>
+    <div class="order-info">
+        <div class="order-type">
+            <p><i class="logo"></i>Life来福魔方</p>
+            <%if(data[i].orderStatus==0){%>
+            <span class="transport">等待付款</span>
+            <%}else if(data[i].orderStatus==1){%>
+            <span class="success">待配货</span>
+            <%}else if(data[i].orderStatus==2){%>
+            <span class="success">待发货</span>
+            <%}else if(data[i].orderStatus==3){%>
+            <span class="transport">正在运输</span>
+            <%}else if(data[i].orderStatus==4){%>
+            <span class="success">交易成功</span>
+            <%}else if(data[i].orderStatus==5){%>
+            <span class="transport">退款中</span>
+            <%}else if(data[i].orderStatus==6){%>
+            <span class="transport">已退款</span>
+            <%}else if(data[i].orderStatus==7){%>
+            <span class="transport">退换货申请中</span>
+            <%}else if(data[i].orderStatus==8){%>
+            <span class="transport">退换中</span>
+            <%}else if(data[i].orderStatus==9){%>
+            <span class="transport">已关闭</span>
+            <%}%>
+        </div>
+        <div class="order-cp">
+            <div class="order-cp-box">
+                <img src="../../img/wap/p-main-md.jpg" alt="信息图片">
+                <div>
+                    <p><%=data[i].goodsName%></p>
+                    <p>白色</p>
+                    <p>￥<%=data[i].goodsAllPrice%></p>
+                </div>
+                <span>x <%=data[i].goodsNum%></span>
+            </div>
+        </div>
+        <div class="order-btn">
+            <%if(data[i].orderStatus==0){%>
+            <a href="javascript:void(0);" data-event="pay" class="mui-btn">立即支付</a>
+            <a href="javascript:void(0);" data-event="cancel" class="mui-btn mui-btn-success mui-btn-outlined">取消订单</a>
+
+            <%}else if(data[i].orderStatus==1){%>
+            <% if(data[i].isNormalDelivery==1){%>
+            <a href="order-refund.html?orderNumber=<%=data[i].orderNumber%>"
+               class="mui-btn mui-btn-success mui-btn-outlined">申请退款</a>
+            <%}%>
+            <a href="order-detail.html?orderNumber=<%=data[i].orderNumber%>" class="mui-btn">订单详情</a>
+
+            <%}else if(data[i].orderStatus==2){%>
+            <% if(data[i].isNormalDelivery==1){%>
+            <a href="order-refund.html?orderNumber=<%=data[i].orderNumber%>"
+               class="mui-btn mui-btn-success mui-btn-outlined">申请退款</a>
+            <%}%>
+            <a href="order-detail.html?orderNumber=<%=data[i].orderNumber%>" class="mui-btn">订单详情</a>
+
+            <%}else if(data[i].orderStatus==3){%>
+            <a href="javascript:void(0);" data-event="shouhuo" class="mui-btn">确认收货</a>
+            <a href="order-detail.html?orderNumber=<%=data[i].orderNumber%>" class="mui-btn mui-btn-success mui-btn-outlined">订单详情</a>
+
+            <%}else if(data[i].orderStatus==4){%>
+            <% if(data[i].isWriteServiceOrder==2){%>
+            <a href="order-after.html?orderNumber=<%=data[i].orderNumber%>" class="mui-btn mui-btn-success mui-btn-outlined">申请售后</a>
+            <%}%>
+            <a href="order-detail.html?orderNumber=<%=data[i].orderNumber%>" class="mui-btn">订单详情</a>
+
+            <%}else if(data[i].orderStatus==5){%>
+            <a href="order-detail.html?orderNumber=<%=data[i].orderNumber%>" class="mui-btn">订单详情</a>
+
+            <%}else if(data[i].orderStatus==6){%>
+            <a href="order-detail.html?orderNumber=<%=data[i].orderNumber%>" class="mui-btn">订单详情</a>
+
+            <%}else if(data[i].orderStatus==7){%>
+            <a href="order-detail.html?orderNumber=<%=data[i].orderNumber%>" class="mui-btn">订单详情</a>
+
+            <%}else if(data[i].orderStatus==8){%>
+            <% if(data[i].isWriteExpress==2){%>
+            <a href="order-tuihuodan.html?orderNumber=<%=data[i].orderNumber%>" class="mui-btn">填写退货单</a>
+            <%}%>
+
+            <%}else if(data[i].orderStatus==9){%>
+            <a href="order-detail.html?orderNumber=<%=data[i].orderNumber%>" class="mui-btn">订单详情</a>
+            <%}%>
+        </div>
+        <!--<div class="order-box"></div>-->
+    </div>
+    <%}%>
+</script>
+<script src="../../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="../../js/plugin/mui/js/mui.min.js"></script>
+<script src="../../js/plugin/template-web.js"></script>
+<script src="../../js/src/common-mobile.js"></script>
+<script>
+    var orderData = [];
+    var page = 1;
+    var $list = $("#order-list");
+    var direction = "up";   // 方向
+    var isMorePage = true;  // 是否有更多数据
+
+    mui.init({
+        pullRefresh: {
+            container: '#pullrefresh',
+            down: {
+                callback: pulldownRefresh
+            },
+            up: {
+                contentrefresh: '正在加载...',
+                callback: pullupRefresh
+            }
+        }
+    });
+    mui.ready(function () {
+        mui('#pullrefresh').pullRefresh().pullupLoading();
+    });
+    /**
+     * 下拉刷新具体业务实现
+     */
+    function pulldownRefresh() {
+        $list.empty();
+        page = 1;
+        direction = "down";
+        setTimeout(function () {
+            getOrderList();
+        }, 1000);
+    }
+    /**
+     * 上拉加载具体业务实现
+     */
+    function pullupRefresh() {
+        direction = "up";
+        setTimeout(function () {
+            getOrderList();
+        }, 1000);
+    }
+
+    function getOrderList() {
+        ajax({
+            url: "/user/" + GLOBAL.VERSION + "/trade/getUserOrderList",
+            type: "get",
+            data: {
+                page: page,
+                pageSize: 10,
+            },
+            success: function (res) {
+                // 对应结束上拉或下拉
+                if (direction == "down") {
+                    mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+                    mui('#pullrefresh').pullRefresh().refresh(true);
+                }
+                if (!res.data || res.data.length == 0) {// 无数据
+                    if (page == 1) {
+//                        $("#custom-list").html("暂无数据");
+                    } else {//结束上拉
+                        isMorePage = false;
+                    }
+                    mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+                } else {
+                    $("#order-list").append(template("temp_order", res));
+                    orderData=orderData.concat(res.data);
+                    if (res.page.totalPage <= page) {// 最后一页，结束上拉
+                        isMorePage = false;
+                        mui('#pullrefresh').pullRefresh().endPullupToRefresh((true));
+                    } else {
+                        page = res.page.page+1;
+                        if (isMorePage) {
+                            mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
+                            mui('#pullrefresh').pullRefresh().refresh(true);
+                        } else {
+                            mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    $(function () {
+        mui("#order-list").on("tap", "a[href]", function () {
+            var href = $(this).attr("href");
+            if (href.indexOf("javascript") == -1) {
+                location.href = href;
+            }
+        });
+
+        mui("#order-list").on("tap", "a[data-event]", function () {
+            var $this = $(this);
+            var index = $this.parents(".order-info").index();
+            var data = orderData[index];
+            var event = $this.attr("data-event");
+            if (event == "pay") {
+                var ua = navigator.userAgent.toLowerCase();
+                if (ua.indexOf('micromessenger') != -1) {
+//                            var SERVE="http://www.laifumofang.com";// 正式
+                    var SERVE="http://pre.laifumofang.com";// 预上线
+                    var pageUrl = SERVE+"/mobile/pay/wxpay.html?msg="
+                        + data.orderNumber
+                        + "&appType=" + getOsType()
+                        + "&isApp=" + isApp();
+                    location.href =
+                        "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
+                        "wxee974f7471fefdef" +
+                        "&redirect_uri=" +
+                        pageUrl + //这里放当前页面的地址
+                        "&response_type=code&scope=snsapi_base&state=" + data.goodsAllPrice + "&connect_redirect=1#wechat_redirect";
+                } else if (ua.indexOf('qq/') != -1) {
+                    location.href = "/mobile/pay/qqpay.html?msg="
+                        + data.orderNumber
+                        + "&amount=" + data.goodsAllPrice
+                        + "&appType=" + getOsType()
+                        + "&isApp=" + isApp();
+                } else {
+                    location.href = "/mobile/pay/pay.html?msg="
+                        + data.orderNumber
+                        + "&amount=" + data.goodsAllPrice
+                        + "&appType=" + getOsType()
+                        + "&isApp=" + isApp();
+                }
+
+//                // 支付
+//                location.href = "/mobile/pay/pay.html?msg="
+//                    + data.orderNumber
+//                    + "&amount=" + data.goodsAllPrice + "&appType=" + getOsType() + "&isApp=" + isApp();
+            } else if (event == "cancel") {
+                // 取消订单
+                mui.confirm("确定取消订单?", function (v) {
+                    if (v.index == 1) {
+                        ajax({
+                            url: " /user/" + GLOBAL.VERSION + "/trade/cancelOrder",
+                            data: JSON.stringify({
+                                orderNumber: data.orderNumber
+                            }),
+                            success: function (res) {
+                                if (res.success) {
+                                    mui.confirm("提交成功!", " ", ["确定"], function (v) {
+                                        location.reload();
+                                    });
+                                } else {
+                                    msg("数据异常");
+                                }
+                            }
+                        });
+                    }
+                });
+
+            } else if (event == "shouhuo") {
+                // 确认收货
+                mui.confirm("确定收货?", function (v) {
+                    if (v.index == 1) {
+                        ajax({
+                            url: " /user/" + GLOBAL.VERSION + "/trade/updateOrderStatus",
+                            data: JSON.stringify({
+                                orderNum: data.orderNumber,
+                                status: 4
+                            }),
+                            success: function (res) {
+                                if (res.success) {
+                                    mui.confirm("提交成功!", " ", ["确定"], function (v) {
+                                        location.reload();
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+.share-wrap{
+    position: relative;
+}
+.share-form {
+    background: #07969a;
+    padding: 0 3.2rem;
+    .title {
+        line-height: 6rem;
+        color: #fff;
+        font-size: 1.8rem;
+        text-align: center;
+    }
+    .item {
+        margin-bottom: 0.8rem;
+        input {
+            display: block;
+            width: 100%;
+            border: 0;
+            background: #fff;
+            margin: 0;
+            height: 3.5rem;
+            font-size: 1.2rem;
+            line-height: 1.4rem;
+            padding: 0.45rem 1.1rem 0 1.1rem;
+            border-radius: 0.2rem;
+        }
+    }
+    .btn {
+        display: block;
+        width: 100%;
+        font-size: 1.3rem;
+        height: 3.5rem;
+        line-height: 3.5rem;
+        background: #e48334;
+        border-radius: 0.2rem;
+        border: 0;
+        outline: none;
+        color: #fff;
+        padding: 0;
+        &:hover {
+            background: darken(#e48334, 5%);
+        }
+        &:active {
+            background: lighten(#e48334, 5%);
+        }
+    }
+    .mark {
+        margin-top: 0.8rem;
+        color: #fff;
+        font-size: 0.9rem;
+        line-height: 1.4rem;
+        padding-bottom: 4rem;
+        text-align: center;
+    }
+}
+
+.share-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, .3);
+    color: #fff;
+    font-size: 0.9rem;
+    height: 2.7rem;
+    line-height: 2.7rem;
+    text-align: center;
+}

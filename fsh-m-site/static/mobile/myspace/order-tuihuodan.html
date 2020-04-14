@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>填写退换货单</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script>
+        (function (doc, win, undefined) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (clientWidth === undefined) return;
+                    docEl.style.fontSize = (clientWidth / 37.5) + 'px';
+                };
+            if (doc.addEventListener === undefined) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            //doc.addEventListener('DOMContentLoaded', recalc, false)
+            recalc();
+        })(document, window);
+    </script>
+    <link rel="stylesheet" href="../../font/iconfont.css">
+    <link rel="stylesheet" href="../../js/plugin/mui/css/mui.min.css">
+    <link rel="stylesheet" href="../../js/plugin/mui/picker/dist/css/mui.picker.min.css"/>
+    <link rel="stylesheet" href="../../css/build/wap.css?v=1.0.1">
+</head>
+<body class="bg-fff">
+<header class="mui-bar mui-bar-nav">
+    <a href="javascript:history.back();" class="iconfont icon-fanhui1 mui-pull-left"></a>
+    <h1 class="mui-title">填写退换货物流单</h1>
+</header>
+<div class="mui-content bg-fff m-b-49">
+    <div class="address-form bg-fff">
+        <div class="item">
+            <input type="text" id="pop" readonly placeholder="选择物流公司">
+        </div>
+        <div class="item">
+            <input type="text" maxlength="30" id="returnExpressNumber" placeholder="物流单号">
+        </div>
+    </div>
+    <!--<p class="tips">退款申请通过后，支付金额将原路返回</p>-->
+</div>
+<button class="btn-buy btn-buy-fixed" type="button" id="save">提交</button>
+<script src="../../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="../../js/plugin/mui/js/mui.min.js"></script>
+<script src="../../js/plugin/mui/picker/dist/js/mui.picker.min.js"></script>
+<script src="../../js/src/common-mobile.js"></script>
+<script>
+    $(function () {
+        var orderNumber = getUrlParam("orderNumber");
+        var pciker = new mui.PopPicker();
+        var returnExpressCompanyCode = "";
+        var returnExpressCompanyName = "";
+
+
+        ajax({
+            url: " /lock" + GLOBAL.VERSION + "/express/getExpressCompanyList",
+            type: "get",
+            success: function (res) {
+                if (res.success && res.data) {
+                    $.each(res.data, function (_, v) {
+                        v.text = v.expressCompanyName;
+                        v.value = v.expressCompanyCode;
+                    });
+                    pciker.setData(res.data);
+                }
+            }
+        });
+
+        // 点击选择
+        mui("#pop")[0].addEventListener('tap', openPicker, false);
+
+        // 保存
+        mui("#save")[0].addEventListener('tap', function (event) {
+
+            var formData = {
+                    orderNumber: orderNumber,
+                    returnExpressCompanyCode: returnExpressCompanyCode,
+                    returnExpressCompanyName: returnExpressCompanyName,
+                    returnExpressNumber: $("#returnExpressNumber").val()
+                }
+                ;
+            if (!returnExpressCompanyCode) {
+                msg("请选择物流公司");
+                openPicker();
+                return;
+            }
+            if (!formData.returnExpressNumber) {
+                msg("请填写物流单号");
+                return;
+            }
+            ajax({
+                url: '/user' + GLOBAL.VERSION + '/trade/addReturnExpressInfo',
+                data: JSON.stringify(formData),
+                async: false,
+                success: function (res) {
+                    if (res.success) {
+                        mui.confirm("提交成功!", " ", ["确定"], function (v) {
+                            location.href = "order.html";
+                        });
+                    } else {
+                        msg("数据异常");
+                    }
+                }
+            });
+        }, false);
+
+        function openPicker() {
+            pciker.show(function (items) {
+                returnExpressCompanyCode = items[0].value;
+                returnExpressCompanyName = items[0].text;
+                $("#pop").val(items[0].text);
+                $("#returnExpressCompanyName").val(items[0].text);
+            });
+        }
+    });
+
+</script>
+</body>
+</html>

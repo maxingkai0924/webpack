@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>来福魔方——登录</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script>
+        (function (doc, win, undefined) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (clientWidth === undefined) return;
+                    docEl.style.fontSize = (clientWidth / 37.5) + 'px';
+                };
+            if (doc.addEventListener === undefined) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            //doc.addEventListener('DOMContentLoaded', recalc, false)
+            recalc();
+        })(document, window);
+    </script>
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <link rel="stylesheet" href="../js/plugin/mui/css/mui.min.css">
+    <link rel="stylesheet" href="../css/build/wap.css?v=1.0.1">
+
+</head>
+<body class="bg-fff">
+<div class="header">
+    <i class="iconfont icon-fanhui1" onclick="history.back();"></i>
+    <img src="../img/wap/logo.jpg">
+</div>
+<div class="mf-content clearfix bg-fff">
+    <div class="login">
+        <div class="login-form">
+            <div class="login-item">
+                <input type="number" id="mobile" placeholder="手机号">
+            </div>
+            <div class="login-item login-item-code">
+                <input type="number" id="code" placeholder="手机验证码">
+                <button class="btn btn-code" id="btn-code" type="button">获取验证码</button>
+            </div>
+            <div class="error-info ellipsis">
+                <i class="iconfont icon-jinggao"></i>
+                <span id="error">手机号格式不正确</span>
+            </div>
+        </div>
+        <div class="login-btn-item">
+            <button class="btn btn-login" id="btn-login">登录</button>
+        </div>
+    </div>
+</div>
+<script src="../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="../js/plugin/mui/js/mui.min.js"></script>
+<script src="../js/src/common-mobile.js"></script>
+<script>
+    $(function () {
+        mui("#btn-code")[0].addEventListener('tap',function (event) {
+            var $this = $(this);
+            var mobile = $.trim($("#mobile").val());
+            if (!mobile) {
+                showError("请输入手机号！");
+                return;
+            }
+            if (!REG.mobile.test(mobile)) {
+                showError("请输入正确的手机号！");
+                return;
+            }
+            closeError();
+            $this.attr("disabled", "disabled");
+            mui.showLoading("正在发送");
+            ajax({
+                url: "/lock" + GLOBAL.VERSION + "/code",
+                data: JSON.stringify({
+                    app: 0,
+                    mobile: mobile
+                }),
+                success: function (res) {
+                    mui.hideLoading();
+                    if (res.success) {
+                        msg(res.msg);
+                        var time = 60;
+                        var timer = setInterval(function () {
+                            if (time == 0) {
+                                $this.removeAttr("disabled").text("重新发送");
+                                clearInterval(timer);
+                            } else {
+                                $this.text("重新发送" + time);
+                            }
+                            time--;
+                        }, 1000);
+                    } else {
+                        $this.removeAttr("disabled");
+                        msg(res.msg);
+                    }
+                },
+                error: function () {
+                    mui.hideLoading();
+                    $this.removeAttr("disabled");
+                    showError("数据异常！");
+                }
+            });
+        });
+        $(".login-form input").keydown(function (e) {
+            if (e.keyCode == 13) {
+                $("#btn-login").trigger("click");
+            }
+        });
+        mui("#btn-login")[0].addEventListener('tap',function (event) {
+            var mobile = $.trim($("#mobile").val());
+            var code = $.trim($("#code").val());
+            if (!mobile) {
+                showError("请输入手机号！");
+                return;
+            }
+            if (!REG.mobile.test(mobile)) {
+                showError("请输入验证码！");
+                return;
+            }
+            if (!code) {
+                showError("请输入验证码！");
+                return;
+            }
+            closeError();
+            mui.showLoading("正在登录");
+            ajax({
+                url: "/lock" + GLOBAL.VERSION + "/reg",
+                async: false,
+                data: JSON.stringify({
+                    app: 0,
+                    mobile: mobile,
+                    code: code,
+                    registerType: 1
+                }),
+                success: function (res) {
+                    mui.hideLoading();
+                    if (res.success) {
+                        ajax({
+                            url: "/lock" + GLOBAL.VERSION + "/login",
+                            data: JSON.stringify({
+                                username: mobile,
+                                password: res.data.password,
+                                deviceId: res.data.deviceId,
+                                app: 0
+                            }),
+                            async: false,
+                            success: function (res) {
+                                if (res.success) {
+                                    msg("登录成功！");
+                                    setTimeout(function () {
+                                        location.href = "index.html";
+                                    }, 1000);
+                                } else {
+                                    showError(res.msg);
+                                }
+                            }
+                        });
+                    } else {
+                        mui.hideLoading();
+                        showError(res.msg);
+                    }
+                }
+            });
+        });
+
+        // 显示错误
+        function showError(msg) {
+            $(".error-info").show();
+            $("#error").text(msg);
+        }
+
+        // 关闭错误
+        function closeError() {
+            $(".error-info").hide();
+        }
+    });
+</script>
+</body>
+</html>

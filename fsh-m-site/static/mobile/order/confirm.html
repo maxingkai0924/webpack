@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>确认订单</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script>
+        (function (doc, win, undefined) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (clientWidth === undefined) return;
+                    docEl.style.fontSize = (clientWidth / 37.5) + 'px';
+                };
+            if (doc.addEventListener === undefined) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            //doc.addEventListener('DOMContentLoaded', recalc, false)
+            recalc();
+        })(document, window);
+    </script>
+    <link rel="stylesheet" href="../../font/iconfont.css">
+    <link rel="stylesheet" href="../../js/plugin/mui/css/mui.min.css">
+    <link rel="stylesheet" href="../../css/build/wap.css?v=1.0.1">
+</head>
+<body class="bg-fff">
+<header class="mui-bar mui-bar-nav">
+    <a href="javascript:history.back();" class="iconfont icon-fanhui1 mui-pull-left"></a>
+    <a class="iconfont icon-wode mui-pull-right" href="/mobile/myspace/center.html"></a>
+    <h1 class="mui-title">确认订单</h1>
+</header>
+
+<div class="mui-content m-b-49">
+    <div class="bg-gray p-b-9">
+        <div class="order-address-empty" id="order-address-empty">
+            <i class="iconfont icon-weizhi"></i>
+            还没有收货地址，立即添加
+            <i class="iconfont icon-xiangyou"></i>
+        </div>
+        <div class="order-address m-t-9" id="order-address" style="display: none;">
+        </div>
+        <ul class="order-info m-t-9">
+            <li>商品金额 <span class="right" id="price">￥999.0</span></li>
+            <!--<li>活动优惠 <span class="right">-￥999.0</span></li>-->
+            <li>运费 <span class="right">￥0.00</span></li>
+        </ul>
+        <div class="order-goods-info clearfix bg-fff m-t-9">
+            <img src="../../img/wap/p-main-md.jpg" class="product">
+            <div class="content">
+                <p class="name" id="name"></p>
+                <p class="specs">白色</p>
+                <p class="price" id="price-all">￥</p>
+            </div>
+        </div>
+        <ul class="order-info m-t-9">
+            <li id="promotionCode-pop">邀请码 <span class="right" id="promotionCode"></span></li>
+        </ul>
+    </div>
+</div>
+<div class="order-conform-footer">
+    <button class="btn" id="confirm">去付款</button>
+    <div class="left price ellipsis" id="price2"></div>
+</div>
+<script id="temp_address" type="text/html">
+    <div class="name ellipsis">{{name}}</div>
+    <div class="content">
+        <p class="mobile"><span>{{$imports.mobilehide(mobile)}}</span> <i class="iconfont icon-xiangyou"></i></p>
+        <p class="address">{{province}}{{city}}{{dstrict}}{{address}}</p>
+    </div>
+</script>
+<script src="../../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="../../js/plugin/mui/js/mui.min.js"></script>
+<script src="../../js/src/common-mobile.js"></script>
+<script>
+    $(function () {
+        var addressChose = null;
+        var shippingAddressId = getUrlParam("shippingAddressId");
+
+        var good_price;
+        var good_price_all;
+        var good_name;
+        var good_num = parseInt(getUrlParam("number"));
+
+        var good_goodId = "7cd43c0b2b2e40a6b602d3551a8ce4b6";
+        var promotionCode = localStorage.getItem("promotionCode");
+        promotionCode && $("#promotionCode").text(promotionCode);
+        mui("#order-address-empty")[0].addEventListener("tap", function () {
+            location.href = "/mobile/myspace/address-add.html?number=" + good_num;
+        });
+        mui("#order-address")[0].addEventListener("tap", function () {
+            location.href = "/mobile/myspace/address.html?number=" + good_num;
+        });
+
+        mui("#promotionCode-pop")[0].addEventListener("tap", function () {
+            if(promotionCode){
+                return;
+            }
+            mui.prompt("", "请输入七位邀请码", "邀请码", ["取消", "保存"], function (v) {
+                if (v.index == 0) {
+                    return true;
+                }
+                var text = $.trim(v.value);
+                if (text && text.length != 8) {
+                    msg("请输入8位邀请码！");
+                    return false;
+                }
+                $("#promotionCode").text(text);
+            });
+            var $input = $(".mui-popup-input input");
+            $input.val("").attr("maxlength", 8);
+        });
+
+        // 查询商品信息
+        ajax({
+            url: "/user" + GLOBAL.VERSION + "/trade/getGoodInfo",
+            type: "get",
+            data: {
+                goodId: good_goodId
+            },
+            async: false,
+            success: function (res) {
+                if (res.success && res.data) {
+                    good_price = res.data.lfmfGoodsPrices;
+                    good_name = res.data.lfmfGoodsName;
+                    good_price_all = good_price * good_num;
+                    $("#name").html(good_name + '<span class="num">x' + good_num + '</span>');
+                    $("#price-unit").text("￥" + good_price);
+                    $("#price").text("￥" + good_price_all);
+                    $("#price-all").text("￥" + good_price_all);
+                    $("#price2").text("应付：￥" + good_price_all);
+                }
+            }
+        });
+
+        // 查询收货地址
+        ajax({
+            url: " /user/" + GLOBAL.VERSION + "/trade/getShippingAddressByUserId",
+            type: "get",
+            success: function (res) {
+                if (res.success && res.data && res.data.length > 0) {
+                    var defaultAddress = null;
+                    $.each(res.data, function (_, v) {
+                        if (shippingAddressId) {
+                            if (v.shippingAddressId == shippingAddressId) {
+                                defaultAddress = v;
+                                return false;
+                            }
+                        } else if (v.isDefault) {
+                            defaultAddress = v;
+                            return false;
+                        }
+                    });
+                    addressChose = defaultAddress ? defaultAddress : res.data[0];
+                    $("#order-address").html(template("temp_address", addressChose)).show();
+                    $(".order-address-empty").hide();
+                }
+            }
+        });
+
+
+        // 点击去结算
+        mui("#confirm")[0].addEventListener("tap", function () {
+            var $btn = $(this);
+            if (!addressChose) {
+                msg("请先添加收货地址");
+                return;
+            }
+            $btn.attr("disabled", "disabled");
+            // 创建订单
+            var url = "/user" + GLOBAL.VERSION + "/trade/uniteCreateOrder";
+            var data = {
+                userMobile: addressChose.mobile,
+                address: addressChose.address,
+                provinceId: addressChose.provinceId,
+                cityId: addressChose.cityId,
+                dstrictId: addressChose.dstrictId,
+                userName: addressChose.name,
+                goodsId: good_goodId,
+                goodsName: good_name,
+                goodsNum: good_num,
+                goodsAllPrice: good_price_all,
+                isPc: 0
+            };
+            var promotionCode=$("#promotionCode").text();
+            if (promotionCode) {
+                data.promotionCode = promotionCode;
+            }
+            var activityCode=localStorage.getItem("activityCode");
+            activityCode && (data.activityCode=activityCode);
+            ajax({
+                url: url,
+                type: "post",
+                data: JSON.stringify(data),
+                success: function (res) {
+                    if (res.success && res.data) {
+                        var ua = navigator.userAgent.toLowerCase();
+                        if (ua.indexOf('micromessenger') != -1) {
+                           var SERVE="http://www.laifumofang.com";// 正式
+                            // var SERVE = "http://pre.laifumofang.com";// 预上线
+                            var pageUrl = SERVE + "/mobile/pay/wxpay.html?msg="
+                                + res.data.orderNumber
+                                + "&appType=" + getOsType()
+                                + "&isApp=" + isApp();
+                            location.href =
+                                "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
+                                "wxee974f7471fefdef" +
+                                "&redirect_uri=" +
+                                pageUrl + //这里放当前页面的地址
+                                "&response_type=code&scope=snsapi_base&state=" + res.data.amount + "&connect_redirect=1#wechat_redirect";
+                        } else if (ua.indexOf('qq/') != -1) {
+                            location.href = "/mobile/pay/qqpay.html?msg="
+                                + res.data.orderNumber
+                                + "&amount=" + res.data.amount
+                                + "&appType=" + getOsType()
+                                + "&isApp=" + isApp();
+                        } else {
+                            location.href = "/mobile/pay/pay.html?msg="
+                                + res.data.orderNumber
+                                + "&amount=" + res.data.amount
+                                + "&appType=" + getOsType()
+                                + "&isApp=" + isApp();
+                        }
+                    } else {
+                        $btn.removeAttr("disabled");
+                        msg("数据异常！");
+                    }
+                },
+                error: function () {
+                    $btn.removeAttr("disabled");
+                    msg("数据异常！");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

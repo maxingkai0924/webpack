@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>来福魔方——快递入户神器</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="keywords" content="来福魔方,家庭智能快递柜,电子猫眼快递柜,智能快递箱，快递收发柜,智能快递签收箱">
+    <meta name="description" content="来福魔方家庭智能快递柜，集快递收发与电子猫眼等其他功能为一体，为解决亿万家庭的快递送货上门及家庭安全问题而生。">
+    <script>
+        (function (doc, win, undefined) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (clientWidth === undefined) return;
+                    docEl.style.fontSize = (clientWidth / 37.5) + 'px';
+                };
+            if (doc.addEventListener === undefined) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            //doc.addEventListener('DOMContentLoaded', recalc, false)
+            recalc();
+        })(document, window);
+    </script>
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <link rel="stylesheet" href="../css/build/wap.css?v=1.0.1">
+    <link rel="stylesheet" href="/js/plugin/video/video-js.css">
+</head>
+<body>
+<div class="header">
+    <i class="iconfont icon-caidan" id="menu-btn"></i>
+    <img src="../img/wap/logo.jpg">
+</div>
+<ul class="wap-menu clearfix" id="menu">
+    <li class="active"><a href="javascript:void(0);">主页</a></li>
+    <li><a href="/mobile/about.html">关于我们</a></li>
+    <li><a href="/mobile/contact.html">联系我们</a></li>
+</ul>
+<div class="mf-content">
+    <div class="mf-index">
+        <div class="cont1"></div>
+        <div class="cont2">
+            <button class="btn" onclick="location.href='/mobile/detail.html'">立即购买</button>
+        </div>
+        <div class="cont3">
+            <img src="../img/wap/index/3.jpg" class="cont3-img">
+            <div class="content">
+                <h2>了解更多了解更多了解更多了解更多了解更多了解更多了解更多了解更多了解更多了解更多</h2>
+                <p class="more">了解更多 <i class="iconfont icon-xiangyoujiantou"></i></p>
+            </div>
+        </div>
+        <div class="cont4">
+            <video class="video-js" id="video" poster="/img/index/poster.jpg" width="1200" height="675"
+                   controls="controls">
+                <!--<source src="res/mf.mp4">-->
+                <source src="http://file1.laifumofang.com/mf.mp4">
+            </video>
+        </div>
+        <div class="cont5 cont-pad">
+            <h2>展会活动</h2>
+            <img src="../img/wap/index/5.jpg" class="cont5-img">
+            <div class="content">
+                <h2 class="ellipsis">2018年首届升维创新论坛</h2>
+                <div class="info">
+                    12月18日上午九点，首届中国房产经纪行业创新升维高峰论坛在济南银丰华美达举行。本次峰会由北京汇智凌云软件技术有限公司主办，山东房生活信息科技有限公司承办，北京新银河教育咨询有限公司协办，峰会为期两天，来自全国的行业大咖、房产中介企业掌门人及高层领导、多家媒体等近300人参加此次峰会。家庭智能终端来福魔方也在本次峰会正式亮相...
+                </div>
+            </div>
+        </div>
+        <div class="cont5 cont-pad">
+            <h2>
+                <a href="#">近期新闻 <i class="iconfont icon-qianjin"></i></a>
+            </h2>
+            <div class=""></div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>
+            ©2018 laifumofang.com All right reserved 来福魔方
+        </p>
+        <p>
+            鲁ICP备16033703号-2
+        </p>
+    </div>
+</div>
+
+<button class="btn-buy btn-buy-fixed" type="button" onclick="location.href='/mobile/detail.html'">立即购买</button>
+<script src="../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/video/video.min.js"></script>
+<script src="../js/src/common.js?v=2.0.1"></script>
+<script>
+    $(function () {
+        var $video = $("#video");
+
+        $video.attr("width", $(window).width());
+        $video.attr("height", $(window).width() / 1200 * 675);
+        var videoPlayer = videojs('video');
+        $("#menu-btn").click(function () {
+            var $this = $(this);
+            if ($this.hasClass("icon-caidan")) {
+                // 展开
+                $this.removeClass("icon-caidan").addClass("icon-fork");
+                $("#menu").slideDown("fast");
+            } else {
+                $this.removeClass("icon-fork").addClass("icon-caidan");
+                $("#menu").slideUp("fast");
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>来福魔方——快递入户神器</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="keywords" content="来福魔方,家庭智能快递柜,电子猫眼快递柜,智能快递箱，快递收发柜,智能快递签收箱">
+    <meta name="description" content="来福魔方家庭智能快递柜，集快递收发与电子猫眼等其他功能为一体，为解决亿万家庭的快递送货上门及家庭安全问题而生。">
+    <script>
+        (function (doc, win, undefined) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (clientWidth === undefined) return;
+                    docEl.style.fontSize = (clientWidth / 37.5) + 'px';
+                };
+            if (doc.addEventListener === undefined) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            //doc.addEventListener('DOMContentLoaded', recalc, false)
+            recalc();
+        })(document, window);
+    </script>
+    <link rel="stylesheet" href="../js/plugin/mui/css/mui.min.css">
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <link rel="stylesheet" href="../css/build/wap.css?v=1.0.1">
+</head>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a href="javascript:history.back();" class="iconfont icon-fanhui1 mui-pull-left"></a>
+    <a class="iconfont icon-wode mui-pull-right" href="/mobile/myspace/center.html"></a>
+    <h1 class="mui-title">商品详情</h1>
+</header>
+<div class="detail">
+    <img src="../img/wap/p-main.jpg" class="product">
+    <div class="pad clearfix">
+        <h2>
+            <span id="name"></span>
+            <!--<i class="iconfont icon-fenxiang"></i>-->
+        </h2>
+        <p class="price">￥<span id="price-unit"></span>
+            <!--<del>999.00</del>-->
+            <!--<span class="volume">已售23件</span>-->
+        </p>
+    </div>
+    <div class="pad mar" id="specs">
+        <div class="specs">
+            规格
+            <span class="chose">颜色型号</span>
+            <i class="iconfont icon-xiangyou"></i>
+        </div>
+    </div>
+    <div class="pad mar">
+        <h3>商品详情</h3>
+    </div>
+    <img src="../img/wap/wap.jpg" style="display: block" width="100%;">
+    <div class="footer">
+        <p>
+            ©2018 laifumofang.com All right reserved 来福魔方
+        </p>
+        <p>
+            鲁ICP备16033703号-2
+        </p>
+    </div>
+</div>
+<div class="mask" style="display: none;"></div>
+<div class="specs-pop" id="specs-pop" style="display: none;">
+    <i class="iconfont icon-fork" id="specs-close"></i>
+    <div style="height: 100%;overflow: auto;padding-bottom: 1rem;">
+        <div class="product clearfix">
+            <img src="../img/wap/p-main-md.jpg">
+            <div class="content">
+                <h3 id="price2">价格：￥</h3>
+                <p>请选择规格属性</p>
+            </div>
+        </div>
+        <div class="specs-title">颜色</div>
+        <div class="color-list clearfix">
+            <span class="active">白色</span>
+        </div>
+        <div class="specs-title-num">数量</div>
+        <div class="mui-numbox mf-numbox" data-numbox-max="99" data-numbox-min="1">
+            <button class="mui-btn mui-numbox-btn-minus" type="button">-</button>
+            <input class="mui-numbox-input" type="number" value="1"/>
+            <button class="mui-btn mui-numbox-btn-plus" type="button">+</button>
+        </div>
+        <!--<div class="num-act">-->
+            <!--<button id="num-minus"><i class="iconfont icon-jian"></i></button>-->
+            <!--<input type="text" value="1" id="num" readonly disabled>-->
+            <!--<button id="num-plus"><i class="iconfont icon-zengjia"></i></button>-->
+        <!--</div>-->
+    </div>
+    <button class="btn-buy" type="button" id="confirm">立即购买</button>
+</div>
+<button class="btn-buy btn-buy-fixed" type="button" id="btn-specs">立即购买</button>
+<script src="../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="../js/plugin/mui/js/mui.min.js"></script>
+<script src="../js/src/common-mobile.js"></script>
+<script>
+    $(function () {
+        var good_price;
+        var good_name;
+
+        var inventory = 99;
+        var good_goodId = "7cd43c0b2b2e40a6b602d3551a8ce4b6";
+
+        // 查询商品信息
+        ajax({
+            url: "/user" + GLOBAL.VERSION + "/trade/getGoodInfo",
+            type: "get",
+            data: {
+                goodId: good_goodId
+            },
+            success: function (res) {
+                if (res.success && res.data) {
+                    good_price = res.data.lfmfGoodsPrices;
+                    good_name = res.data.lfmfGoodsName;
+                    $("#name").text(good_name);
+                    $("#price-unit").text(good_price);
+                    $("#price2").text("价格：￥"+good_price);
+                }
+            }
+        });
+
+        // 选择规格
+        mui("#btn-specs")[0].addEventListener("tap", openSpecs);
+        // 选择规格
+        mui("#specs")[0].addEventListener("tap", openSpecs);
+
+        // 点击遮罩关闭
+        mui(".mask")[0].addEventListener("tap", closeSpecs);
+        mui("#specs-close")[0].addEventListener("tap", closeSpecs);
+
+        // 去购买
+        mui("#confirm")[0].addEventListener("tap", function () {
+            location.href="/mobile/order/confirm.html?number="+mui("body").numbox().getValue();
+        });
+
+        function openSpecs() {
+            $(".mask").show();
+            $("#specs-pop").show();
+        }
+
+        function closeSpecs() {
+            $(".mask").hide();
+            $("#specs-pop").hide();
+        }
+    })
+</script>
+</body>
+</html>

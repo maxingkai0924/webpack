@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>来福魔方——快递入户神器</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="keywords" content="来福魔方,家庭智能快递柜,电子猫眼快递柜,智能快递箱，快递收发柜,智能快递签收箱">
+    <meta name="description" content="来福魔方家庭智能快递柜，集快递收发与电子猫眼等其他功能为一体，为解决亿万家庭的快递送货上门及家庭安全问题而生。">
+    <script>
+        (function (doc, win, undefined) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (clientWidth === undefined) return;
+                    docEl.style.fontSize = (clientWidth / 37.5) + 'px';
+                };
+            if (doc.addEventListener === undefined) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            //doc.addEventListener('DOMContentLoaded', recalc, false)
+            recalc();
+        })(document, window);
+    </script>
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <link rel="stylesheet" href="../js/plugin/mui/css/mui.min.css">
+    <link rel="stylesheet" href="../js/plugin/mui/picker/dist/css/mui.picker.min.css"/>
+    <link rel="stylesheet" href="../css/build/wap.css?v=1.0.1">
+    <link rel="stylesheet" href="../css/build/wap-share.css">
+</head>
+<body>
+<div class="share-wrap">
+    <img src="../img/wap/share.jpg" style="display:block;width: 100%;">
+    <form class="share-form clearfix">
+        <div class="title">代理报名表</div>
+        <div class="item">
+            <input type="text" id="name" placeholder="*您的姓名" maxlength="10">
+        </div>
+        <div class="item">
+            <input type="text" id="gender-pop" placeholder="*您的性别" value="性别：男" readonly>
+            <input type="hidden" id="gender" value="M">
+        </div>
+        <div class="item">
+            <input type="number" id="age" placeholder="您的年龄" step="1"
+                   oninput="if(value.length>3){value=value.slice(0,3)}">
+        </div>
+        <div class="item">
+            <input type="text" id="weixin" placeholder="微信号" maxlength="30">
+        </div>
+        <div class="item">
+            <input type="tel" id="mobile" placeholder="*联系电话" maxlength="11">
+        </div>
+        <div class="item">
+            <input type="text" id="companyName" placeholder="*中介公司" maxlength="20">
+        </div>
+        <button id="save" class="btn" type="button">提交</button>
+        <div class="mark">
+            备注：以上信息处于保密状态，不会出现信息泄露
+        </div>
+    </form>
+
+    <div class="share-footer">
+        最终解释权归山东房生活信息科技有限公司所有
+    </div>
+</div>
+<script src="../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="../js/plugin/mui/js/mui.min.js"></script>
+<script src="../js/plugin/mui/picker/dist/js/mui.picker.min.js"></script>
+<script src="../js/src/common-mobile.js"></script>
+<script>
+    $(function () {
+        var pciker = new mui.PopPicker();
+        pciker.setData([
+            {value: "M", text: "男"},
+            {value: "F", text: "女"}
+        ]);
+        function openPicker() {
+            pciker.show(function (items) {
+                $("#gender").val(items[0].value);
+                $("#gender-pop").val("性别：" + items[0].text);
+            });
+        }
+
+        mui("#gender-pop")[0].addEventListener('tap', openPicker);
+        mui("#save")[0].addEventListener('tap', function () {
+            var $this = $(this);
+            var formData = {
+                name: $.trim($("#name").val()),
+                gender: $.trim($("#gender").val()),
+                age: $.trim($("#age").val()),
+                weixin: $.trim($("#weixin").val()),
+                mobile: $.trim($("#mobile").val()),
+                companyName: $.trim($("#companyName").val()),
+                industry: 1
+            };
+            if (!formData.name) {
+                msg("请输入姓名！");
+                return;
+            }
+            if (formData.age.indexOf(".") > 0) {
+                msg("请输入正确的年龄");
+                return;
+            }
+            if (!formData.mobile) {
+                msg("请输入手机号！");
+                return;
+            }
+            if (!REG.mobile.test(formData.mobile)) {
+                msg("请输入正确的手机号！");
+                return;
+            }
+            if (!formData.companyName) {
+                msg("请输入公司名称！");
+                return;
+            }
+            mui.showLoading("正在提交");
+            $this.attr("disabled", "disabled");
+            setTimeout(function () {
+                ajax({
+                    url: "/busi/promoter/addintendrecord",
+                    data: formData,
+                    contentType: "application/x-www-form-urlencoded",
+                    success: function (res) {
+                        mui.hideLoading();
+                        if (res.success) {
+                            mui.alert("提交成功");
+                        } else {
+                            msg(res.msg);
+                        }
+                    },
+                    error: function () {
+                        mui.hideLoading();
+                        $this.removeAttr("disabled");
+                        msg("数据异常！");
+                    }
+                });
+            }, 100);
+        });
+    });
+</script>
+</body>
+</html>

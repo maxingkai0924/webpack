@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>来福魔方——登录</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script>
+        (function (doc, win, undefined) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (clientWidth === undefined) return;
+                    docEl.style.fontSize = (clientWidth / 37.5) + 'px';
+                };
+            if (doc.addEventListener === undefined) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            //doc.addEventListener('DOMContentLoaded', recalc, false)
+            recalc();
+        })(document, window);
+    </script>
+    <link rel="stylesheet" href="../../font/iconfont.css">
+    <link rel="stylesheet" href="../../js/plugin/mui/css/mui.min.css">
+    <link rel="stylesheet" href="../../css/build/wap.css?v=1.0.1">
+    <link rel="stylesheet" href="../../css/build/wap-myspace.css">
+</head>
+<body class="bg-fff">
+<header class="mui-bar mui-bar-nav">
+    <a href="javascript:history.back();" class="iconfont icon-fanhui1 mui-pull-left"></a>
+    <h1 class="mui-title">个人资料</h1>
+</header>
+<div class="mui-content bg-fff m-b-49">
+    <div class="myList" id="nickname-edit">
+        <span>姓名</span>
+        <div>
+            <span class="login-name" id="nickname"></span>
+            <i class="icon iconfont">&#xe637;</i>
+        </div>
+    </div>
+    <div class="myList">
+        <span>电话</span>
+        <div>
+            <span class="login-name" id="mobile">15210447515</span>
+            <i class="icon iconfont" style="visibility: hidden;">&#xe637;</i>
+        </div>
+    </div>
+</div>
+<script src="../../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="../../js/plugin/mui/js/mui.min.js"></script>
+<script src="../../js/src/common-mobile.js"></script>
+<script>
+    $(function () {
+        var nickname = "";
+        if (!isApp()) {
+            $(".header").show();
+        }
+        checkLoginState({
+            success: function (data) {
+                nickname = data.nickname;
+                $("#nickname").text(mobilehide(data.nickname));
+                $("#mobile").text(mobilehide(data.mobile));
+            }
+        });
+
+        mui("#nickname-edit")[0].addEventListener('tap', function () {
+            mui.prompt("", "请输入昵称", "修改昵称", ["取消", "保存"], function (v) {
+                if (v.index == 0) {
+                    return true;
+                }
+                var text = $.trim(v.value);
+                if (!text) {
+                    msg("请输入昵称！");
+                    return false;
+                }
+                var reg = new RegExp("[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]");
+                if (reg.test(text)) {
+                    msg("不可包含特殊字符！");
+                    return false;
+                }
+                ajax({
+                    url: "/user/" + GLOBAL.VERSION + "/modifyUserInfo",
+                    data: JSON.stringify({
+                        nickname: text,
+                    }),
+                    success: function (res) {
+                        if (res.success) {
+                            mui.confirm("操作成功!", " ", ["确定"], function (v) {
+                                location.reload();
+                            });
+                        } else {
+                            msg("数据异常");
+                        }
+                    }
+                });
+            });
+            var $input = $(".mui-popup-input input");
+            $input.val(nickname).attr("maxlength", 10);
+        }, false);
+    });
+</script>
+</body>
+</html>

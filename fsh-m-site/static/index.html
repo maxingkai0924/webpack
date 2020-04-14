@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>来福魔方</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="keywords" content="来福魔方,智能快递箱，电子猫眼快递箱,智能快递收发柜,智能快递签收箱">
+    <meta name="description"
+          content="来福魔方是一款家庭智能快递柜，来福魔方集快递收发与电子猫眼等其他功能为一体，为解决亿万家庭的快递送货上门及家庭安全问题而生。外部主体为一个多功能、可伸缩式的智能快递签收箱，快递人员可以依托电子猫眼系统实时与业主视频，确定快递是安全投递。">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+    <link rel="stylesheet" href="js/plugin/swiper/swiper.min.css">
+    <link rel="stylesheet" href="js/plugin/video/video-js.css">
+    <link rel="stylesheet" href="js/plugin/layer/theme/default/layer.css">
+    <link rel="stylesheet" href="/css/build/index.css?v=2.0.1">
+</head>
+<body>
+<!--header-->
+<div class="header clearfix" id="header"></div>
+<div class="index-banner">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="img/index/banner-1.jpg"></div>
+            <div class="swiper-slide"><img src="img/index/banner-2.jpg"></div>
+            <div class="swiper-slide"><img src="img/index/banner-3.jpg"></div>
+        </div>
+        <!-- 分页器 -->
+        <div class="swiper-pagination"></div>
+        <!-- 导航按钮 -->
+        <i class="swiper-button swiper-prev icon-fanhui1 iconfont"></i>
+        <i class="swiper-button swiper-next icon-qianjin iconfont"></i>
+    </div>
+</div>
+
+<!--魔方-->
+<div class="container index-mf" id="news1">
+    <a href="#">
+        <img src="img/index/img-1.jpg" class="media-left left">
+        <div class="index-mf-right right">
+            <!--<div class="media">-->
+                <!--<img src="img/index/img-2.jpg" class="mf">-->
+            <!--</div>-->
+
+            <!--<div class="content">-->
+                <!--<h3>来福魔方启领未来，<br>-->
+                <!--构建万物互联的智能世界-->
+                <!--</h3>-->
+                <!--<p class="more">-->
+                <!--了解更多 <i class="iconfont icon-xiangyoujiantou index-more-ico"></i>-->
+                <!--</p>-->
+            <!--</div>-->
+        </div>
+    </a>
+</div>
+
+<!--视频展示-->
+<div class="index-video">
+    <div class="container">
+        <video class="video-js" id="video" poster="img/index/poster.jpg" width="1200" height="675" controls="controls">
+            <!--<source src="res/mf.mp4">-->
+            <source src="http://file1.laifumofang.com/mf.mp4">
+        </video>
+    </div>
+</div>
+
+<!--展会-->
+<div class="container index-ex" id="news2">
+    <!--<h2 class="title-v2">展会活动-->
+        <!--<a href="#" class="more">查看全部 <span class="iconfont icon-qianjin"></span></a>-->
+    <!--</h2>-->
+    <!--<a href="#">-->
+        <!--<div class="wrap">-->
+            <!--<div class="content left">-->
+                <!--<h3>2018年首届升维创新论坛</h3>-->
+                <!--<p class="text">-->
+                    <!--12月18日上午九点，首届中国房产经纪行业创新升维高峰论坛在济南银丰华美达举行。本次峰会由北京汇智凌云软件技术有限公司主办，山东房生活信息科技有限公司承办，北京新银河教育咨询有限公司协办，峰会为期两天，来自全国的行业大咖、房产中介企业掌门人及高层领导、多家媒体等近300人参加此次峰会。家庭智能终端来福魔方也在本次峰会正式亮相...</p>-->
+                <!--<p class="more">-->
+                    <!--了解更多 <i class="iconfont icon-xiangyoujiantou index-more-ico"></i>-->
+                <!--</p>-->
+            <!--</div>-->
+            <!--<img src="img/index/img-3.jpg" class="left">-->
+        <!--</div>-->
+    <!--</a>-->
+</div>
+
+<!--新闻中心-->
+<div class="index-news container">
+    <h2 class="title-v2">近期新闻 <a href="/views/news/list.html" class="more">查看全部 <span
+            class="iconfont icon-qianjin"></span></a></h2>
+    <div class="mf-news clearfix" id="news">
+    </div>
+</div>
+
+<!--sub导航-->
+<div class="index-sub container">
+    <a href="/mf.html">
+        <div class="item">
+            <img src="img/index/ico-1.jpg" alt="">
+            <div class="content">
+                <h3>购买渠道</h3>
+                <p>查找可靠的购买渠道</p>
+            </div>
+        </div>
+    </a>
+    <a href="/views/guide/index.html">
+        <div class="item">
+            <img src="img/index/ico-2.jpg" alt="">
+            <div class="content">
+                <h3>服务与支持</h3>
+                <p>我们很高兴为您服务</p>
+            </div>
+        </div>
+    </a>
+    <a href="/views/guide/install-door.html">
+        <div class="item item-last">
+            <img src="img/index/ico-3.jpg" alt="">
+            <div class="content">
+                <h3>安装与使用</h3>
+                <p>为您提供专业的安装与使用说明</p>
+            </div>
+        </div>
+    </a>
+</div>
+
+<div class="footer container-full m-t-90" id="footer"></div>
+<script id="news1-temp" type="text/html">
+    <a href="/views/news/detail.html?id={{id}}" target="_blank">
+        <img src="img/index/img-1.jpg" class="media-left left">
+        <div class="index-mf-right right">
+            <div class="media">
+                <img class="mf" src="{{$imports.GLOBAL.IMAGESERVER}}{{coverPic}}">
+            </div>
+
+            <div class="content">
+                <h3>{{title}}</h3>
+                <p class="more">
+                    了解更多 <i class="iconfont icon-xiangyoujiantou index-more-ico"></i>
+                </p>
+            </div>
+        </div>
+    </a>
+</script>
+<script id="news2-temp" type="text/html">
+    <h2 class="title-v2">展会活动
+        <!--<a href="#" class="more">查看全部 <span class="iconfont icon-qianjin"></span></a>-->
+    </h2>
+    <a href="/views/news/detail.html?id={{id}}" target="_blank">
+        <div class="wrap">
+            <div class="content left">
+                <h3>{{title}}</h3>
+                <p class="text">{{summary}}</p>
+                <p class="more">
+                    了解更多 <i class="iconfont icon-xiangyoujiantou index-more-ico"></i>
+                </p>
+            </div>
+            <img src="{{$imports.GLOBAL.IMAGESERVER}}{{coverPic}}" class="left">
+        </div>
+    </a>
+</script>
+<script id="news-temp" type="text/html">
+    {{each data}}
+    <div class="item clearfix">
+        <a href="/views/news/detail.html?id={{$value.id}}" class="media" target="_blank">
+            <img src="{{$imports.GLOBAL.IMAGESERVER}}{{$value.coverPic}}">
+        </a>
+        <div class="content">
+            <h3><a href="/views/news/detail.html?id={{$value.id}}" target="_blank">{{$value.title}}</a></h3>
+            <p class="summary">{{$value.summary}}</p>
+            <p class="time">{{$imports.dateFormat($value.createDate,"yyyy MM-dd")}}</p>
+        </div>
+    </div>
+    {{/each}}
+</script>
+
+<script src="js/plugin/jquery-2.2.4.min.js"></script>
+<script src="js/plugin/video/video.min.js"></script>
+<script src="js/plugin/template-web.js"></script>
+<script src="js/plugin/swiper/swiper.min.js"></script>
+<script src="js/plugin/layer/layer.js"></script>
+<script src="js/src/common.js?v=2.0.1"></script>
+<script>
+    $(function () {
+        var mySwiper = new Swiper('.swiper-container', {
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+            },
+            navigation: {
+                nextEl: '.swiper-next',
+                prevEl: '.swiper-prev',
+            },
+        });
+
+        var videoPlayer = videojs('video');
+//        var videoPlayer = videojs('video');
+//        videoPlayer.play();
+//        videoPlayer.dispose();
+
+        ajax({
+            url: " /user/" + GLOBAL.VERSION + "/liveNews/getLFNewsList",
+            type: "get",
+            success: function (res) {
+                if (res.success && res.data) {
+                    $("#news1").html(template("news1-temp", res.data[0].lfmfNewsList[0]));
+                    $("#news2").html(template("news2-temp", res.data[1].lfmfNewsList[0]));
+                    $("#news").html(template("news-temp", {data: res.data[2].lfmfNewsList}));
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
+
+
+
+

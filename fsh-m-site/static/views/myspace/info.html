@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心-个人资料</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/font/iconfont.css">
+    <link rel="stylesheet" href="/js/plugin/layer/theme/default/layer.css">
+    <link rel="stylesheet" href="../../js/plugin/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/build/index.css?v=2.0.1">
+    <link rel="stylesheet" href="/css/build/myspace.css">
+</head>
+<body>
+
+<!--header-->
+<div class="header clearfix" id="header"></div>
+<div class="space-crumbs container">
+    <a href="/">首页</a>&gt;<span>个人中心</span>
+</div>
+<div class="space-wrap container">
+    <div class="space-left clearfix">
+        <h3>个人中心</h3>
+        <ul>
+            <li><a href="index.html">我的首页</a></li>
+            <li><a href="order.html">我的订单</a></li>
+            <li><a href="info.html" class="active">个人资料</a></li>
+            <li><a href="address.html">收货地址</a></li>
+        </ul>
+    </div>
+    <div class="space-panel">
+        <div class="space-content">
+            <div class="space-content">
+                <h3 class="space-title">个人资料</h3>
+                <div class="myspace-info clearfix" id="order-list">
+                    <div class="avatar-wrap">
+                        <div class="avatar">
+                            <img src="../../img/default.jpg" id="avatar">
+                        </div>
+                        <p><a href="#" class="link-primary2" id="upload">设置头像</a></p>
+                    </div>
+                    <div class="info-content">
+                        <h4>基础资料 <a href="javascript:void(0);" class="link-primary2" style="display: none;">编辑</a></h4>
+                        <p>昵称：<span id="nickname"></span> <a href="javascript:void(0);" class="link-primary2"
+                                                             id="edit">编辑</a></p>
+                        <p id="mobile">手机号：</p>
+                        <!--<p>邮箱：aa</p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="/js/plugin/layer/layer.js"></script>
+<script src="../../js/plugin/layui/src/layui.js"></script>
+<script src="/js/src/common.js?v=2.0.1"></script>
+<script>
+    layui.use(['form', 'upload'], function () {
+        var userInfo = {};
+        checkLoginState({
+            success: function (data) {
+                if (data.photo) {
+                    var img = new Image();
+                    img.onload = function () {
+                        $("#avatar").attr("src", GLOBAL.IMAGESERVER + data.photo)
+                    };
+                    img.src = GLOBAL.IMAGESERVER + data.photo;
+                }
+                userInfo = data;
+                $("#nickname").text(mobilehide(data.nickname||"无"));
+                $("#mobile").text("手机号：" + mobilehide(data.mobile));
+            }
+        });
+
+        var upload = layui.upload; //得到 upload 对象
+
+        //创建一个上传组件
+        upload.render({
+            elem: '#upload',
+            field: "photo",
+            url: "/user/" + GLOBAL.VERSION + "/modifyPhoto",
+            done: function (res, index, upload) { //上传后的回调
+                layer.msg("操作成功");
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            },
+            size: 3000 //最大允许上传的文件大小
+        });
+        $("#edit").click(function () {
+            layer.prompt({
+                title: '修改昵称',
+                formType: 0,
+                value: userInfo.nickname, //初始时的值，默认空字符
+                maxlength: 10, //可输入文本的最大长度，默认500
+                skin: 'layui-layer-prompt mf-Dialog'
+            }, function (text, index) {
+                text = $.trim(text);
+                if (!text) {
+                    layer.msg("请输入昵称！");
+                    return;
+                }
+                var reg=new RegExp("[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]");
+                if(reg.test(text)){
+                    layer.msg("不可包含特殊字符！");
+                    return;
+                }
+                layer.close(index);
+                ajax({
+                    url: "/user/" + GLOBAL.VERSION + "/modifyUserInfo",
+                    data: JSON.stringify({
+                        nickname: text
+                    }),
+                    success: function (res) {
+                        if (res.success) {
+                            layer.close(index);
+                            layer.msg("操作成功");
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        }
+                    }
+                });
+            });
+        });
+    });
+</script>
+</body>
+</html>
+
+
+
+

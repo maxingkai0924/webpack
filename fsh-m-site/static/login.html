@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="keywords" content="来福魔方，来福魔方产品，来福魔方外观，家庭智能快递柜，来福魔方产品参数">
+    <meta name="description" content="来福魔方是一款55cm*46cm*33cm，容量可达56L的家庭智能快递柜产品，外观简单，时尚，科技感十足，来福魔方产品其他参数请参照官网。">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/font/iconfont.css">
+    <link rel="stylesheet" href="/js/plugin/layer/theme/default/layer.css">
+    <link rel="stylesheet" href="/css/build/index.css?v=2.0.1">
+    <link rel="stylesheet" href="/css/build/login.css">
+</head>
+<body>
+<!--header-->
+<div class="header clearfix" id="header"></div>
+<div class="login container-full md-bg-auto">
+    <div class="container">
+        <div class="login-wrap">
+            <div class="login-header">
+                账号登录
+            </div>
+            <div class="login-form">
+                <div class="login-item">
+                    <input id="mobile" type="text" placeholder="手机号">
+                </div>
+                <div class="login-item login-item-code clearfix">
+                    <input id="code" type="text" placeholder="验证码">
+                    <button type="button" class="btn-code" id="btn-code">获取验证码</button>
+                </div>
+                <div class="error-info ellipsis">
+                    <i class="iconfont icon-jinggao"></i>
+                    <span id="error">手机号格式不正确</span>
+                </div>
+                <button type="button" class="btn-login" id="btn-login">登录</button>
+                <div class="login-type">
+                    <fieldset>
+                        <legend align="center">其他方式登录</legend>
+                    </fieldset>
+                    <div class="login-type-link">
+                        <a href="/lock/account/qqcode" class="link btn-qq" id="">
+                            <i class="iconfont icon-QQ"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="link btn-wx" onclick="openweixin();">
+                            <i class="iconfont icon-weixin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--微信登录二维码-->
+<div class="weixinqr" id="weixinqr">
+</div>
+<div class="footer container-full" id="footer"></div>
+<script src="/js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="/js/plugin/layer/layer.js"></script>
+<script src="/js/src/common.js?v=2.0.1"></script>
+<script>
+    $(function () {
+        $("#btn-code").click(function () {
+            var $this = $(this);
+            var mobile = $.trim($("#mobile").val());
+            if (!mobile) {
+                showError("请输入手机号！");
+                return;
+            }
+            if (!REG.mobile.test(mobile)) {
+                showError("请输入正确的手机号！");
+                return;
+            }
+            closeError();
+            $this.attr("disabled", "disabled");
+            ajax({
+                url: "/lock" + GLOBAL.VERSION + "/code",
+                data: JSON.stringify({
+                    app: 0,
+                    mobile: mobile
+                }),
+                success: function (res) {
+                    if (res.success) {
+                        layer.msg(res.msg);
+                        var time = 60;
+                        var timer = setInterval(function () {
+                            if (time == 0) {
+                                $this.removeAttr("disabled").text("重新发送");
+                                clearInterval(timer);
+                            } else {
+                                $this.text("重新发送" + time);
+                            }
+                            time--;
+                        }, 1000);
+                    } else {
+                        $this.removeAttr("disabled");
+                        layer.msg(res.msg);
+                    }
+                },
+                error: function () {
+                    $this.removeAttr("disabled");
+                    showError("数据异常！");
+                }
+            });
+        });
+        $(".login-form input").keydown(function (e) {
+            if (e.keyCode == 13) {
+                $("#btn-login").trigger("click");
+            }else {
+                var mobile = $.trim($("#mobile").val());
+                var code = $.trim($("#code").val());
+                var errorText=$("#error").text();
+                if(mobile && errorText=="请输入手机号！"){
+                    closeError();
+                }else if(code && errorText=="请输入验证码！"){
+                    closeError();
+                }
+            }
+        });
+        $("#btn-login").click(function () {
+            var mobile = $.trim($("#mobile").val());
+            var code = $.trim($("#code").val());
+            if (!mobile) {
+                showError("请输入手机号！");
+                return;
+            }
+            if (!REG.mobile.test(mobile)) {
+                showError("请输入正确的手机号！");
+                return;
+            }
+            if (!code) {
+                showError("请输入验证码！");
+                return;
+            }
+            closeError();
+            ajax({
+                url: "/lock" + GLOBAL.VERSION + "/reg",
+                async: false,
+                data: JSON.stringify({
+                    app: 0,
+                    mobile: mobile,
+                    code: code,
+                    registerType: 1
+                }),
+                success: function (res) {
+                    if (res.success) {
+                        ajax({
+                            url: "/lock" + GLOBAL.VERSION + "/login",
+                            data: JSON.stringify({
+                                username: mobile,
+                                password: res.data.password,
+                                deviceId: res.data.deviceId,
+                                app: 0
+                            }),
+                            async: false,
+                            success: function (res) {
+                                if (res.success) {
+                                    layer.msg("登录成功！");
+                                    setTimeout(function () {
+                                        location.href = "index.html";
+                                    }, 1000);
+                                } else {
+                                    showError(res.msg);
+                                }
+                            }
+                        });
+                    } else {
+                        showError(res.msg);
+                    }
+                }
+            });
+        });
+
+        // 显示错误
+        function showError(msg) {
+            $(".error-info").show();
+            $("#error").text(msg);
+        }
+
+        // 关闭错误
+        function closeError() {
+            $(".error-info").hide();
+        }
+    });
+
+    /** 开启微信登录()
+     *
+     *
+     */
+    function openweixin() {
+        $("#weixinqr").append(template.render('<iframe src="/lock/account/wxWebCode" frameborder="0"></iframe>', {}))
+        layer.open({
+            type: 1,
+            title: false,
+            // area:"350px 400px",
+            content: $("#weixinqr"),
+            shift: 1,
+            isOutAnim: true,
+            closeBtn: 2,
+            end: function () {
+                $("#weixinqr").empty();
+            }
+        });
+    }
+</script>
+</body>
+</html>

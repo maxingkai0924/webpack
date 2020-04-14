@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>第三方账号绑定</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="keywords" content="来福魔方，来福魔方产品，来福魔方外观，家庭智能快递柜，来福魔方产品参数">
+    <meta name="description" content="来福魔方是一款55cm*46cm*33cm，容量可达56L的家庭智能快递柜产品，外观简单，时尚，科技感十足，来福魔方产品其他参数请参照官网。">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/font/iconfont.css">
+    <link rel="stylesheet" href="/js/plugin/layer/theme/default/layer.css">
+    <link rel="stylesheet" href="/css/build/index.css?v=2.0.1">
+    <link rel="stylesheet" href="/css/build/login.css">
+</head>
+<body>
+<!--header-->
+<div class="header clearfix" id="header"></div>
+<div class="login container-full md-bg-auto">
+    <div class="container">
+        <div class="login-wrap">
+            <div class="login-header">
+                第三方账号绑定
+            </div>
+            <div class="login-form">
+                <div class="login-item">
+                    <input id="mobile" type="text" placeholder="手机号">
+                </div>
+                <div class="login-item login-item-code clearfix">
+                    <input id="code" type="text" placeholder="验证码">
+                    <button type="button" class="btn-code" id="btn-code">获取验证码</button>
+                </div>
+                <div class="error-info ellipsis">
+                    <i class="iconfont icon-jinggao"></i>
+                    <span id="error"></span>
+                </div>
+                <button type="button" class="btn-login" id="btn-login">绑定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer container-full" id="footer"></div>
+<script src="/js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="/js/plugin/layer/layer.js"></script>
+<script src="/js/src/common.js?v=2.0.1"></script>
+<script>
+    $(function () {
+        $("#btn-code").click(function () {
+            var $this = $(this);
+            var mobile = $.trim($("#mobile").val());
+            if (!mobile) {
+                showError("请输入手机号！");
+                return;
+            }
+            if (!REG.mobile.test(mobile)) {
+                showError("请输入正确的手机号！");
+                return;
+            }
+            closeError();
+            $this.attr("disabled", "disabled");
+            ajax({
+                url: "/lock/account/isUserUnionId",
+                data: JSON.stringify({
+                    userType: getUrlParam("registerType"),
+                    mobile: mobile
+                }),
+                success: function (res) {
+                    if (!res.success) {
+                        showError(res.msg);
+                        $this.removeAttr("disabled");
+
+                        return;
+                    }
+                    // 发送验证码
+                    ajax({
+                        url: "/lock" + GLOBAL.VERSION + "/code",
+                        data: JSON.stringify({
+                            app: 0,
+                            mobile: mobile
+                        }),
+                        success: function (res) {
+                            if (res.success) {
+                                layer.msg(res.msg);
+                                var time = 60;
+                                var timer = setInterval(function () {
+                                    if (time == 0) {
+                                        $this.removeAttr("disabled").text("重新发送");
+                                        clearInterval(timer);
+                                    } else {
+                                        $this.text("重新发送" + time);
+                                    }
+                                    time--;
+                                }, 1000);
+                            } else {
+                                layer.msg(res.msg);
+                            }
+                        },
+                        error: function () {
+                            showError("数据异常！");
+                        }
+                    });
+                },
+                error: function () {
+                    showError("数据异常！");
+                    $this.removeAttr("disabled");
+                }
+            });
+
+        });
+        $(".login-form input").keydown(function (e) {
+            if (e.keyCode == 13) {
+                $("#btn-login").trigger("click");
+            }
+        });
+        $("#btn-login").click(function () {
+            var mobile = $.trim($("#mobile").val());
+            var code = $.trim($("#code").val());
+            if (!mobile) {
+                showError("请输入手机号！");
+                return;
+            }
+            if (!REG.mobile.test(mobile)) {
+                showError("请输入验证码！");
+                return;
+            }
+            if (!code) {
+                showError("请输入验证码！");
+                return;
+            }
+            closeError();
+            var registerType = getUrlParam("registerType");//* 1：手机号注册；2：微信注册；3：qq注册；4：支付宝注册
+            var data = {
+                app: 0,
+                mobile: mobile,
+                code: code,
+                registerType: 1,
+            };
+            if (registerType == 3) {// QQ
+                data.qqUnionId = getUrlParam("unionid");
+            } else {
+                data.unionId = getUrlParam("unionid");
+            }
+            data.nickname = getUrlParam("nickname");
+            ajax({
+                url: "/lock" + GLOBAL.VERSION + "/reg",
+                async: false,
+                data: JSON.stringify(data),
+                success: function (res) {
+                    if (res.success) {
+                        ajax({
+                            url: "/lock" + GLOBAL.VERSION + "/login",
+                            data: JSON.stringify({
+                                username: mobile,
+                                password: res.data.password,
+                                deviceId: res.data.deviceId,
+                                app: 0
+                            }),
+                            async: false,
+                            success: function (res) {
+                                if (res.success) {
+                                    layer.msg("登录成功！");
+                                    setTimeout(function () {
+                                        location.href = "index.html";
+                                    }, 1000);
+                                } else {
+                                    showError(res.msg);
+                                }
+                            }
+                        });
+                    } else {
+                        showError(res.msg);
+                    }
+                }
+            });
+        });
+
+        // 显示错误
+        function showError(msg) {
+            $(".error-info").show();
+            $("#error").text(msg);
+        }
+
+        // 关闭错误
+        function closeError() {
+            $(".error-info").hide();
+        }
+    });
+</script>
+</body>
+</html>

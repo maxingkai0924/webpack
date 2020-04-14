@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>来福魔方</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="keywords" content="来福魔方,智能快递箱，电子猫眼快递箱,智能快递收发柜,智能快递签收箱">
+    <meta name="description"
+          content="来福魔方是一款家庭智能快递柜，来福魔方集快递收发与电子猫眼等其他功能为一体，为解决亿万家庭的快递送货上门及家庭安全问题而生。外部主体为一个多功能、可伸缩式的智能快递签收箱，快递人员可以依托电子猫眼系统实时与业主视频，确定快递是安全投递。">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/font/iconfont.css">
+    <link rel="stylesheet" href="/js/plugin/swiper/swiper.min.css">
+    <link rel="stylesheet" href="/js/plugin/video/video-js.css">
+    <link rel="stylesheet" href="/js/plugin/layer/theme/default/layer.css">
+    <link rel="stylesheet" href="/css/build/index.css?v=2.0.1">
+</head>
+<body>
+<!--header-->
+<div class="header clearfix" id="header"></div>
+
+<div class="news-detail-page container" id="news">
+    <div class="crumbs">
+        <a href="/">首页</a>>
+        <a href="/views/news/list.html">新闻</a>>
+        <span class="ellipsis"></span>
+    </div>
+    <h2 class="title"></h2>
+    <p class="time"></p>
+    <div class="article">
+    </div>
+</div>
+
+<!--footer-->
+<div class="footer container-full" id="footer"></div>
+<script id="news-temp" type="text/html">
+    <div class="crumbs">
+        <a href="/">首页</a>>
+        <a href="/views/news/list.html">新闻</a>>
+        <span class="ellipsis">{{title}}</span>
+    </div>
+    <h2 class="title">{{title}}</h2>
+    <p class="time">{{$imports.dateFormat(createDate,"yyyy MM-dd")}}</p>
+    <div class="article">
+        {{@ content}}
+    </div>
+</script>
+<script src="/js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="/js/plugin/layer/layer.js"></script>
+<script src="/js/src/common.js?v=2.0.1"></script>
+<script>
+    $(function () {
+        var id = getUrlParam("id");
+        ajax({
+            url: " /user/" + GLOBAL.VERSION + "/liveNews/getLFNewsById?newsId=" + id,
+            type: "get",
+            success: function (res) {
+                if (res.success && res.data) {
+                    $("#news").html(template("news-temp", res.data));
+                }
+            }
+        });
+    })
+</script>
+</body>
+</html>
+
+
+
+

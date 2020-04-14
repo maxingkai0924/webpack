@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心-订单详情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/font/iconfont.css">
+    <link rel="stylesheet" href="/js/plugin/layer/theme/default/layer.css">
+    <link rel="stylesheet" href="../../js/plugin/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/build/index.css?v=2.0.1">
+    <link rel="stylesheet" href="/css/build/myspace.css">
+</head>
+<body>
+<!--header-->
+<div class="header clearfix" id="header"></div>
+<div class="space-crumbs container">
+    <a href="/">首页</a>&gt;<span>个人中心</span>
+</div>
+<div class="space-wrap container">
+    <div class="space-left clearfix">
+        <h3>个人中心</h3>
+        <ul>
+            <li><a href="index.html">我的首页</a></li>
+            <li><a href="order.html" class="active">我的订单</a></li>
+            <li><a href="info.html">个人资料</a></li>
+            <li><a href="address.html">收货地址</a></li>
+        </ul>
+    </div>
+    <div class="space-panel">
+        <div class="space-content">
+            <h3 class="space-title">订单详情</h3>
+            <div class="order-detail clearfix" id="order-detail">
+            </div>
+        </div>
+    </div>
+</div>
+<script id="temp_log" type="text/html">
+    {{each data.data}}
+    <li class="item">{{$value.context}}{{$value.time}}</li>
+    {{/each}}
+</script>
+<script id="temp_order" type="text/html">
+    <div class="number">
+        订单号：{{orderNumber}}
+        {{if orderStatus==0}}
+        <!--已下单-->
+        <a href="../order/pay.html?orderNumber={{orderNumber}}" class="btn-ord btn-pay">立即支付</a>
+        <a href="javascript:void(0);" data-event="cancel" class="btn-ord">取消订单</a>
+
+        {{else if orderStatus==1}}
+        <!--已付款-->
+        {{if isNormalDelivery==1}}
+        <a href="javascript:void(0);" data-event="refund" class="btn-ord">申请退款</a>
+        {{/if}}
+
+        {{else if orderStatus==2}}
+        <!--仓库配货-->
+        {{if isNormalDelivery==1}}
+        <a href="javascript:void(0);" data-event="refund" class="btn-ord">申请退款</a>
+        {{/if}}
+
+        {{else if orderStatus==3}}
+        <!--已发货-->
+        <a href="javascript:void(0);" data-event="shouhuo" class="btn-ord">确认收货</a>
+
+        {{else if orderStatus==4}}
+        <!--完成-->
+        {{if isWriteServiceOrder==2}}
+        <a href="order-after.html?orderNumber={{orderNumber}}" class="btn-ord">申请售后</a>
+        {{/if}}
+
+        {{else if orderStatus==8 && isWriteExpress==2}}
+            <a href="javascript:void(0);" data-event="tuihuodan" class="btn-ord">填写退货单</a>
+        {{/if}}
+    </div>
+    <div class="status-name">{{$imports.getItemStatusName(orderStatus)}}</div>
+    {{if orderStatus<5}}
+    <div class="mf-order-status clearfix">
+        <div class="item {{orderStatus>0?'active':''}}">
+            <span class="line"></span>
+            <span class="disc disc-left"></span>
+            <span class="name name-left">下单</span>
+
+            <span class="disc"></span>
+            <span class="name">付款</span>
+        </div>
+        <div class="item {{orderStatus>1?'active':''}}">
+            <span class="line"></span>
+            <span class="disc"></span>
+            <span class="name">配货</span>
+        </div>
+        <div class="item {{orderStatus>2?'active':''}}">
+            <span class="line"></span>
+            <span class="disc"></span>
+            <span class="name">出货</span>
+        </div>
+        <div class="item {{orderStatus>3?'active':''}}">
+            <span class="line"></span>
+            <span class="disc"></span>
+            <span class="name" style="right: -2em;">交易成功</span>
+        </div>
+    </div>
+    {{/if}}
+    {{if expressNumber && orderStatus < 5}}
+    <div class="express" style="margin-top: 15px">
+        <div class="slide" id="express-slide" style="display: none;">
+            <div class="info">
+                物流公司：{{expressCompanyName}} 运单号：{{expressNumber}}
+            </div>
+            <div class="log-wrap">
+                <ul class="log" id="express-log">
+                </ul>
+            </div>
+        </div>
+        <div class="act" id="express-open">展开物流详情 <i class="iconfont icon-iconfontxiangxia"></i></div>
+    </div>
+    {{/if}}
+    <div class="goods-info">
+        <img src="../../img/order/product-1.jpg" alt="" class="product">
+        <span class="name">{{goodsName}}     {{goodsPrices}}x {{goodsNum}} </span>
+        <span class="price">{{goodsAllPrice}}元</span>
+    </div>
+    <div class="address-info">
+        <h3>收货信息</h3>
+        <p>
+            姓名：&nbsp;&nbsp;{{userName}}
+        </p>
+        <p>
+            联系电话：{{userMobile}}
+        </p>
+        <p>
+            收货地址：{{province}}{{city}}{{dstrict}}{{address}}
+        </p>
+    </div>
+    <div class="pay-way">
+        <h3>支付方式</h3>
+        <p>{{payWay==1?"支付宝":"微信"}}</p>
+    </div>
+    <div class="order-money">
+        <p>商品价格：<span>{{goodsAllPrice}}元</span></p>
+        <p>活动优惠：<span>-0元</span></p>
+        <p class="all">应付金额：<span>{{goodsAllPrice}}元</span></p>
+    </div>
+</script>
+<script src="/js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="/js/plugin/layer/layer.js"></script>
+<script src="/js/plugin/layui/src/layui.js"></script>
+<script src="/js/src/common.js?v=2.0.1"></script>
+<script>
+    layui.use(['layer', 'form'], function () {
+
+        var orderData = null;
+        // 查询订单信息
+        ajax({
+            url: " /user" + GLOBAL.VERSION + "/trade/getOrderInfo",
+            type: "get",
+            data: {
+                orderNumber: getUrlParam("orderNumber")
+            },
+            success: function (res) {
+                if (res.success && res.data) {
+                    orderData = res.data;
+                    $("#order-detail").html(template("temp_order", res.data));
+
+                    if (res.data.expressNumber && res.data.orderStatus < 5) {
+                        ajax({
+                            url: " /lock" + GLOBAL.VERSION + "/express/getExpressStatus",
+                            type: "get",
+                            data: {
+                                expressNum: res.data.expressNumber,
+                                expressCompanyCode: res.data.expressCompanyCode
+                            },
+                            success: function (res) {
+                                $("#express-log").html(template("temp_log", res));
+                            }
+                        });
+
+                        // 物流信息展开关闭
+                        $("#express-open").click(function () {
+                            var $this = $(this);
+                            if ($this.hasClass("opened")) {
+                                $("#express-slide").slideUp("fast");
+                                $this.removeClass("opened").html('展开物流详情 <i class="iconfont icon-iconfontxiangxia"></i>');
+                            } else {
+                                $("#express-slide").slideDown("fast");
+                                $this.addClass("opened").html('收起物流详情 <i class="iconfont icon-xiangshang"></i>');
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+
+        $("#order-detail").on("click", "a[data-event]", function () {
+            var $this = $(this);
+            var event = $this.attr("data-event");
+            if (event == "cancel") {
+                // 取消订单
+                showConfirm("确定取消订单？", function () {
+                    ajax({
+                        url: " /user/" + GLOBAL.VERSION + "/trade/cancelOrder",
+                        data: JSON.stringify({
+                            orderNumber: orderData.orderNumber
+                        }),
+                        success: function (res) {
+                            if (res.success) {
+                                layer.msg("操作成功");
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 1000);
+                            } else {
+                                layer.msg("数据异常");
+                            }
+                        }
+                    });
+                });
+            } else if (event == "refund") {
+                showDialog({
+                    title: '申请退款',
+                    template: 'order-refund',
+                    saveUrl: '/user' + GLOBAL.VERSION + '/trade/applyTradeRefund',
+                    width: 620,
+                    height: 400,
+                    htmlData: orderData,
+                    afterSubmit: function () {
+                        location.reload();
+                    }
+                })
+            } else if (event == "shouhuo") {
+                // 确认收货
+                showConfirm("确认收货？", function () {
+                    ajax({
+                        url: " /user/" + GLOBAL.VERSION + "/trade/updateOrderStatus",
+                        data: JSON.stringify({
+                            orderNum: orderData.orderNumber,
+                            status: 4
+                        }),
+                        success: function (res) {
+                            if (res.success) {
+                                layer.msg("操作成功");
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 1000);
+                            }
+                        }
+                    });
+                });
+            } else if (event == "tuihuodan") {
+                // 填写退货单
+                showDialog({
+                    title: '退换物流单',
+                    template: 'order-after-express',
+                    saveUrl: '/user' + GLOBAL.VERSION + '/trade/addReturnExpressInfo',
+                    width: 620,
+                    height: 400,
+                    htmlData: orderData,
+                    afterSubmit: function () {
+                        location.reload();
+                    }
+                });
+            }
+        });
+    });
+
+
+    function getItemStatusName(orderStatus) {
+        switch (orderStatus) {
+            case 0:// 已下单
+                return "等待付款";
+            case 1:// 已付款
+                return "待配货";
+            case 2:// 已配货
+                return "待发货";
+            case 3:// 已发货
+                return "运输中";
+            case 4:// 已完成（用户已收货）
+                return "已完成";
+            case 5:// 正在退款
+                return "退款中";
+            case 6:// 已退款
+                return "已退款";
+            case 7:// 申请退换货（可填写退货单）
+                return "退换货申请中";
+            case 8:// 正在退货
+                return "退货中";
+            case 9:// 已关闭
+                return "已关闭";
+        }
+    }
+</script>
+</body>
+</html>
+
+
+
+

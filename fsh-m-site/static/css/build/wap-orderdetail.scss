@@ -1,0 +1,172 @@
+.order-detail {
+    background: #fafafa;
+    .order-info {
+        background: #fff;
+        margin-top: 0.75rem;
+        .order-type {
+            height: 4.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.3rem;
+            margin: 0 1.5rem;
+            p {
+                color: #333;
+                margin-bottom: 0;
+            }
+            span.success {
+                color: #2bab52;
+            }
+            span.fila {
+                color: #dc4c3d;
+            }
+        }
+        .order-cp {
+            height: 11rem;
+            .order-cp-box {
+                margin: 0 1.5rem;
+                display: flex;
+                justify-content: space-between;
+                padding-top: 1.1rem;
+                img {
+                    width: 8rem;
+                    height: 8rem;
+                }
+                div {
+                    margin-left: 1rem;
+                    font-size: 1.3rem;
+                    p {
+                        color: #333;
+                        margin-bottom: 0;
+                        &:first-child {
+                            margin-top: 0.4rem;
+                        }
+                        &:nth-child(2) {
+                            color: #b3b3b3;
+                            margin: 0.5rem 0 1rem 0;
+                        }
+                    }
+                }
+                span {
+                    color: #999;
+                    font-size: 1.4rem;
+                    padding-top: 0.3rem;
+                }
+            }
+        }
+    }
+    .order-code {
+        height: 7.2rem;
+        margin-top: 0.9rem;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        padding-left: 1.5rem;
+        margin-left: 0;
+        p {
+            font-size: 1.3rem;
+            color: #999;
+            margin-bottom: 0;
+            &:last-child {
+                margin-top: 0.75rem;
+            }
+            span {
+                &:last-child {
+                    color: #333;
+                    margin-left: 1rem;
+                }
+            }
+        }
+    }
+    .order-detail-info {
+        background: #fff;
+        margin-top: 0.9rem;
+        padding: 1.2rem 1.5rem;
+        list-style: none;
+        li {
+            list-style: none;
+            line-height: 2.3rem;
+            font-size: 1.4rem;
+            color: #333;
+            span {
+                display: inline-block;
+                color: #999;
+                width: 8rem;
+            }
+        }
+    }
+    .price {
+        height: 5rem;
+        line-height: 5rem;
+        color: #dc4c3d;
+        font-size: 1.4rem;
+        margin: 0 1.5rem;
+        border-top: 1px solid #e0e0e0;
+        background: #fff;
+        span {
+            display: inline-block;
+            width: 8rem;
+        }
+    }
+    .order-price {
+        height: 14.4rem;
+        background: #fff;
+        margin-top: 0.9rem;
+        div {
+            &:first-child {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 9.4rem;
+                border-bottom: 1px solid #e0e0e0;
+                margin: 0 1.5rem;
+                p {
+                    font-size: 1.4rem;
+                    span {
+                        color: #999;
+                        &:first-child {
+                            width: 6.4rem;
+                            display: inline-block;
+                        }
+                        &:last-child {
+                            color: #333;
+                        }
+                    }
+                }
+            }
+            &:last-child {
+                height: 5rem;
+                display: flex;
+                align-items: center;
+                margin: 0 1.5rem;
+                font-size: 1.3rem;
+                color: #dc4c3d;
+                span:last-child {
+                    margin-left: 3.4rem;
+                }
+            }
+        }
+    }
+    .base-btn {
+        width: 100%;
+        height: 5rem;
+        background: #fff;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        text-align: right;
+        border-top: 1px solid #e0e0e0;
+        a {
+            width: 8rem;
+            height: 3rem;
+            line-height: 1.8rem;
+            font-size: 1.3rem;
+            border-radius: 2.8rem;
+            margin-top: 1.1rem;
+            &:last-child {
+                margin: 1.1rem 1.5rem 0 0.6rem;
+            }
+        }
+    }
+}

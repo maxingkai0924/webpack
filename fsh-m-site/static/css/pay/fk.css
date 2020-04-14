@@ -1,0 +1,98 @@
+.feedback textarea {
+    height: 100px;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    border: none !important;
+}
+
+.feedback p {
+    padding: 0.2rem;
+    color: #8f8f94;
+    margin-bottom: 0.12rem;
+}
+
+.feedback .image-list {
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    padding: 10px 10px;
+    overflow: hidden;
+    display: flex;
+}
+
+.feedback .row {
+    width: 100%;
+    background-color: #fff;
+}
+
+.feedback .image-item.space {
+    border: none;
+}
+
+.feedback .image-item {
+    width: 110px;
+    height: 110px;
+    background-image: url("../../img/wap/pay/ico/iconfont-tianjia.png");
+    background-size: 100% 100%;
+    display: inline-block;
+    position: relative;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border: solid 1px #e8e8e8;
+}
+
+.feedback .image-item input[type="file"] {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 0;
+}
+
+.feedback input, .feedback textarea {
+    border: none !important;
+}
+
+.mui-input-row {
+    position: relative;
+}
+
+.mui-input-row {
+    clear: left;
+    overflow: hidden;
+}
+
+.feedback input, .feedback textarea {
+    border: none !important;
+}
+
+.feedback button {
+    width: 90% !important;
+    height: 46px;
+    left: 50%;
+    float: none !important;
+    -webkit-transform: translate(-50%);
+}
+
+#ImgPr img {
+    width: 100px;
+    height: 100px;
+    display: none;
+    margin-top: 4px;
+}
+
+input[type=color], input[type=date], input[type=datetime-local], input[type=datetime], input[type=email], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], input[type=week], select, textarea {
+    font-size: 0.37rem;
+}
+
+p {
+    font-size: 0.35rem;
+}
+
+body {
+    background-color: #efefef;
+}

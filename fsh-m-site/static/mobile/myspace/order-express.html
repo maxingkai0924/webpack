@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>来福魔方——物流信息</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script>
+        (function (doc, win, undefined) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (clientWidth === undefined) return;
+                    docEl.style.fontSize = (clientWidth / 37.5) + 'px';
+                };
+            if (doc.addEventListener === undefined) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            //doc.addEventListener('DOMContentLoaded', recalc, false)
+            recalc();
+        })(document, window);
+    </script>
+    <link rel="stylesheet" href="../../font/iconfont.css">
+    <link rel="stylesheet" href="../../js/plugin/mui/css/mui.min.css">
+    <link rel="stylesheet" href="../../css/build/wap.css?v=1.0.1">
+    <link rel="stylesheet" href="../../css/build/wap-orderdetail.css">
+</head>
+<body class="bg-fff">
+<header class="mui-bar mui-bar-nav">
+    <a href="javascript:history.back();" class="iconfont icon-fanhui1 mui-pull-left"></a>
+    <h1 class="mui-title">物流信息</h1>
+</header>
+<div class="mui-content clearfix bg-fff">
+    <div class="express-title">
+        <p>运单状态: <span class="f-6" id="expressState"></span></p>
+        <p>订单编号: <span class="f-6" id="expressNumber"></span></p>
+        <p>承运公司: <span class="f-6" id="expressCompanyName"></span></p>
+    </div>
+    <div class="empty hide" id="empty">未查询到数据</div>
+    <div class="express-list" id="express-log" style="display: none;">
+    </div>
+</div>
+<script id="temp_log" type="text/html">
+    {{each data.data}}
+    <div class="item">
+        <i class="icon"></i>
+        <p class="time">{{$value.time}}</p>
+        <p class="info">{{$value.context}}</p>
+    </div>
+    {{/each}}
+</script>
+<script src="../../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="../../js/plugin/mui/js/mui.min.js"></script>
+<script src="../../js/src/common-mobile.js"></script>
+<script>
+    $(function () {
+        var expressNumber = getUrlParam("expressNumber");
+        var expressCompanyName = getUrlParam("expressCompanyName");
+        var expressCompanyCode = getUrlParam("expressCompanyCode");
+
+        $("#expressNumber").text(expressNumber);
+        $("#expressCompanyName").text(expressCompanyName);
+
+        ajax({
+            url: " /lock" + GLOBAL.VERSION + "/express/getExpressStatus",
+            type: "get",
+            data: {
+                expressNum: expressNumber,
+                expressCompanyCode: expressCompanyCode
+            },
+            success: function (res) {
+                if (res.success && res.data.status ==1 ) {
+                    $("#express-log").html(template("temp_log", res)).show();
+                    var txt="";
+                    switch (res.data.state){
+                        case "0" :txt="在途";break;
+                        case "1" :txt="揽件";break;
+                        case "2" :txt="寄送异常";break;
+                        case "3" :txt="签收";$("#expressState").addClass("succ").removeClass("f-6");break;
+                        case "4" :txt="退签或异常签收";break;
+                        case "5" :txt="派件";break;
+                        case "6" :txt="退回";break;
+                    }
+                    $("#expressState").text(txt);
+                } else {
+                    $("#empty").removeClass("hide");
+                    $("#expressState").text("查询异常");
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

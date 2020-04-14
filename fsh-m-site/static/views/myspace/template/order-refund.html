@@ -1,0 +1,35 @@
+<div class="fsh-pop">
+    <div id="add_form" class="layui-form order-refund">
+        <input type="hidden" name="orderNumber" value="{{orderNumber}}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">退款申请通过后，支付金额将原路返回</label>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                请选择退款原因
+            </label>
+            <div class="layui-input-inline">
+                <select id="refundReason" name="refundReason" lay-verify="required">
+                    <option value="">退款原因</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <div class="layui-input-inline" style="width:80%;">
+                <textarea name="refundDescription" placeholder="说明" class="layui-textarea" maxlength="30"
+                          style="resize: none;"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use('form', function () {
+        initSelect({
+            elem: "#refundReason",
+            url: "/user" + GLOBAL.VERSION + "/trade/getRefundReasonList",
+            type: "GET",
+            field: ["orderRefugeesId", "orderRefugees"],
+        });
+    });
+</script>

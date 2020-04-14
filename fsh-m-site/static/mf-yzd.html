@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>来福魔方</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="keywords" content="来福魔方,智能快递箱，电子猫眼快递箱,智能快递收发柜,智能快递签收箱">
+    <meta name="description"
+          content="来福魔方是一款家庭智能快递柜，来福魔方集快递收发与电子猫眼等其他功能为一体，为解决亿万家庭的快递送货上门及家庭安全问题而生。外部主体为一个多功能、可伸缩式的智能快递签收箱，快递人员可以依托电子猫眼系统实时与业主视频，确定快递是安全投递。">
+    <link rel="stylesheet" href="/font/iconfont.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/js/plugin/layer/theme/default/layer.css">
+    <link rel="stylesheet" href="/css/build/index.css?v=2.0.1">
+</head>
+<body>
+<!--header-->
+<div class="header clearfix" style="height: 170px;" id="header"></div>
+
+<div class="yzd">
+    <div class="container-full yzd-bar">
+        <div class="container-big">
+            <div class="container"></div>
+        </div>
+    </div>
+    <div class="container-full yzd-1" id="yzd-1">
+        <div class="container-big">
+            <div class="container">
+                <img class="yzd-text animated slideInUp" src="img/yzd/txt-1.png">
+            </div>
+        </div>
+    </div>
+    <div class="container-full yzd-2" id="yzd-2">
+        <div class="container-big">
+            <div class="container">
+                <img class="yzd-text" src="img/yzd/txt-2.png" style="display: none;">
+            </div>
+        </div>
+    </div>
+    <div class="container-full yzd-3" id="yzd-3">
+        <div class="container-big">
+            <div class="container">
+                <img class="yzd-text" src="img/yzd/txt-3.png" style="display: none;">
+            </div>
+        </div>
+    </div>
+    <div class="container-full yzd-4" id="yzd-4">
+        <div class="container-big">
+            <div class="container">
+                <img class="yzd-text" src="img/yzd/txt-4.png" style="display: none;">
+            </div>
+        </div>
+    </div>
+    <div class="container-full yzd-5" id="yzd-5">
+        <div class="container-big">
+            <div class="container">
+                <img class="yzd-text" src="img/yzd/txt-5.png" style="display: none;">
+            </div>
+        </div>
+    </div>
+    <div class="container-full yzd-6" id="yzd-6">
+        <div class="container-big">
+            <div class="container">
+                <img class="yzd-text" src="img/yzd/txt-6.png" style="display: none;">
+            </div>
+        </div>
+    </div>
+    <div class="container-full yzd-7"  id="yzd-7">
+        <div class="container-big">
+            <div class="container">
+                <img class="yzd-text" src="img/yzd/txt-7.png" style="display: none;">
+            </div>
+        </div>
+    </div>
+    <div class="container-full yzd-8">
+        <div class="container-big">
+            <div class="container">
+                <div class="txt">
+                    1、 本实物产品为来福魔方定制版，含有3年质保期限； <br>
+                    2、 因产品定制原因，您购买后收到为产品兑换卡；<br>
+                    3、 可扫描兑换卡二维码进入定制页面，进行实物产品定制及兑换；<br>
+                    4、 按照定制页面要求及定制信息，完成定制操作，确认信息无误后提交，等待收取定制产品；
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer container-full" id="footer"></div>
+<script src="/js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="/js/plugin/layer/layer.js"></script>
+<script src="/js/src/common.js?v=2.0.1"></script>
+<script>
+    $(function () {
+        var windowHeight = $(window).height();
+
+        $(window).scroll(function () {
+            var scrollTop = $(window).scrollTop();
+
+            var $yzd2 = $("#yzd-2");
+            if ((scrollTop + windowHeight - $yzd2.offset().top) > 300) {
+                $("#yzd-2 .yzd-text").show().addClass('animated slideInUp');
+            }
+            var $yzd3 = $("#yzd-3");
+            if ((scrollTop + windowHeight - $yzd3.offset().top) > 300) {
+                $("#yzd-3 .yzd-text").show().addClass('animated slideInUp');
+            }
+            var $yzd4 = $("#yzd-4");
+            if ((scrollTop + windowHeight - $yzd4.offset().top) > 300) {
+                $("#yzd-4 .yzd-text").show().addClass('animated slideInUp');
+            }
+            var $yzd5 = $("#yzd-5");
+            if ((scrollTop + windowHeight - $yzd5.offset().top) > 300) {
+                $("#yzd-5 .yzd-text").show().addClass('animated slideInUp');
+            }
+            var $yzd6 = $("#yzd-6");
+            if ((scrollTop + windowHeight - $yzd6.offset().top) > 300) {
+                $("#yzd-6 .yzd-text").show().addClass('animated slideInUp');
+            }
+            var $yzd7 = $("#yzd-7");
+            if ((scrollTop + windowHeight - $yzd7.offset().top) > 300) {
+                $("#yzd-7 .yzd-text").show().addClass('animated slideInUp');
+            }
+
+
+        });
+    })
+</script>
+</body>
+</html>
+
+
+
+

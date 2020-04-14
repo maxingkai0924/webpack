@@ -1,0 +1,413 @@
+body {
+    height: auto;
+}
+
+.header {
+    border-bottom: 1px solid #e6eaf2;
+}
+
+.bg-fff {
+    background: #fff;
+}
+
+.bg-fa {
+    background: #fafafa;
+}
+
+.bg-f7 {
+    background: #f7f7f7;
+}
+
+.m-b-9 {
+    margin-bottom: 0.9rem;
+}
+
+//个人中心
+.person {
+    height: 11rem;
+    background: url("../../img/wap/back.png");
+    border-radius: 0.5rem;
+    margin: 1rem 0.5rem 0 0.5rem;
+    position: relative;
+    background-size: cover;
+    .photo {
+        width: 6.8rem;
+        height: 6.8rem;
+        background: #dbdf57;
+        border-radius: 50%;
+        margin-left: 1.8rem;
+        img {
+            width: 6.5rem;
+            height: 6.5rem;
+        }
+    }
+    .name {
+        margin-left: 1.5rem;
+        p {
+            color: #fff;
+            font-size: 1.7rem;
+            margin-left: 0.4rem;
+        }
+        button {
+            width: 10rem;
+            height: 3rem;
+            background: #54d087;
+            border-radius: 3rem;
+            border: 0.05rem solid #fff;
+            margin-top: 0.5rem;
+            font-size: 1.4rem;
+            i {
+                font-size: 14px;
+            }
+        }
+    }
+    .set {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        i {
+            font-size: 18px;
+            color: #fff;
+        }
+    }
+}
+
+.personType {
+    margin-top: 1.8rem;
+    border-top: 1px solid #ebebeb;
+    border-bottom: 1px solid #ebebeb;
+    div {
+        position: relative;
+        height: 5.5rem;
+        margin: 0 1rem;
+        &:first-child {
+            border-bottom: 1px solid #ebebeb;
+        }
+        span {
+            margin-left: 1.5rem;
+            font-size: 1.5rem;
+        }
+        img {
+            width: 2rem;
+            height: 2rem;
+        }
+        .icon-xiangyou {
+            position: absolute;
+            right: 2rem;
+            top: 2rem;
+            color: #cdcdcd;
+            font-size: 1.5rem;
+        }
+    }
+}
+
+//个人资料
+.myList {
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.4rem;
+    color: #333333;
+    border-bottom: 0.05rem solid #e6eaf2;
+    margin-left: 1.5rem;
+
+    .login-name {
+        color: #999;
+        margin-right: 0.8rem;
+        font-size: 1.3rem;
+    }
+    i {
+        color: #999;
+        position: relative;
+        top: 0.09rem;
+        right: 0.6rem;
+    }
+}
+
+//我的订单
+.order-info {
+    background: #fff;
+    margin-top: 0.75rem;
+    .order-type {
+        height: 4.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 1.3rem;
+        margin: 0 1.5rem;
+        .logo {
+            display: inline-block;
+            background: url("../../img/wap/logo-order.jpg");
+            background-size: 100% 100%;
+            margin-right: 1rem;
+            width: 1.4rem;
+            height: 1.6rem;
+            vertical-align: middle;
+        }
+        p {
+            color: #333;
+            line-height: 1.6rem;
+            margin-bottom: 0;
+        }
+        span.success {
+            color: #2bab52;
+        }
+        span.transport {
+            color: #f9e097;
+        }
+    }
+    .order-cp {
+        height: 11rem;
+        .order-cp-box {
+            margin: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            padding-top: 1.1rem;
+            img {
+                width: 8rem;
+                height: 8rem;
+            }
+            div {
+                margin-left: 1rem;
+                font-size: 1.3rem;
+                p {
+                    color: #333;
+                    margin-bottom: 0;
+                    &:first-child {
+                        margin-top: 0.4rem;
+                    }
+                    &:nth-child(2) {
+                        color: #b3b3b3;
+                        margin: 0.5rem 0 1rem 0;
+                    }
+                }
+            }
+            span {
+                color: #999;
+                font-size: 1.4rem;
+                padding-top: 0.3rem;
+            }
+        }
+    }
+    .order-btn {
+        height: 4.2rem;
+        text-align: right;
+        border-top: 1px solid #e0e0e0;
+        margin: 0 1.5rem;
+        a {
+            width: 8rem;
+            height: 2.8rem;
+            line-height: 2.8rem;
+            font-size: 1.4rem;
+            margin-top: 0.9rem;
+            border-radius: 1.4rem;
+            padding: 0;
+        }
+    }
+    .order-box {
+        height: 1rem;
+        background: #f9f9f8;
+    }
+}
+
+/* 盒子布局 */
+.flex-start {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.flex-bet {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-arod {
+    display: flex;
+    justify-content: space-around;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-bc {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex1 {
+    flex: 1;
+}
+
+.order-after {
+    .after-panel {
+        margin-top: 0.9rem;
+        background: #fff;
+        .title {
+            margin-left: 1.5rem;
+            height: 4.2rem;
+            line-height: 4.2rem;
+            border-bottom: 1px solid #dedede;
+            font-size: 1.2rem;
+            color: #999;
+        }
+    }
+    .product {
+        padding-left: 1.5rem;
+        padding-top: 1rem;
+        padding-bottom: 1.5rem;
+        img {
+            display: block;
+            float: left;
+            width: 6rem;
+            height: 6rem;
+            margin-right: 3.3rem;
+        }
+        .content {
+            font-size: 1.7rem;
+            line-height: 2rem;
+            padding-top: 0.4rem;
+            .name {
+                color: #333;
+            }
+            .time {
+                color: #999;
+                margin-top: 0.8rem;
+            }
+        }
+    }
+    .service {
+        padding: 1.5rem;
+        .item {
+            //156*62
+            display: inline-block;
+            width: 7.8rem;
+            height: 3.1rem;
+            line-height: 3.1rem;
+            border: 1px solid #ddd;
+            font-size: 1.3rem;
+            color: #666;
+            margin-right: 1.5rem;
+            text-align: center;
+            &.active {
+                border-color: #2bab52;
+                color: #2bab52;
+            }
+        }
+    }
+    .description {
+        margin-top: 1.5rem;
+        border: 1px solid #ddd;
+        padding-left: 1.5rem;
+        padding-bottom: 3rem;
+        position: relative;
+        margin-right: 1.5rem;
+        margin-left: 1.5rem;
+        textarea {
+            border: 0;
+            margin: 0;
+            padding: 1.3rem 1rem;
+            font-size: 1.3rem;
+        }
+        .upload {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            overflow: hidden;
+            .iconfont {
+                font-size: 1.5rem;
+                color: #e6e6e6;
+            }
+        }
+        .count {
+            position: absolute;
+            bottom: 1.1rem;
+            right: 1.2rem;
+            color: #ccc;
+            font-size: 1.2rem;
+        }
+
+        input[type='file'] {
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 1000px;
+        }
+    }
+    .prev {
+        padding: 1.5rem;
+        .item {
+            display: inline-block;
+            width: 4.5rem;
+            height: 4.5rem;
+            margin-right: 1rem;
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}
+
+.order-after-success {
+    padding-top: 6rem;
+    text-align: center;
+    img {
+        display: inline-block;
+        width: 4rem;
+        height: 3.9rem;
+    }
+    h2 {
+        color: #33cc99;
+        font-size: 1.3rem;
+        line-height: 2rem;
+        margin-top: 1.2rem;
+    }
+    p {
+        font-size: 1.3rem;
+        line-height: 2rem;
+        margin-top: 0.4rem;
+        color: #999;
+    }
+}
+
+.fix-button {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    background: #fff;
+    padding: 1.5rem;
+    .btn {
+        display: block;
+        margin: 0 auto;
+        padding: 0;
+        background: #2bab52;
+        width: 100%;
+        height: 4.5rem;
+        line-height: 4.5rem;
+        color: #fff;
+        font-size: 15px;
+        border: 0;
+        border-radius: 0;
+    }
+}
+
+
+
+
+
+
+
+

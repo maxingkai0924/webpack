@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>服务与支持</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="keywords" content="来福魔方，智能快递箱购买，来福魔方购买指南，来福魔方客户服务，来福魔方售后服务">
+    <meta name="description" content="来福魔方是一款专注于家庭的智能快递箱，来福魔方官方网站提供在线购买、售后服务等，您也可以在京东众筹平台参与活动。">
+    <link rel="stylesheet" href="/font/iconfont.css">
+    <link rel="stylesheet" href="/js/plugin/layer/theme/default/layer.css">
+    <link rel="stylesheet" href="/css/build/index.css?v=2.0.1">
+</head>
+<body>
+<!--header-->
+<div class="header clearfix" id="header"></div>
+<div class="guide-page">
+    <div class="container m-t-30">
+        <img src="/img/sub3.jpg" class="block">
+        <h2 class="title">
+            欢迎使用来福魔方产品支持
+        </h2>
+        <p class="sub-title">我们很高兴为您提供帮助</p>
+        <div class="sub-nav clearfix">
+            <a href="/views/guide/help.html">
+                <div class="item">
+                    <span class="ico ico-1"></span>
+                    <p>产品支持</p>
+                </div>
+            </a>
+            <a href="/views/guide/help.html?type=2">
+                <div class="item">
+                    <span class="ico ico-2"></span>
+                    <p>购买指南</p>
+                </div>
+            </a>
+            <a href="/views/guide/help.html?type=5">
+                <div class="item">
+                    <span class="ico ico-3"></span>
+                    <p>智能服务</p>
+                </div>
+            </a>
+            <a href="/views/guide/help.html?type=7">
+                <div class="item item-last">
+                    <span class="ico ico-4"></span>
+                    <p>售后政策</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <h2 class="title-about">关于我们</h2>
+
+    <div class="container">
+        <div class="about">
+            <a href="/contact.html">
+                <div class="item">
+                    <span class="ico ico-1"></span>
+                    <p>电话</p>
+                </div>
+            </a>
+            <a href="mailto:laifumofang@163.com">
+                <div class="item">
+                    <span class="ico ico-2"></span>
+                    <p>邮箱</p>
+                </div>
+            </a>
+            <a href="javascript:void(0);" data-act="showQr" data-type="wb">
+                <div class="item">
+                    <span class="ico ico-3"></span>
+                    <p>微博</p>
+                </div>
+            </a>
+            <a href="javascript:void(0);" data-act="showQr" data-type="wx">
+                <div class="item item-last">
+                    <span class="ico ico-4"></span>
+                    <p>微信</p>
+                </div>
+            </a>
+        </div>
+        <div class="about-qr" style="display: none;">
+            <!--https://weibo.com/laifumofang-->
+            <img src="/img/guide/qr-wb.png" style="display: none;" id="qr-wb">
+            <!--http://weixin.qq.com/r/5iptdbjEdeUKrfwW93-0-->
+            <img src="/img/guide/qr-wx.png" style="display: none;" id="qr-wx">
+        </div>
+    </div>
+</div>
+
+<div class="footer container-full" id="footer"></div>
+<script src="/js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="/js/plugin/layer/layer.js"></script>
+<script src="/js/src/common.js?v=2.0.1"></script>
+<script>
+    $(function () {
+        $("a[data-act='showQr']").click(function () {
+            var type = $(this).attr("data-type");
+            if (type == "wx") {
+                $("#qr-wx").show();
+                $("#qr-wb").hide();
+            } else {
+                $("#qr-wx").hide();
+                $("#qr-wb").show();
+            }
+            $(".about-qr").slideDown();
+
+            $("body,html").animate({
+                scrollTop: 900
+            }, 1000);
+        });
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+.header {
+	border-bottom: 2px solid #f4f2f3;
+}
+.money {
+	height: 4.613rem;
+	background: #fff;
+	margin-top: 10px;
+	text-align: center;
+	color: #333333;
+	overflow: hidden;
+}
+
+.text {
+	font-size: 0.373rem;
+	margin-top: 1rem;
+}
+
+.price {
+	font-size: 0.533rem;
+	margin-top: 0.4rem;
+}
+
+.name {
+	font-size: 0.32rem;
+	color: #999;
+	margin-top: 1.333rem;
+}
+
+.payType {
+	background: #fff;
+	margin-top: 0.2rem;
+}
+
+.paylist {
+	height: 1.6rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.paylist div {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-left: 0.4rem;
+}
+
+.payType .paylist:first-child {
+	border-bottom: 2px solid #f7f7f7;
+}
+
+.paylist img {
+	width: 0.5rem;
+	height: 0.5rem;
+}
+
+.paylist span {
+	margin-left: 0.2rem;
+}
+
+.select {
+	margin-right: 0.4rem;
+}
+
+.next {
+	width: 96%;
+	height: 1.2rem;
+	background: #34cc99;
+	border: 1px solid #34cc99;
+	border-radius: 1.2rem;
+	margin-top: 1.266rem;
+}

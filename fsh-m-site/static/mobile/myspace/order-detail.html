@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>来福魔方——订单详情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script>
+        (function (doc, win, undefined) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (clientWidth === undefined) return;
+                    docEl.style.fontSize = (clientWidth / 37.5) + 'px';
+                };
+            if (doc.addEventListener === undefined) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            //doc.addEventListener('DOMContentLoaded', recalc, false)
+            recalc();
+        })(document, window);
+    </script>
+    <link rel="stylesheet" href="../../font/iconfont.css">
+    <link rel="stylesheet" href="../../js/plugin/mui/css/mui.min.css">
+    <link rel="stylesheet" href="../../css/build/wap.css?v=1.0.1">
+    <link rel="stylesheet" href="../../css/build/wap-orderdetail.css">
+</head>
+<body class="bg-fff">
+<header class="mui-bar mui-bar-nav">
+    <a href="javascript:history.back();" class="iconfont icon-fanhui1 mui-pull-left"></a>
+    <h1 class="mui-title">订单详情</h1>
+</header>
+<div class="mui-content bg-fff m-b-49">
+    <div class="order-detail" id="order-detail"></div>
+</div>
+<script id="temp_order" type="text/html">
+    <div class="order-address m-t-9" id="order-address">
+        <div class="name ellipsis">{{userName}}</div>
+        <div class="content">
+            <p class="mobile"><span>{{userMobile}}</span></p>
+            <p class="address">{{province}}{{city==province?"":city}}{{dstrict}}{{address}}</p>
+        </div>
+    </div>
+    <div class="order-info">
+        <div class="order-type">
+            <p>订单信息</p>
+            <span class="{{(orderStatus==3||orderStatus==4)?'success':'fila'}}">{{orderStatusName}}</span>
+        </div>
+        <div class="order-cp">
+            <div class="order-cp-box">
+                <img src="../../img/wap/p-main-md.jpg" alt="信息图片">
+                <div>
+                    <p>{{goodsName}}</p>
+                    <p>白色</p>
+                    <p>￥{{goodsPrices}}</p>
+                </div>
+                <span>x {{goodsNum}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="order-code">
+        <div>
+            <p>
+                <span>订单编号：</span>
+                <span>{{orderNumber}}</span>
+            </p>
+            <p>
+                <span>下单时间：</span>
+                <span>{{$imports.dateFormat(createDate,"yyyy-MM-dd HH:mm:ss")}}</span>
+            </p>
+        </div>
+    </div>
+    <ul class="order-detail-info">
+        <li><span>支付方式：</span>{{payWay==1?"支付宝":"微信"}}</li>
+        <li><span>商品合计：</span>￥{{goodsAllPrice}}</li>
+        <li><span>运费：</span>￥0.00</li>
+        <li><span>实付：</span>￥{{goodsAllPrice}}</li>
+    </ul>
+    <div class="price">
+        <span>实付：</span>￥{{goodsAllPrice}}
+    </div>
+
+    {{if orderStatus==0}}
+    <div class="base-btn">
+        <a href="javascript:void(0);" data-event="cancel" class="mui-btn mui-btn-outlined">取消订单</a>
+        <a href="javascript:void(0);" data-event="pay" class="mui-btn mui-btn-outlined">立即付款</a>
+    </div>
+    {{else if orderStatus==1 && isNormalDelivery==1}}
+    <div class="base-btn">
+        <a href="order-refund.html?orderNumber={{orderNumber}}" class="mui-btn mui-btn-outlined">申请退款</a>
+    </div>
+    {{else if orderStatus==2 && isNormalDelivery==1}}
+    <div class="base-btn">
+        <a href="order-refund.html?orderNumber={{orderNumber}}" class="mui-btn mui-btn-outlined">申请退款</a>
+    </div>
+    {{else if orderStatus==3}}
+    <div class="base-btn">
+        <a href="javascript:void(0);" data-event="shouhuo" class="mui-btn mui-btn-outlined">确认收货</a>
+        {{if expressNumber}}
+        <a href="order-express.html?expressNumber={{expressNumber}}&expressCompanyName={{expressCompanyName}}&expressCompanyCode={{expressCompanyCode}}"
+           class="mui-btn mui-btn-outlined">查看物流</a>
+        {{/if}}
+    </div>
+    {{else if orderStatus==4}}
+    {{ if isWriteServiceOrder==2}}
+    <div class="base-btn">
+        <a href="order-after.html?orderNumber={{orderNumber}}" class="mui-btn mui-btn-outlined">申请售后</a>
+    </div>
+    {{/if}}
+    {{else if orderStatus==8}}
+    {{if isWriteExpress==2}}
+    <div class="base-btn">
+        <a href="order-tuihuodan.html?orderNumber={{orderNumber}}" class="mui-btn mui-btn-outlined">填写退货单</a>
+    </div>
+    {{/if}}
+
+    {{/if}}
+
+</script>
+<script src="../../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="../../js/plugin/mui/js/mui.min.js"></script>
+<script src="../../js/plugin/template-web.js"></script>
+<script src="../../js/src/common-mobile.js"></script>
+<script>
+    $(function () {
+        var orderData = null;
+        ajax({
+            url: " /user" + GLOBAL.VERSION + "/trade/getOrderInfo",
+            type: "get",
+            data: {
+                orderNumber: getUrlParam("orderNumber")
+            },
+            success: function (res) {
+                if (res.success && res.data) {
+                    orderData = res.data;
+                    $("#order-detail").html(template("temp_order", res.data));
+                }
+            }
+        });
+
+
+        mui("#order-detail").on("tap", "a[href]", function () {
+            var href = $(this).attr("href");
+            if (href.indexOf("javascript") == -1) {
+                location.href = href;
+            }
+        });
+
+        mui("#order-detail").on("tap", "a[data-event]", function () {
+            var $this = $(this);
+            var index = $this.parents(".order-info").index();
+            var data = orderData;
+            var event = $this.attr("data-event");
+            if (event == "pay") {
+                // 支付
+                location.href = "/mobile/pay/pay.html?msg="
+                    + data.orderNumber
+                    + "&amount=" + data.goodsAllPrice + "&appType=" + getOsType() + "&isApp=" + isApp();
+            } else if (event == "cancel") {
+                // 取消订单
+                mui.confirm("确定取消订单?", function (v) {
+                    if (v.index == 1) {
+                        ajax({
+                            url: " /user/" + GLOBAL.VERSION + "/trade/cancelOrder",
+                            data: JSON.stringify({
+                                orderNumber: data.orderNumber
+                            }),
+                            success: function (res) {
+                                if (res.success) {
+                                    mui.confirm("提交成功!", " ", ["确定"], function (v) {
+                                        location.reload();
+                                    });
+                                } else {
+                                    msg("数据异常");
+                                }
+                            }
+                        });
+                    }
+                });
+
+            } else if (event == "shouhuo") {
+                // 确认收货
+                mui.confirm("确定收货?", function (v) {
+                    if (v.index == 1) {
+                        ajax({
+                            url: " /user/" + GLOBAL.VERSION + "/trade/updateOrderStatus",
+                            data: JSON.stringify({
+                                orderNum: data.orderNumber,
+                                status: 4
+                            }),
+                            success: function (res) {
+                                if (res.success) {
+                                    mui.confirm("提交成功!", " ", ["确定"], function (v) {
+                                        location.reload();
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    function getItemStatusName(orderStatus) {
+        var name = "";
+        var className = "";
+        switch (orderStatus) {
+            case 0:// 已下单
+                name = "等待付款";
+                className = "fila";
+                break;
+            case 1:// 已付款
+                name = "待配货";
+                className = "fila";
+                break;
+            case 2:// 已配货
+                name = "待发货";
+                className = "fila";
+                break;
+            case 3:// 已发货
+                name = "运输中";
+                className = "success";
+                break;
+            case 4:// 已完成（用户已收货）
+                name = "已完成";
+                className = "success";
+                break;
+            case 5:// 正在退款
+                name = "退款中";
+                className = "fila";
+                break;
+            case 6:// 已退款
+                name = "已退款";
+                className = "fila";
+                break;
+            case 7:// 申请退换货（可填写退货单）
+                name = "退换货申请中";
+                className = "fila";
+                break;
+            case 8:// 正在退货
+                name = "退货中";
+                className = "fila";
+                break;
+            case 9:// 已关闭
+                name = "已关闭";
+                className = "fila";
+                break;
+                return '<span class="' + className + '">' + name + '</span>';
+        }
+    }
+</script>
+</body>
+</html>

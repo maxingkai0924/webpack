@@ -1,0 +1,89 @@
+{{if pathname!="/login.html" && pathname!="/openid.html"}}
+<div class="topbar">
+    <div class="container">
+        <div class="topbar-nav">
+            <a href="/">欢迎进入来福魔方官网</a>
+        </div>
+        <div class="topbar-info">
+            <a href="/login.html" class="link">登录</a>
+            <!--<span class="sep">|</span>-->
+            <!--<a href="/" class="link">登录</a>-->
+        </div>
+        <!--<div class="topbar-info">-->
+        <!--<a href="/" class="link">158****5393</a>-->
+        <!--<span class="sep">|</span>-->
+        <!--<a href="/" class="link">退出</a>-->
+        <!--</div>-->
+    </div>
+</div>
+{{/if}}
+<div class="header-1">
+    <div class="container">
+        <a href="/"><img src="/img/logo.jpg" alt="来福魔方" class="logo"></a>
+        <div class="right-wrap">
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li><a href="javascript:void(0);" id="header-mf">来福魔方</a></li>
+                <li><a href="/down.html">手机APP</a></li>
+                <li><a href="/views/guide/index.html">服务与支持</a></li>
+                <li><a href="/about.html">关于我们</a></li>
+                <!--<li><a href="/contact.html">联系我们</a></li>-->
+                <li class="tel"><img src="/img/tel.jpg">400-063-6658 </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{{if pathname=="/mf.html"}}
+<!--来福魔方-->
+<div class="header-2" id="header2">
+    <div class="container">
+        <span>来福魔方乐享版</span>
+        <div class="right-wrap">
+            <a href="/mf.html">概述</a>|
+            <a href="/specs.html">参数</a>|
+            <a href="/views/guide/video.html">视频</a>|
+            <a href="/views/guide/help.html">常见问题</a>
+            <!--|<a href="#">图集</a>-->
+            <button class="btn" type="button"
+                    onclick="location.href='/views/order/balance.html?goodId=7cd43c0b2b2e40a6b602d3551a8ce4b6'">立即购买
+            </button>
+        </div>
+    </div>
+</div>
+{{/if}}
+{{if pathname=="/mf-yzd.html"}}
+<!--云之鼎-->
+<div class="header-2" id="header2">
+    <div class="container">
+        <span>来福魔方尊享版</span>
+        <div class="right-wrap">
+            <a href="/mf-yzd.html">概述</a>|
+            <a href="/specs.html">参数</a>|
+            <a href="/views/guide/video.html">视频</a>|
+            <a href="/views/guide/help.html">常见问题</a>
+            <!--<a href="#">图集</a>-->
+            <button class="btn" type="button"
+                    onclick="location.href='/views/order/balance.html?goodId=0b13faef32ad4b98b62d24d21e7fec1b'">立即购买
+            </button>
+        </div>
+    </div>
+</div>
+{{/if}}
+<div class="product-sub" id="header-product">
+    <div class="container">
+        <a href="/mf.html">
+            <div class="item">
+                <img src="/img/p.jpg">
+                <p class="ellipsis" id="header-name1"></p>
+                <p id="header-price1">￥999</p>
+            </div>
+        </a>
+        <a href="/mf-yzd.html">
+            <div class="item">
+                <img src="/img/p.jpg">
+                <p class="ellipsis" id="header-name2"></p>
+                <p id="header-price2">￥2677</p>
+            </div>
+        </a>
+    </div>
+</div>

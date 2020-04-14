@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>APP下载</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/font/iconfont.css">
+    <link rel="stylesheet" href="/js/plugin/layer/theme/default/layer.css">
+    <link rel="stylesheet" href="/css/build/index.css?v=2.0.1">
+</head>
+<body>
+<!--header-->
+<div class="header clearfix" id="header"></div>
+<div class="container-full down1 bg-md-auto">
+    <div class="container">
+        <div class="down1-left animated slideInLeft">
+            <h2>来福魔方，让生活多点智在</h2>
+            <img src="img/down/qr-code.jpg">
+            <p>手机扫码下载APP</p>
+        </div>
+        <div class="down1-right animated slideInRight">
+            <img src="img/down/d-1.png">
+        </div>
+    </div>
+</div>
+
+<div class="container-full down down2" id="down2">
+    <div class="container">
+        <h2>收发快递，随时随地</h2>
+        <p>远程授权，一键开锁 <br>
+            每一部手机都是一把钥匙 <br>
+            每一次投递都变得有据可依
+        </p>
+        <img src="img/down/d-2.png" class="d-2 ab" style="display: none;">
+        <img src="img/down/d-3.jpg" class="d-3 ab" style="display: none;">
+        <img src="img/down/d-4.png" class="d-4 ab" style="display: none;">
+    </div>
+</div>
+<div class="container-full down down3" id="down3">
+    <img src="img/down/d-5.png" class="d-5 ab">
+    <img src="img/down/d-8.png" class="d-8 ab">
+    <div class="container">
+        <div id="down3-text" style="display: none;">
+            <h2>实时监测，安全又省心</h2>
+            <p>收寄快递的每一条动态实时记录<br>
+                家的安全，每刻掌握<br>
+                你的生活，从未如此智慧安全
+            </p>
+        </div>
+        <img src="img/down/d-9.png" class="d-9 ab">
+        <img src="img/down/d-7.png" class="d-7 ab">
+    </div>
+</div>
+
+<div class="container-full down down4" id="down4">
+    <img src="img/down/d-12.png" class="d-12 ab">
+    <div class="container">
+        <div id="down4-text" style="display: none;">
+            <h2>来福魔方，与“邻”分享</h2>
+            <p>通过APP将家人或邻居设置为用户，<br>
+                共享来福魔方<br>
+                共享状态，清晰记载
+            </p>
+        </div>
+        <img src="img/down/d-14.png" class="d-14 ab">
+        <img src="img/down/d-13.png" class="d-13 ab">
+    </div>
+</div>
+
+<div class="container-full down down5 bg-md-auto" id="down5">
+    <div class="container" id="down5-text" style="display: none;">
+        <h2>奔波在外，别担心，家有来福魔方</h2>
+        <p>或许此刻，你奔波在外，或徜徉山水 <br>
+            但对于无法收快递而黯然神伤 <br>
+            别担心，家有来福魔方 <br>
+            一键开锁， 守护家的安全
+        </p>
+    </div>
+</div>
+<div class="container-full down down6 bg-md-auto" id="down6">
+    <div class="container">
+        <div id="down6-text" style="display: none;">
+            <h2>来福魔方，智能家居设备</h2>
+            <h2>让生活迎接“智”的飞跃</h2>
+        </div>
+        <img src="img/down/d-15.png" class="d-15 ab">
+    </div>
+</div>
+
+<div class="footer container-full" id="footer"></div>
+<script src="/js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="/js/plugin/layer/layer.js"></script>
+<script src="/js/src/common.js?v=2.0.1"></script>
+<script>
+    $(function () {
+        var windowHeight = $(window).height();
+        var documentHeight = $(document).height();
+
+        $(window).scroll(function () {
+            var scrollTop = $(window).scrollTop();
+
+            // 智能收发
+            var $down2 = $("#down2");
+            if ((scrollTop + windowHeight - $down2.offset().top) > 300) {
+                $("#down2 .d-3").show().addClass('animated slideInUp');
+                setTimeout(function () {
+                    $("#down2 .d-2").show().addClass('animated slideInLeft');
+                    $("#down2 .d-4").show().addClass('animated slideInRight');
+                }, 300);
+            }
+
+            var $down3 = $("#down3");
+            if ((scrollTop + windowHeight - $down3.offset().top) > 300) {
+                $("#down3-text").show().addClass('animated fadeInUp');
+            }
+
+            var $down4 = $("#down4");
+            if ((scrollTop + windowHeight - $down4.offset().top) > 300) {
+                $("#down4-text").show().addClass('animated slideInUp');
+                setTimeout(function () {
+                    $("#down4 .d-13").show().addClass('animated pulse');
+                }, 1000);
+            }
+
+            var $down5 = $("#down5");
+            if ((scrollTop + windowHeight - $down5.offset().top) > 300) {
+                $("#down5-text").show().addClass('animated slideInUp');
+            }
+
+            var $down6 = $("#down6");
+            if ((scrollTop + windowHeight - $down6.offset().top) > 300) {
+                $("#down6-text").show().addClass('animated slideInUp');
+            }
+        });
+        $(window).trigger("scroll");
+    })
+</script>
+</body>
+</html>

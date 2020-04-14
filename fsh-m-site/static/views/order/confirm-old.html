@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>确认订单</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="/font/iconfont.css">
+    <link rel="stylesheet" href="/js/plugin/layer/theme/default/layer.css">
+    <link rel="stylesheet" href="/css/build/index.css?v=2.0.1">
+    <link rel="stylesheet" href="../../css/build/order.css">
+</head>
+<body style="background: #f7f7f7;">
+<!--header-->
+<div class="header clearfix" id="header"></div>
+<div class="container order-confirm">
+    <div class="goods-list">
+        <div class="list-head clearfix">
+            <div class="name">商品名称</div>
+            <div class="unit-price">单价</div>
+            <div class="num">数量</div>
+            <div class="price">小计</div>
+            <div class="act">操作</div>
+        </div>
+        <div class="list-body clearfix">
+            <img src="../../img/order/product-3.jpg" alt="" class="img">
+            <div class="content">
+                <div class="name">Life来福魔方智能快递收发柜</div>
+                <div class="unit-price" id="unit-price">0元</div>
+                <div class="num">
+                    <div class="num-act">
+                        <button id="num-minus"><i class="iconfont icon-jian"></i></button>
+                        <input type="text" value="1" id="num" readonly>
+                        <button id="num-plus"><i class="iconfont icon-zengjia"></i></button>
+                    </div>
+                </div>
+                <div class="price" id="price">1699</div>
+                <div class="act">
+                    <i class="iconfont icon-shanchu"></i>
+                </div>
+            </div>
+        </div>
+        <div class="list-footer clearfix">
+            <button type="button" class="btn">去结算</button>
+            <div class="price-all">合计 <span id="price-all">1699</span>元</div>
+            共选择 <span class="font-org">1</span> 件商品
+        </div>
+    </div>
+</div>
+<div class="footer container-full" id="footer"></div>
+<script src="/js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="/js/plugin/layer/layer.js"></script>
+<script src="/js/src/common.js?v=2.0.1"></script>
+<script>
+    $(function () {
+        // 价格，库存
+
+        var price = 1699;
+        var inventory = 999;
+
+        $("#unit-price").text(price);
+
+        $("#num-minus").click(function () {
+            var ele = $("#num")[0];
+            var val = $(ele).val();
+            var num = parseInt(val);
+            if (num == 1) {
+                return;
+            }
+            num--;
+            ele.value=num;
+            var _price = num * price;
+            $("#price-all").text(_price);
+            $("#price").text(_price);
+        });
+
+        $("#num-plus").click(function () {
+            var ele = $("#num")[0];
+            var val = $(ele).val();
+            var num = parseInt(val);
+            if (num >= inventory) {
+                layer.msg("没有更多的库存了！");
+                return;
+            }
+            num++;
+            ele.value=num;
+            var _price = num * price;
+            $("#price-all").text(_price);
+            $("#price").text(_price);
+        });
+    });
+</script>
+</body>
+</html>

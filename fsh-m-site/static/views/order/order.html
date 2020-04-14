@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>确认订单</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="/font/iconfont.css">
+    <link rel="stylesheet" href="/js/plugin/layer/theme/default/layer.css">
+    <link rel="stylesheet" href="/css/build/index.css?v=2.0.1">
+    <link rel="stylesheet" href="../../css/build/order.css">
+</head>
+<body style="background: #f7f7f7;">
+<!--header-->
+<div class="header clearfix" id="header"></div>
+<div class="container order-success">
+    <div class="title">
+        <i class="iconfont icon-icon1"></i>
+        <div class="content">
+            <h2>订单提交成功！开始支付～</h2>
+            <p>应付总额：<span>1699元</span></p>
+        </div>
+    </div>
+    <div class="info">
+        <ul>
+            <li>
+                <span>订单号：</span>
+                <span class="font-org">87654345679876</span>
+            </li>
+            <li>
+                <span>收货信息：</span>
+                <span>小丸子  132****9876  山东省 济南市 历下区 丁豪广场</span>
+            </li>
+            <li>
+                <span>商品名称： </span>
+                <span>Life来福魔方智能快递盒</span>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="container order-pay">
+    <h2>选择以下支付方式付款</h2>
+    <div class="order-pay-type">
+        <span class="item" id="pay_wx"><i class="iconfont icon-weixinzhifu"></i>微信支付</span>
+        <span class="item" id="pay_zbf"><i class="iconfont icon-zhifubao"></i>支付宝支付</span>
+    </div>
+</div>
+<div class="footer container-full" id="footer"></div>
+<div class="modal-mask" id="pay_wx_pop">
+    <div class="modal">
+        <div class="modal-title">
+            微信支付 <i class="iconfont icon-fork"></i>
+        </div>
+        <div class="modal-content clearfix">
+            <div class="wx-pay-qr">
+                <img src="../../img/p1.png" alt="">
+                <p>请使用微信扫一扫</p>
+                <p>扫描二维码完成支付</p>
+            </div>
+            <div class="wx-pay-example"></div>
+        </div>
+    </div>
+</div>
+<script src="/js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="/js/plugin/layer/layer.js"></script>
+<script src="/js/src/common.js?v=2.0.1"></script>
+<script>
+    $(function () {
+
+        // 查询商品信息
+        ajax({
+            url: " /user/" + GLOBAL.VERSION + "/trade/getOrderInfo",
+            type: "get",
+            data: {
+                orderNumber: getUrlParam("orderNumber")
+            },
+            success: function (res) {
+                if (res.success && res.data) {
+
+                }
+            }
+        });
+
+        var wx_timer = null;
+        $("#pay_wx").click(function () {
+            $(this).addClass("active").siblings(".active").removeClass("active");
+            $("#pay_wx_pop").show();
+        });
+
+
+        $("#pay_zbf").click(function () {
+            $(this).addClass("active").siblings(".active").removeClass("active");
+
+        });
+
+
+    });
+</script>
+</body>
+</html>

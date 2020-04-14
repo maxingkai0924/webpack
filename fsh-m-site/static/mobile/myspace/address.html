@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>收货地址</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script>
+        (function (doc, win, undefined) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (clientWidth === undefined) return;
+                    docEl.style.fontSize = (clientWidth / 37.5) + 'px';
+                };
+            if (doc.addEventListener === undefined) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            //doc.addEventListener('DOMContentLoaded', recalc, false)
+            recalc();
+        })(document, window);
+    </script>
+    <link rel="stylesheet" href="../../font/iconfont.css">
+    <link rel="stylesheet" href="../../js/plugin/mui/css/mui.min.css">
+    <link rel="stylesheet" href="../../js/plugin/mui/picker/css/mui.picker.css"/>
+    <link rel="stylesheet" href="../../js/plugin/mui/picker/css/mui.poppicker.css"/>
+    <link rel="stylesheet" href="../../css/build/wap.css?v=1.0.1">
+</head>
+<body class="bg-fff">
+<header class="mui-bar mui-bar-nav">
+    <a href="javascript:history.back();" class="iconfont icon-fanhui1 mui-pull-left"></a>
+    <!--<a class="iconfont icon-zengjia mui-pull-right" href="javascript:void(0);" id="add"></a>-->
+    <h1 class="mui-title">收货地址</h1>
+</header>
+<div class="mui-content bg-fff">
+    <div id="address">
+
+    </div>
+    <div class="btn-address">
+        <button type="button" id="add">添加新地址</button>
+    </div>
+</div>
+<script id="temp_address" type="text/html">
+    {{each data}}
+    <div class="order-address {{$value.isDefault?'':'order-address-list'}}"
+         data-shippingAddressId="{{$value.shippingAddressId}}">
+        <div class="name ellipsis">{{$value.name}}</div>
+        <div class="content">
+            <p class="mobile"><span>{{$imports.mobilehide($value.mobile)}}</span> <i class="iconfont icon-bianji"></i>
+            </p>
+            <p class="address ellipsis">
+                {{$value.province}}{{$value.city==$value.province?"":$value.city}}{{$value.dstrict}}
+                {{$value.address}}</p>
+        </div>
+    </div>
+    {{/each}}
+</script>
+<script src="../../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="../../js/plugin/template-web.js"></script>
+<script src="../../js/plugin/mui/js/mui.min.js"></script>
+<script src="../../js/src/common-mobile.js"></script>
+<script>
+    $(function () {
+        var $address = $("#address");
+        var addressDate = [];
+        ajax({
+            url: " /user/" + GLOBAL.VERSION + "/trade/getShippingAddressByUserId",
+            type: "get",
+            success: function (res) {
+                if (res.success && res.data) {
+                    addressDate = res.data;
+                    $address.html(template("temp_address", res));
+                }
+            }
+        });
+
+
+        // 下单
+        var number = getUrlParam("number");
+
+        // 售后选地址
+        var orderNumber = getUrlParam("orderNumber");
+        var serviceType = getUrlParam("serviceType");
+        var description = getUrlParam("description");
+
+
+        // 新增
+        mui("#add")[0].addEventListener("tap", function () {
+            if (number) {
+                location.href = "address-add.html?number=" + number;
+            } else if (orderNumber) {
+                location.href = "address-add.html?orderNumber=" + orderNumber + "&service=" + service + "&description=" + description;
+            } else {
+                location.href = "address-add.html";
+            }
+        });
+
+        mui("#address").on("tap", ".order-address", function (e) {
+            var shippingAddressId = $(this).attr("data-shippingAddressId");
+            if ($(e.target).hasClass("icon-bianji")) {// 编辑
+                if (number) {
+                    location.href = "address-edit.html?number=" + number + "&shippingAddressId=" + shippingAddressId;
+                } else if(orderNumber){
+                    location.href = "/mobile/myspace/order-after.html?orderNumber=" + orderNumber + "&serviceType=" + serviceType + "&description=" + description + "&shippingAddressId=" + shippingAddressId;
+                }else {
+//                    location.href = "address-edit.html?shippingAddressId=" + shippingAddressId;
+                }
+            } else if (number) {// 下单选择地址
+                location.href = "/mobile/order/confirm.html?number=" + number + "&shippingAddressId=" + shippingAddressId;
+            } else if (orderNumber) {// 售后服务选择地址
+                location.href = "/mobile/myspace/order-after.html?orderNumber=" + orderNumber + "&serviceType=" + serviceType + "&description=" + description + "&shippingAddressId=" + shippingAddressId;
+            } else {
+//                location.href = "/mobile/order/confirm.html?shippingAddressId=" + shippingAddressId;
+            }
+        });
+    })
+</script>
+</body>
+</html>

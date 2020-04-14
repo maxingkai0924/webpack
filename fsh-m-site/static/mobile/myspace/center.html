@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>来福魔方——个人中心</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script>
+        (function (doc, win, undefined) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (clientWidth === undefined) return;
+                    docEl.style.fontSize = (clientWidth / 37.5) + 'px';
+                };
+            if (doc.addEventListener === undefined) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            //doc.addEventListener('DOMContentLoaded', recalc, false)
+            recalc();
+        })(document, window);
+    </script>
+    <link rel="stylesheet" href="../../font/iconfont.css">
+    <link rel="stylesheet" href="../../js/plugin/mui/css/mui.min.css">
+    <link rel="stylesheet" href="../../css/build/wap.css?v=1.0.1">
+    <link rel="stylesheet" href="../../css/build/wap-myspace.css">
+</head>
+<body class="bg-fff">
+<header class="mui-bar mui-bar-nav">
+    <a href="javascript:history.back();" class="iconfont icon-fanhui1 mui-pull-left"></a>
+    <h1 class="mui-title">来福魔方</h1>
+</header>
+<div class="mui-content bg-fff">
+    <div class="person flex-start">
+        <div class="photo flex-center">
+            <img id="" src="../../img/wap/photo@2x.png" alt="头像">
+        </div>
+        <div class="name">
+            <p id="nickname"></p>
+            <button id="info" type="button" class="mui-btn mui-btn-success">个人资料 <i class="icon iconfont">&#xe637;</i>
+            </button>
+        </div>
+        <!--<div class="set">-->
+        <!--<i class="iconfont">&#xe607;</i>-->
+        <!--</div>-->
+    </div>
+    <div class="personType">
+        <div class="flex-start" id="order">
+            <img src="../../img/wap/order.png" alt="">
+            <span>我的订单</span>
+            <i class="iconfont icon-xiangyou"></i>
+        </div>
+        <!--<div class="flex-start">-->
+            <!--<img src="../../img/wap/yj.png" alt="">-->
+            <!--<span>分销佣金</span>-->
+            <!--<i class="iconfont icon-xiangyou"></i>-->
+        <!--</div>-->
+    </div>
+</div>
+<script src="../../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="../../js/plugin/mui/js/mui.min.js"></script>
+<script src="../../js/src/common-mobile.js"></script>
+<script>
+    $(function () {
+        checkLoginState({
+            success: function (data) {
+                if (data.photo) {
+                    var img = new Image();
+                    img.onload = function () {
+                        $("#avatar").attr("src", GLOBAL.IMAGESERVER + data.photo)
+                    };
+                    img.src = GLOBAL.IMAGESERVER + data.photo;
+                }
+                $("#nickname").text(mobilehide(data.nickname));
+            }
+        });
+
+        // 点击个人信息
+        mui("#info")[0].addEventListener('tap', function () {
+            location.href = "info.html";
+        }, false);
+        // 点击订单
+        mui("#order")[0].addEventListener('tap', function () {
+            location.href = "order.html";
+        }, false);
+    });
+</script>
+</body>
+</html>

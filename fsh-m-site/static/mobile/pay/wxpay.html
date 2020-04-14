@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>支付页面</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <script src="../../js/src/mobile/flexible.js"></script>
+    <link rel="stylesheet" href="../../js/plugin/mui/css/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/pay/common.css"/>
+    <link rel="stylesheet" href="../../css/pay/payment.css">
+
+</head>
+
+<body>
+<!--header-->
+<!--<div class="header mui-clearfix">-->
+<!--<span class="back" onclick="history.back();"></span> 支付界面-->
+<!--</div>-->
+<div class="money">
+    <p class="text">支付金额</p>
+    <p class="price">￥6999.00</p>
+    <p class="name">商品名称：来福魔方</p>
+</div>
+<div class="payType">
+    <div class="paylist" data-text="1">
+        <div>
+            <img src="/img/wap/pay/ico/zfb@2x.png"/>
+            <span>支付宝支付</span>
+        </div>
+        <img src="/img/wap/pay/ico/w-2@2x.png" alt="" class="select"/>
+    </div>
+    <div class="paylist" data-text="2">
+        <div>
+            <img src="/img/wap/pay/ico/wx@2x.png"/>
+            <span>微信支付</span>
+        </div>
+        <img src="/img/wap/pay/ico/w-1@2x.png" alt="" class="select"/>
+    </div>
+</div>
+<div style="text-align:center;" id="btn">
+    <button type="button" class="mui-btn mui-btn-success next" id="payment">立即支付</button>
+</div>
+<script src="../../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="../../js/plugin/mui/js/mui.min.js" type="text/javascript"></script>
+<script src="../../js/src/common-mobile.js"></script>
+<script src="../../js/src/mobile/ap.js"></script>
+<script type="text/javascript">
+    $('.price').text(getUrlParam("state"));
+    var paytype = 1;
+    //选择支付方式 paytype  1支付宝  2微信
+    mui('.payType').on('tap', '.paylist', function () {
+        paytype = $(this).attr("data-text");
+        $(this).children('img').attr("src", "/img/wap/pay/ico/w-2@2x.png");
+        $(this).siblings('.paylist').children("img").attr("src", "/img/wap/pay/ico/w-1@2x.png");
+    });
+
+    var flag = false;
+    var wxData = null;
+    $('#btn').on('tap', '#payment', function () {
+        if (paytype == 1) {
+            $.ajax({
+                type: 'POST',
+                url: "/user" + GLOBAL.VERSION + "/trade/getAliPayUrl",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    orderNum: getUrlParam("msg"),
+                    way: 1,
+                    appType: getUrlParam("appType"),
+                    isApp: getUrlParam("isApp")
+                }),
+                dataType: 'json',
+                success: function (res) {
+//                    console.log(res);
+                    if (res.success) {
+                        _AP.pay("https://openapi.alipay.com/gateway.do?" + res.msg);
+                    } else {
+                        mui.alert(res.msg);
+                    }
+                }
+            });
+        }
+        if (paytype == 2) {
+            if(flag){
+                WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest', {
+                        "appId": "wxee974f7471fefdef",     //公众号名称，由商户传入
+                        "timeStamp": wxData.weChatTimestamp,         //时间戳，自1970年以来的秒数
+                        "nonceStr": wxData.weChatNonceStr, //随机串
+                        "package": wxData.weChatPackage,
+                        "signType": "MD5",         //微信签名方式：
+                        "paySign": wxData.weChatSign //微信签名
+                    },
+                    function (res) {
+                        if (res.err_msg == "get_brand_wcpay_request:ok") {
+                            // 使用以上方式判断前端返回,微信团队郑重提示：
+                            //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                            window.location.href = "/mobile/pay/paysuccess.html";
+                        }
+                    }
+                );
+            }else{
+                var code = getUrlParam("code");
+                $.ajax({
+                    type: 'GET',
+                    url: "/user" + GLOBAL.VERSION + "/trade/getWxPrepayId?orderNum=" + getUrlParam("msg") + "&code=" + code,
+                    dataType: 'json',
+                    success: function (res) {
+                        console.log(res);
+                        if (res.success) {
+                            flag  = true;
+                            wxData = res.data;
+                            WeixinJSBridge.invoke(
+                                'getBrandWCPayRequest', {
+                                    "appId": "wxee974f7471fefdef",     //公众号名称，由商户传入
+                                    "timeStamp": res.data.weChatTimestamp,         //时间戳，自1970年以来的秒数
+                                    "nonceStr": res.data.weChatNonceStr, //随机串
+                                    "package": res.data.weChatPackage,
+                                    "signType": "MD5",         //微信签名方式：
+                                    "paySign": res.data.weChatSign //微信签名
+                                },
+                                function (res) {
+                                    if (res.err_msg == "get_brand_wcpay_request:ok") {
+                                        // 使用以上方式判断前端返回,微信团队郑重提示：
+                                        //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                                        window.location.href = "/mobile/pay/paysuccess.html";
+                                    }
+                                }
+                            );
+                        } else {
+                            mui.alert(res.msg);
+                        }
+                    }
+
+                });
+            }
+
+        }
+    });
+</script>
+</body>
+</html>

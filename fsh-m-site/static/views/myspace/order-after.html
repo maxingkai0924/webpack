@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心-售后申请</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/font/iconfont.css">
+    <link rel="stylesheet" href="/js/plugin/layer/theme/default/layer.css">
+    <link rel="stylesheet" href="../../js/plugin/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/build/index.css?v=2.0.1">
+    <link rel="stylesheet" href="/css/build/myspace.css">
+</head>
+<body>
+<!--header-->
+<div class="header clearfix" id="header"></div>
+<div class="space-crumbs container">
+    <a href="/">首页</a>&gt;<span>个人中心</span>
+</div>
+<div class="space-wrap container">
+    <div class="space-left clearfix">
+        <h3>个人中心</h3>
+        <ul>
+            <li><a href="index.html">我的首页</a></li>
+            <li><a href="order.html" class="active">我的订单</a></li>
+            <li><a href="info.html">个人资料</a></li>
+            <li><a href="address.html">收货地址</a></li>
+        </ul>
+    </div>
+    <div class="space-panel">
+        <div class="space-content">
+            <h3 class="space-title">申请售后</h3>
+            <div id="step-1">
+                <div class="order-after clearfix">
+                    <div class="mf-order-status">
+                        <div class="item">
+                            <span class="line"></span>
+                            <span class="disc disc-left"></span>
+                            <span class="name name-left" style="left: -1em;">选择产品和服务</span>
+
+                            <span class="disc"></span>
+                            <span class="name" style="right:-2.5em;">填写申请单</span>
+                        </div>
+                        <div class="item">
+                            <span class="line"></span>
+                            <span class="disc"></span>
+                            <span class="name" style="right:-2em;">完成申请</span>
+                        </div>
+                    </div>
+                    <h3 class="title"><i class="line"></i>选择需要售后的产品</h3>
+                    <div class="goods-list clearfix">
+                        <img src="../../img/order/product-1.jpg" alt="" class="product">
+                        <div class="content">
+                            <h4 id="goodsName">&nbsp;</h4>
+                            <p id="orderNumber">&nbsp;</p>
+                        </div>
+                    </div>
+                    <h3 class="title"><i class="line"></i>选择服务类型</h3>
+                    <div class="service" id="serviceType">
+                        <span id="exchange" class="item active" data-value="2" style="display: none">换货</span>
+                        <span id="return" class="item" data-value="1">退货</span>
+                    </div>
+                    <h3 class="title"><i class="line"></i>产品问题描述</h3>
+                    <div class="layui-form-item layui-form-text">
+                        <div class="layui-input-inline" style="width: 543px;">
+                        <textarea id="description" placeholder="您的产品哪里出现了问题" class="layui-textarea"
+                                  style="resize: none;border-color:#e9e9e9;"></textarea>
+                        </div>
+                    </div>
+                    <div class="after-upload">
+                        <p>上传产品图片（选填）</p>
+                        <div class="prev clearfix" id="prev">
+                            <div class="item item-up">
+                                <input type="file" id="files" multiple onchange="uploadFile(this)" accept="image/*">
+                                <i class="iconfont icon-zengjia"></i>
+                                <p>添加图片</p>
+                            </div>
+                            <!--<div class="item"><img src="../../img/order/product-1.jpg" alt=""></div>-->
+                            <!--<div class="item"><img src="../../img/order/product-1.jpg" alt=""></div>-->
+                        </div>
+                    </div>
+                    <button class="btn-org btn-next" id="btn-1">下一步</button>
+                </div>
+            </div>
+            <div id="step-2" style="display: none;">
+                <div class="order-after clearfix">
+                    <div class="mf-order-status">
+                        <div class="item active">
+                            <span class="line"></span>
+                            <span class="disc disc-left"></span>
+                            <span class="name name-left" style="left: -1em;">选择产品和服务</span>
+
+                            <span class="disc"></span>
+                            <span class="name" style="right:-2.5em;">填写申请单</span>
+                        </div>
+                        <div class="item">
+                            <span class="line"></span>
+                            <span class="disc"></span>
+                            <span class="name" style="right:-2em;">完成申请</span>
+                        </div>
+                    </div>
+                    <div id="after-mobile">
+                        <h3 class="title"><i class="line"></i>填写联系电话</h3>
+                        <div class="after-mobile">
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline" style="width:270px;">
+                                    <input type="text" autocomplete="off" id="receiveName" maxlength="10"
+                                           placeholder="联系人姓名" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline" style="width:270px;">
+                                    <input type="text" autocomplete="off" id="receiveMobile" maxlength="11"
+                                           placeholder="手机号" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="after-address">
+                        <h3 class="title"><i class="line"></i>填写收货地址</h3>
+                        <div class="address address-chose clearfix" id="address">
+                            <div class="item item-add">
+                                <i class="iconfont icon-zengjia-yuan-tianchong"></i>
+                                <p>添加新地址</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-org btn-next" id="btn-2">提交申请</button>
+                </div>
+            </div>
+            <div id="step-3" style="display: none;">
+                <div class="order-after clearfix">
+                    <div class="mf-order-status">
+                        <div class="item active">
+                            <span class="line"></span>
+                            <span class="disc disc-left"></span>
+                            <span class="name name-left" style="left: -1em;">选择产品和服务</span>
+
+                            <span class="disc"></span>
+                            <span class="name" style="right:-2.5em;">填写申请单</span>
+                        </div>
+                        <div class="item active">
+                            <span class="line"></span>
+                            <span class="disc"></span>
+                            <span class="name" style="right:-2em;">完成申请</span>
+                        </div>
+                    </div>
+                    <div class="after-success">
+                        <i class="iconfont icon-right-1"></i>
+                        <h4>提交成功！</h4>
+                        <p>您的售后申请已提交，我们会尽快处理， <br> 请耐心等候</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="temp_address" type="text/html">
+    <div class="item item-add">
+        <i class="iconfont icon-zengjia-yuan-tianchong"></i>
+        <p>添加新地址</p>
+    </div>
+    {{each data}}
+    <div class="item {{$value.isDefault?'active':''}}">
+        <p class="name">{{$value.name}}</p>
+        <p>{{$imports.mobilehide($value.mobile)}}</p>
+        <p class="addr">
+            {{$value.province}}{{$value.city}}{{$value.dstrict}}
+            {{$value.address}}
+        </p>
+        <div class="edit">
+            <a href="javascript:void(0);" data-act="edit">修改</a>
+            <a href="javascript:void(0);" data-act="del">删除</a>
+        </div>
+    </div>
+    {{/each}}
+</script>
+<script src="/js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="/js/plugin/layer/layer.js"></script>
+<script src="/js/plugin/layui/src/layui.js"></script>
+<script src="/js/src/common.js?v=2.0.1"></script>
+<script>
+    // 地址操作
+    var $address = $("#address");
+    var addressData = [];
+    var orderData = null;
+    $(function () {
+        getAddressList();
+        // 新增弹窗
+        $address.on("click", ".item-add", function () {
+            showDialog({
+                title: '添加收货地址'
+                , template: 'address-add'
+                , saveUrl: '/user' + GLOBAL.VERSION + '/trade/addShippingAddress'
+                , width: 620
+                , height: 420
+                , afterSubmit: function () {
+                    getAddressList();
+                }
+            })
+        });
+
+        // 编辑
+        $address.on("click", "a[data-act='edit']", function () {
+            var index = $(this).parents(".item").index();
+            var data = addressData[index - 1];
+            showDialog({
+                title: '修改收货地址'
+                , template: 'address-edit'
+                , saveUrl: '/user' + GLOBAL.VERSION + '/trade/modifyShippingAddressById'
+                , width: 620
+                , height: 420
+                , htmlData: data
+                , afterSubmit: function () {
+                    getAddressList();
+                }
+            })
+        });
+
+        // 删除
+        $address.on("click", "a[data-act='del']", function () {
+            var index = $(this).parents(".item").index();
+            var data = addressData[index - 1];
+            showConfirm("确定删除地址？", function () {
+                ajax({
+                    url: " /user" + GLOBAL.VERSION + "/trade/removeShippingAddressById",
+                    data: JSON.stringify({
+                        shippingAddressId: data.shippingAddressId
+                    }),
+                    success: function (res) {
+                        if (res.success) {
+                            layer.closeAll();
+                            layer.msg("操作成功！");
+                            getAddressList();
+                        } else {
+                            layer.msg("数据异常！");
+                        }
+                    }
+                });
+            })
+        });
+
+        $address.on("click", ".item", function () {
+            var $this = $(this);
+            if (!$this.hasClass("item-add") && !$this.hasClass("active")) {
+                $this.addClass("active").siblings(".active").removeClass("active");
+            }
+        });
+    });
+
+    layui.use(['layer', 'form'], function () {
+        // 查询订单信息
+        ajax({
+            url: " /user" + GLOBAL.VERSION + "/trade/getOrderInfo",
+            type: "get",
+            data: {
+                orderNumber: getUrlParam("orderNumber")
+            },
+            success: function (res) {
+                if (res.success && res.data) {
+                    orderData = res.data;
+                    $("#goodsName").text(res.data.goodsName);
+                    $("#orderNumber").text("订单号：" + res.data.orderNumber);
+                    if (res.data.isCanExchange != 2) {
+                        $("#exchange").show();
+                    } else {
+                        $("#return").addClass("active").siblings(".active").removeClass("active");
+                    }
+                    if (res.data.isWriteServiceOrder != 2) {
+                        layer.confirm('订单已在售后中，请勿重复提交！', {
+                                icon: 3,
+                                title: '提示',
+                                skin: 'mf-Dialog',
+                                closeBtn: 0,
+                                btn: ["确定"]
+                            },
+                            function (index) {
+                                location.href = "order.html";
+                            });
+                    }
+                }
+            }
+        });
+
+        // 服务类型切换
+        $("#serviceType").on("click", ".item", function () {
+            $(this).addClass("active").siblings(".active").removeClass("active");
+        });
+
+        // 切换下一步
+        $("#btn-1").click(function () {
+            var description = $.trim($("#description").val());
+            if (!description) {
+                layer.msg("请输入产品问题描述！");
+                return;
+            }
+            var serviceType = $("#serviceType .item.active").attr("data-value");
+            if (serviceType == 1) {//退货
+                $("#after-address").hide();
+            } else {
+                $("#after-mobile").hide();
+            }
+
+            $("#step-2").show();
+            $("#step-1").hide();
+        });
+        // 提交
+        $("#btn-2").click(function () {
+            var formData = new FormData($("form")[0]);
+            formData.append("orderNumber", orderData.orderNumber);
+            formData.append("goodsId", orderData.goodsId);
+            var description = $.trim($("#description").val());
+            formData.append("description", $("#description").val());
+
+//            //
+//            var files = $("#files")[0].files;
+//            var arr = [files[0], files[1]];
+////            for (var k = 0; k < files.length; k++) { //文件数组
+////                formData.append('files[]', files[k]);
+////            }
+//            formData.append('files', arr);
+            var serviceType = $("#serviceType .item.active").attr("data-value");
+            // formData.serviceType = serviceType;
+            formData.append("serviceType", serviceType);
+            if (serviceType == 2) { //换货
+                var $address = $("#address .active");// 收货地址
+                if ($address.length == 0) {
+                    layer.msg("请选择收货地址！");
+                    return;
+                }
+                var addIndex = $address.index();
+                var address = addressData[addIndex - 1];
+                formData.append("receiveName", address.name);
+                formData.append("receiveMobile", address.mobile);
+                formData.append("receiveAddress", address.address);
+                formData.append("receiveProvince", address.province);
+                formData.append("receiveCity", address.city);
+                formData.append("receiveDistrict", address.dstrict);
+            } else {
+                var receiveName = $.trim($("#receiveName").val());
+                if (!receiveName) {
+                    layer.msg("请输入联系人姓名！");
+                    return;
+                }
+                var mobile = $.trim($("#receiveMobile").val());
+                if (!REG.mobile.test(mobile)) {
+                    layer.msg("请输入正确的手机号！");
+                    return;
+                }
+                formData.append("receiveName", receiveName);
+                formData.append("receiveMobile", mobile);
+            }
+
+            // 图片
+            $("#prev .item:not(.item-up) img").each(function (_, item) {
+                formData.append("files", convertBase64UrlToBlob($(this).attr("src")));
+            });
+
+            var index = loading();
+            ajax({
+                url: " /user/" + GLOBAL.VERSION + "/trade/createServiceOrder",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    layer.close(index);
+                    if (res.success) {
+                        $("#step-3").show();
+                        $("#step-2").hide();
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                },
+                error: function () {
+                    layer.close(index);
+                    layer.msg("数据异常！");
+                }
+            });
+        });
+    });
+
+    function convertBase64UrlToBlob(urlData) {
+        var bytes = window.atob(urlData.split(',')[1]);        //去掉url的头，并转换为byte
+        //处理异常,将ascii码小于0的转换为大于0
+        var ab = new ArrayBuffer(bytes.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < bytes.length; i++) {
+            ia[i] = bytes.charCodeAt(i);
+        }
+        return new Blob([ab], {type: 'image/png'});
+    }
+
+    function uploadFile(obj) {
+        if ($("#prev .item").length >= 4) {
+            layer.msg("最多传3张图片！");
+            return false;
+        }
+        //获取file对象
+        var file = obj.files[0];
+        // 73121==71.4k
+        if (file.size > 3000000) {
+            layer.msg("请上传小于3M的图片！");
+            return false;
+        }
+        //创建FileReader对象
+        var fr = new FileReader();
+        readImage(fr, file);
+        function readImage(frObj, fileObj) {
+            frObj.onload = function () {
+                var img = document.createElement("img");
+                img.src = frObj.result;
+                var item = document.createElement("item");
+                item.setAttribute("class", "item");
+                item.appendChild(img);
+                document.querySelector("#prev").appendChild(item);
+            };
+            frObj.readAsDataURL(fileObj);
+        }
+    }
+
+    function getAddressList() {
+        ajax({
+            url: " /user/" + GLOBAL.VERSION + "/trade/getShippingAddressByUserId",
+            type: "get",
+            success: function (res) {
+                if (res.success && res.data) {
+                    $address.empty();
+                    addressData = res.data;
+                    $address.html(template("temp_address", res));
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>
+
+
+
+

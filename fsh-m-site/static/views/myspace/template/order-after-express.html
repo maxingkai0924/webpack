@@ -1,0 +1,39 @@
+<div class="fsh-pop">
+    <div id="add_form" class="layui-form order-after-express">
+        <input type="hidden" name="orderNumber" value="{{orderNumber}}">
+        <input type="hidden" name="returnExpressType" value="{{returnExpressType}}">
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 150px;">请选择物流公司</label>
+            <div class="layui-input-block" style="margin-left: 150px;">
+                <select lay-filter="express" id="returnExpressCompanyCode" name="returnExpressCompanyCode"
+                        lay-verify="required">
+                    <option value="">请选择物流公司</option>
+                </select>
+                <input type="hidden" name="returnExpressCompanyName" id="returnExpressCompanyName">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 150px;">物流单号</label>
+            <div class="layui-input-block" style="margin-left: 150px;">
+                <input type="text" name="returnExpressNumber" lay-verify="required" placeholder="请输入物流单号"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form;
+        var express = [];
+        initSelect({
+            elem: "#returnExpressCompanyCode",
+            url: "/lock" + GLOBAL.VERSION + "/express/getExpressCompanyList",
+            type: "GET",
+            field: ["expressCompanyCode", "expressCompanyName"],
+        });
+        form.on('select(express)', function (data) {
+            var $option = $("#returnExpressCompanyCode option:selected");
+            $("#returnExpressCompanyName").val($option.text());
+        });
+    });
+</script>

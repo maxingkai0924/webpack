@@ -1,0 +1,133 @@
+<div class="fsh-pop">
+    <div id="add_form" class="layui-form">
+        <input type="hidden" name="shippingAddressId" value="{{shippingAddressId}}">
+        <div class="layui-form-item">
+            <div class="layui-input-inline" style="width:270px;">
+                <input type="text" autocomplete="off" name="name" maxlength="10" lay-verify="required"
+                       placeholder="姓名"
+                       class="layui-input" value="{{name}}">
+            </div>
+            <div class="layui-input-inline" style="width:270px;">
+                <input type="text" autocomplete="off" name="mobile" maxlength="11" lay-verify="required|phone"
+                       placeholder="手机号"
+                       class="layui-input" value="{{mobile}}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-inline" style="width: 177px;">
+                <select id="provinceId" name="provinceId" lay-filter="provinceId" lay-verify="required"
+                        placeholder="请选择省" data-value="{{provinceId}}">
+                    <option value="">请选择省</option>
+                </select>
+                <input type="hidden" name="province" id="province" value="{{province}}">
+            </div>
+            <div class="layui-input-inline" style="width: 177px;">
+                <select id="cityId" name="cityId" lay-filter="cityId" lay-verify="required"
+                        placeholder="请选择市" data-value="{{cityId}}">
+                    <option value="">请选择市</option>
+                </select>
+                <input type="hidden" name="city" id="city" value="{{city}}">
+            </div>
+            <div class="layui-input-inline" style="width: 177px;">
+                <select id="dstrictId" name="dstrictId" lay-filter="dstrictId" lay-verify="required"
+                        placeholder="请选择市" data-value="{{dstrictId}}">
+                    <option value="">请选择区</option>
+                </select>
+                <input type="hidden" name="dstrict" id="dstrict" value="{{dstrict}}">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <div class="layui-input-inline" style="width: 550px;">
+                <textarea maxlength="30" name="address" placeholder="详细地址" class="layui-textarea" lay-verify="required|address"
+                          style="resize: none;">{{address}}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-inline" style="width:auto;">
+                <input checked type="checkbox" lay-filter="isDefault" lay-skin="primary" title="设为默认">
+                <input type="hidden" id="isDefault" name="isDefault" value="1">
+            </div>
+            <div class="layui-input-inline" style="width:270px;">
+                <input type="text" autocomplete="off" name="zipCode" lay-verify="zipCode" placeholder="邮政编码"
+                       class="layui-input" value="{{zipCode}}">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form;
+        form.verify({
+            zipCode: [
+                /^[0-9]{6}$/
+                , '请输入正确的邮编'
+            ],
+            address: function (v) {
+                if (v.length < 5) {
+                    return "请输入5字以上地址描述！";
+                }
+            }
+        });
+
+        initSelect({
+            elem: "#provinceId",
+            url: "/user" + GLOBAL.VERSION + "/city/getProvinces",
+            type: "GET",
+            field: ["provinceId", "provinceName"],
+        });
+
+        form.on('select(provinceId)', function (data) {
+            getcitys(data.value);
+        });
+        form.on('select(cityId)', function (data) {
+            getdstricts(data.value);
+        });
+        form.on('select(dstrictId)', function (data) {
+            $("#dstrict").val($("#dstrictId option:selected").text());
+        });
+
+        form.on('checkbox(isDefault)', function(data){
+            if(data.elem.checked){
+                $("#isDefault").val("1");
+            }else {
+                $("#isDefault").val("0");
+            }
+        });
+
+
+        getcitys("{{provinceId}}",1);
+        getdstricts("{{cityId}}",1);
+
+        function getcitys(provinceId,trigger) {
+            if (provinceId) {
+                initSelect({
+                    elem: "#cityId",
+                    url: "/user" + GLOBAL.VERSION + "/city/getCitys",
+                    type: "GET",
+                    data: {provinceId: provinceId},
+                    field: ["cityId", "cityName"],
+                });
+                !trigger && $("#province").val($("#provinceId option:selected").text());
+            } else {
+                emptySelect("#cityId");
+                $("#province").val("");
+            }
+        }
+
+        function getdstricts(cityId,trigger) {
+            if (cityId) {
+                initSelect({
+                    elem: "#dstrictId",
+                    url: "/user" + GLOBAL.VERSION + "/city/getDstricts",
+                    type: "GET",
+                    data: {cityId: cityId},
+                    field: ["dstrictId", "dstrictName"],
+                });
+                !trigger && $("#city").val($("#cityId option:selected").text());
+            } else {
+                emptySelect("#dstrictId");
+                $("#dstrict").val("");
+            }
+        }
+    });
+</script>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>申请售后</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <script>
+        (function (doc, win, undefined) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (clientWidth === undefined) return;
+                    docEl.style.fontSize = (clientWidth / 37.5) + 'px';
+                };
+            if (doc.addEventListener === undefined) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            //doc.addEventListener('DOMContentLoaded', recalc, false)
+            recalc();
+        })(document, window);
+    </script>
+    <link rel="stylesheet" href="../../font/iconfont.css">
+    <link rel="stylesheet" href="../../js/plugin/mui/css/mui.min.css">
+    <link rel="stylesheet" href="../../js/plugin/mui/picker/dist/css/mui.picker.min.css"/>
+    <link rel="stylesheet" href="../../css/build/wap.css?v=1.0.1">
+    <link rel="stylesheet" href="../../css/build/wap-myspace.css?v=1.0.0">
+</head>
+<body class="bg-fff">
+<header class="mui-bar mui-bar-nav">
+    <a href="javascript:history.back();" class="iconfont icon-fanhui1 mui-pull-left"></a>
+    <h1 class="mui-title">申请售后</h1>
+</header>
+<div class="mui-content bg-fff m-b-75">
+    <div id="step1" style="display: block;">
+        <div class="bg-fa clearfix">
+            <div class="order-after bg-f7">
+                <div class="after-panel">
+                    <div class="title">申请售后的产品</div>
+                    <div class="product clearfix">
+                        <img src="../../img/wap/p-main-md.jpg" alt="">
+                        <div class="content">
+                            <p class="name" id="goodsName"></p>
+                            <!--<p class="time">维修服务剩余：88天</p>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="after-panel">
+                    <div class="title">服务类型</div>
+                    <div class="service" id="serviceType">
+                        <span id="exchange" class="item active" data-value="2" style="display: none">换货</span>
+                        <span id="return" class="item" data-value="1">退货</span>
+                    </div>
+                </div>
+                <div class="after-panel">
+                    <div class="title">问题描述</div>
+                    <div class="description">
+                    <textarea maxlength="200" id="description" placeholder="详细描述下你的产品遇到的问题～" class="layui-textarea"
+                              style="resize: none;"></textarea>
+                        <div class="upload">
+                            <i class="iconfont icon-weibiaoti553"></i>
+                            <input type="file" id="files" multiple onchange="uploadFile(this)" accept="image/*">
+                        </div>
+                        <span class="count" id="count">0/200</span>
+                    </div>
+                    <div class="prev" id="prev">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fix-button">
+            <button type="button" class="btn" id="btn-1">下一步</button>
+        </div>
+    </div>
+    <div id="step2" style="display: none;">
+        <div class="bg-fa clearfix">
+            <div class="order-after">
+                <div class="after-panel">
+                    <div class="title">通过以下方式进行售后服务</div>
+                    <div class="service">
+                        <span class="item active" data-value="2">厂家售后</span>
+                    </div>
+                </div>
+                <div class="after-panel m-b-9" id="address-panel">
+                    <div class="title">回寄地址</div>
+                    <div class="order-address-empty" id="order-address-empty">
+                        <i class="iconfont icon-weizhi"></i>
+                        还没有收货地址，立即添加
+                        <i class="iconfont icon-xiangyou"></i>
+                    </div>
+                    <div class="order-address m-t-9" id="order-address" style="display: none;">
+                        <div class="name ellipsis">{{name}}</div>
+                        <div class="content">
+                            <p class="mobile"><span>{{$imports.mobilehide(mobile)}}</span> <i
+                                    class="iconfont icon-xiangyou"></i></p>
+                            <p class="address">{{province}}{{city}}{{dstrict}}{{address}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="after-panel m-b-9" id="mobile-panel" style="display: none;">
+                    <div class="address-form bg-fff">
+                        <div class="item">
+                            <input type="text" id="receiveName" placeholder="*联系人姓名">
+                        </div>
+                        <div class="item">
+                            <input type="number" id="receiveMobile" maxlength="11" placeholder="*手机号">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fix-button">
+            <button class="btn" id="btn-2">提交</button>
+        </div>
+    </div>
+    <div id="step3" style="display: none;">
+        <div class="bg-fa clearfix">
+            <div class="order-after">
+                <div class="after-panel order-after-success bg-fff">
+                    <img src="../../img/wap/after-succ.jpg" alt="">
+                    <h2>售后申请提交成功</h2>
+                    <p>我们会尽快处理，请耐心等待</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="temp_address" type="text/html">
+    <div class="name ellipsis">{{name}}</div>
+    <div class="content">
+        <p class="mobile"><span>{{$imports.mobilehide(mobile)}}</span> <i class="iconfont icon-xiangyou"></i></p>
+        <p class="address">{{province}}{{city}}{{dstrict}}{{address}}</p>
+    </div>
+</script>
+<script src="../../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="/js/plugin/template-web.js"></script>
+<script src="../../js/plugin/mui/js/mui.min.js"></script>
+<script src="../../js/src/common-mobile.js"></script>
+<script>
+    $(function () {
+        var orderNumber = getUrlParam("orderNumber");
+        var orderData = null;
+        var addressChose = null;
+
+        var shippingAddressId = getUrlParam("shippingAddressId");
+        var serviceType = getUrlParam("serviceType");
+        var description = getUrlParam("description");
+        serviceType == 1 && $("#serviceType item:last").addClass("active").siblings().removeClass("active");
+        description && $("#description").val(description);
+        serviceType && nextFn();
+
+        afterImgHandler("init");
+        $("#description").keyup(function () {
+            var length = $(this).val().length;
+            $("#count").text(length + "/200");
+        });
+        $("#description").trigger("keyup");
+
+
+        // 查询订单信息
+        ajax({
+            url: " /user" + GLOBAL.VERSION + "/trade/getOrderInfo",
+            type: "get",
+            data: {
+                orderNumber: getUrlParam("orderNumber")
+            },
+            success: function (res) {
+                if (res.success && res.data) {
+                    orderData = res.data;
+                    $("#goodsName").text(res.data.goodsName);
+//                    $("#orderNumber").text("订单号：" + res.data.orderNumber);
+                    if (res.data.isCanExchange != 2) {
+                        $("#exchange").show();
+                    } else {
+                        $("#return").addClass("active").siblings(".active").removeClass("active");
+                    }
+                    if (res.data.isWriteServiceOrder != 2) {
+                        mui.confirm('订单已在售后中，请勿重复提交！', " ", ["确定"], function (v) {
+                            location.href = "order.html";
+                        });
+                    }
+                }
+            }
+        });
+
+        // 查询收货地址
+        ajax({
+            url: " /user/" + GLOBAL.VERSION + "/trade/getShippingAddressByUserId",
+            type: "get",
+            success: function (res) {
+                if (res.success && res.data && res.data.length > 0) {
+                    var defaultAddress = null;
+                    $.each(res.data, function (_, v) {
+                        if (shippingAddressId) {
+                            if (v.shippingAddressId == shippingAddressId) {
+                                defaultAddress = v;
+                                return false;
+                            }
+                        } else if (v.isDefault) {
+                            defaultAddress = v;
+                            return false;
+                        }
+                    });
+                    addressChose = defaultAddress ? defaultAddress : res.data[0];
+                    $("#order-address").html(template("temp_address", addressChose)).show();
+                    $(".order-address-empty").hide();
+                }
+            }
+        });
+
+        mui("#order-address-empty")[0].addEventListener("tap", function () {
+            var serviceType = $("#serviceType .item.active").attr("data-value");
+            var description = $("#description").val();
+            location.href = "/mobile/myspace/address-add.html?serviceType="
+                + serviceType + "&description=" + description + "&orderNumber=" + orderNumber;
+        });
+
+        mui("#order-address")[0].addEventListener("tap", function () {
+            var serviceType = $("#serviceType .item.active").attr("data-value");
+            var description = $("#description").val();
+            location.href = "/mobile/myspace/address.html?serviceType="
+                + serviceType + "&description=" + description + "&orderNumber=" + orderNumber;
+        });
+
+        // 点击服务
+        mui("#serviceType").on('tap', ".item", function () {
+            $(this).addClass("active").siblings(".active").removeClass("active");
+        }, false);
+
+        // 下一步
+        mui("#btn-1")[0].addEventListener('tap', nextFn, false);
+
+        function nextFn() {
+            var description = $.trim($("#description").val());
+            if (!description) {
+                msg("请输入产品问题描述！");
+                return;
+            }
+            var serviceType = $("#serviceType .item.active").attr("data-value");
+            if (serviceType == 1) {//退货
+                $("#mobile-panel").show();
+                $("#address-panel").hide();
+            } else {
+                $("#address-panel").show();
+                $("#mobile-panel").hide();
+            }
+            $("#step2").show();
+            $("#step1").hide();
+        }
+
+        // 提交
+        mui("#btn-2")[0].addEventListener('tap', function () {
+            var formData = new FormData($("form")[0]);
+            formData.append("orderNumber", orderData.orderNumber);
+            formData.append("goodsId", orderData.goodsId);
+            var description = $.trim($("#description").val());
+            formData.append("description", $("#description").val());
+
+//            //
+//            var files = $("#files")[0].files;
+//            var arr = [files[0], files[1]];
+////            for (var k = 0; k < files.length; k++) { //文件数组
+////                formData.append('files[]', files[k]);
+////            }
+//            formData.append('files', arr);
+            var serviceType = $("#serviceType .item.active").attr("data-value");
+            // formData.serviceType = serviceType;
+            formData.append("serviceType", serviceType);
+            if (serviceType == 2) { //换货
+                if (!addressChose) {
+                    msg("请选择收货地址！");
+                    return;
+                }
+                var address = addressChose;
+                formData.append("receiveName", address.name);
+                formData.append("receiveMobile", address.mobile);
+                formData.append("receiveAddress", address.address);
+                formData.append("receiveProvince", address.province);
+                formData.append("receiveCity", address.city);
+                formData.append("receiveDistrict", address.dstrict);
+            } else {
+                var receiveName = $.trim($("#receiveName").val());
+                if (!receiveName) {
+                    msg("请输入联系人姓名！");
+                    return;
+                }
+                var mobile = $.trim($("#receiveMobile").val());
+                if (!REG.mobile.test(mobile)) {
+                    msg("请输入正确的手机号！");
+                    return;
+                }
+                formData.append("receiveName", receiveName);
+                formData.append("receiveMobile", mobile);
+            }
+
+            // 图片
+            $("#prev .item img").each(function (_, item) {
+                formData.append("files", convertBase64UrlToBlob($(this).attr("src")));
+            });
+            mui.showLoading("正在加载..", "div");
+            ajax({
+                url: " /user/" + GLOBAL.VERSION + "/trade/createServiceOrder",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    mui.hideLoading();
+                    if (res.success) {
+                        $("#step3").show();
+                        $("#step2").hide();
+                    } else {
+                        msg("数据异常！");
+                    }
+                },
+                error: function () {
+                    mui.hideLoading();
+                    msg("数据异常！");
+                }
+            });
+        })
+    });
+
+    function convertBase64UrlToBlob(urlData) {
+        var bytes = window.atob(urlData.split(',')[1]);        //去掉url的头，并转换为byte
+        //处理异常,将ascii码小于0的转换为大于0
+        var ab = new ArrayBuffer(bytes.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < bytes.length; i++) {
+            ia[i] = bytes.charCodeAt(i);
+        }
+        return new Blob([ab], {type: 'image/png'});
+    }
+
+    function uploadFile(obj) {
+        if ($("#prev .item").length >= 3) {
+            msg("最多传3张图片！");
+            return false;
+        }
+        //获取file对象
+        var file = obj.files[0];
+        // 73121==71.4k
+        if (file.size > 3000000) {
+            msg("请上传小于3M的图片！");
+            return false;
+        }
+        //创建FileReader对象
+        var fr = new FileReader();
+        readImage(fr, file);
+        function readImage(frObj, fileObj) {
+            frObj.onload = function () {
+                var img = document.createElement("img");
+                img.src = frObj.result;
+                afterImgHandler("add", frObj.result);
+                var item = document.createElement("item");
+                item.setAttribute("class", "item");
+                item.appendChild(img);
+                document.querySelector("#prev").appendChild(item);
+            };
+            frObj.readAsDataURL(fileObj);
+        }
+    }
+
+    function afterImgHandler(state, src) {
+        var prevEle = document.querySelector("#prev");
+        if (state == "init") {
+            if (getUrlParam("serviceType")) {
+                var src1 = localStorage.getItem("after_1");
+                src1 && appendPre(src1);
+                var src2 = localStorage.getItem("after_2");
+                src2 && appendPre(src2);
+                var src3 = localStorage.getItem("after_3");
+                src3 && appendPre(src3);
+            } else {
+                localStorage.removeItem("after_1");
+                localStorage.removeItem("after_2");
+                localStorage.removeItem("after_3");
+            }
+        } else if (state == "add") {
+            var length = $(prevEle).children().length + 1;
+            localStorage.setItem(("after_" + length), src);
+        }
+
+        function appendPre(src) {
+            var img = document.createElement("img");
+            img.src = src;
+            var item = document.createElement("item");
+            item.setAttribute("class", "item");
+            item.appendChild(img);
+            prevEle.appendChild(item);
+        }
+
+    }
+</script>
+</body>
+</html>

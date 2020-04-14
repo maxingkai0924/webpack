@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>支付订单</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="../../font/iconfont.css">
+    <link rel="stylesheet" href="../../js/plugin/layer/theme/default/layer.css">
+    <link rel="stylesheet" href="../../js/plugin/layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/build/index.css?v=2.0.1">
+    <link rel="stylesheet" href="../../css/build/order.css">
+</head>
+<body style="background: #f7f7f7;">
+<!--header-->
+<div class="header clearfix" id="header"></div>
+<div class="container order-balance">
+    <h2 class="address-title">收货地址</h2>
+    <div class="address address-chose clearfix" id="address">
+        <div class="item item-add">
+            <i class="iconfont icon-zengjia-yuan-tianchong"></i>
+            <p>添加新地址</p>
+        </div>
+    </div>
+    <h2 class="goods-title">商品及优惠券</h2>
+    <div class="goods">
+        <img src="../../img/order/product-2.jpg" alt="" class="product">
+        <div class="name" id="name"></div>
+        <div class="price" id="price-unit"></div>
+        <div class="num">
+            <div class="num-act">
+                <button id="num-minus"><i class="iconfont icon-jian"></i></button>
+                <input type="text" value="0" id="num" readonly>
+                <button id="num-plus"><i class="iconfont icon-zengjia"></i></button>
+            </div>
+        </div>
+        <div class="price-all" id="price-all"></div>
+    </div>
+    <h2 class="send-title">配送 <span class="type">包邮</span></h2>
+    <h2 class="send-title" id="code">邀请码 <span class="code"><input type="text" class="" placeholder="非必填"
+                                                                   id="promotionCode" maxlength="8"></span></h2>
+    <!--<div class="youhui">-->
+    <!--<h3><i class="iconfont icon-jianhao"></i>是否使用优惠劵</h3>-->
+    <!--<ul>-->
+    <!--<li><i class="radio checked"></i>满1000元 - 100元劵</li>-->
+    <!--<li><i class="radio"></i>每满500元 - 60元劵</li>-->
+    <!--</ul>-->
+    <!--</div>-->
+    <div class="count" id="order-count">
+        <ul>
+            <li>
+                <span class="info" id="num-count">0件</span>
+                <span class="name">商品件数：</span>
+            </li>
+            <li>
+                <span class="info" id="price-count">0元</span>
+                <span class="name">商品价格：</span>
+            </li>
+            <!--<li>-->
+            <!--<span class="info">-300元</span>-->
+            <!--<span class="name">活动优惠：</span>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<span class="info">-0元</span>-->
+            <!--<span class="name">优惠抵扣：</span>-->
+            <!--</li>-->
+            <li class="all">
+                <span class="info price-all" id="price-all-count">0元</span>
+                <span class="name">应付金额：</span>
+            </li>
+        </ul>
+    </div>
+    <div class="pay">
+        <button class="btn btn-org" id="confirm">去结算</button>
+    </div>
+</div>
+<div class="footer container-full" id="footer"></div>
+<script id="temp_address" type="text/html">
+    <div class="item item-add">
+        <i class="iconfont icon-zengjia-yuan-tianchong"></i>
+        <p>添加新地址</p>
+    </div>
+    {{each data}}
+    <div class="item {{$value.isDefault?'active':''}}">
+        <p class="name">{{$value.name}}</p>
+        <p>{{$imports.mobilehide($value.mobile)}}</p>
+        <p class="addr">
+            {{$value.province}}{{$value.city==$value.province?"":$value.city}}{{$value.dstrict}}
+            {{$value.address}}
+        </p>
+        <div class="edit">
+            <a href="javascript:void(0);" data-act="edit">修改</a>
+            <a href="javascript:void(0);" data-act="del">删除</a>
+        </div>
+    </div>
+    {{/each}}
+</script>
+<script src="../../js/plugin/jquery-2.2.4.min.js"></script>
+<script src="../../js/plugin/template-web.js"></script>
+<script src="../../js/plugin/layer/layer.js"></script>
+<script src="../../js/plugin/layui/src/layui.js"></script>
+<script src="../../js/src/common.js?v=2.0.1"></script>
+<script>
+    layui.use(['layer', 'form'], function () {
+        var $address = $("#address");
+        var addressDate = [];
+
+        var good_price;
+        var good_price_all;
+        var good_name;
+        var good_num;
+
+
+        var inventory = 99;// 数量最大值
+        var good_goodId = getUrlParam("goodId");
+
+//        var redeemCode = getUrlParam("redeemCode");// 兑换码
+//        var redeemPassword = getUrlParam("redeemPassword");
+
+        var promotionCode = localStorage.getItem("promotionCode");
+        promotionCode && $("#promotionCode").val(promotionCode).attr("disabled","disabled");
+        // 查询商品信息
+        ajax({
+            url: " /user" + GLOBAL.VERSION + "/trade/getGoodInfo",
+            type: "get",
+            data: {
+                goodId: good_goodId
+            },
+            success: function (res) {
+                if (res.success && res.data) {
+                    good_price = res.data.lfmfGoodsPrices;
+                    good_name = res.data.lfmfGoodsName;
+                    $("#name").text(good_name);
+
+//                    if (redeemCode) {
+//                        $("#order-count").hide();
+//                        $("#code").hide();
+//                        $("#num").val(1);
+//                        $("#num-plus,#num-minus").attr("disabled", "disabled").css({visibility: "hidden"});
+//                        $("#confirm").text("提交订单");
+//                    } else {
+                        $("#price-unit").text("" + good_price + "(单价)");
+                        $("#num-plus").trigger("click");
+//                    }
+                }
+            }
+        });
+
+        // 查询收货地址
+        ajax({
+            url: " /user/" + GLOBAL.VERSION + "/trade/getShippingAddressByUserId",
+            type: "get",
+            success: function (res) {
+                if (res.success && res.data) {
+                    addressDate = res.data;
+                    $("#address").html(template("temp_address", res));
+                }
+            }
+        });
+
+        // 收货地址新增弹窗
+        $address.on("click", ".item-add", function () {
+            showDialog({
+                title: '添加收货地址'
+                , template: '/views/myspace/template/address-add.html'
+                , saveUrl: '/user' + GLOBAL.VERSION + '/trade/addShippingAddress'
+                , width: 620
+                , height: 420
+                , afterSubmit: function () {
+                    location.reload();
+                }
+            })
+        });
+
+        // 收货地址编辑
+        $address.on("click", "a[data-act='edit']", function () {
+            var index = $(this).parents(".item").index();
+            var data = addressDate[index - 1];
+            showDialog({
+                title: '修改收货地址'
+                , template: '/views/myspace/template/address-edit.html'
+                , saveUrl: '/user' + GLOBAL.VERSION + '/trade/modifyShippingAddressById'
+                , width: 620
+                , height: 420
+                , htmlData: data
+                , afterSubmit: function () {
+                    location.reload();
+                }
+            })
+        });
+
+        // 删除
+        $address.on("click", "a[data-act='del']", function () {
+            var index = $(this).parents(".item").index();
+            var data = addressDate[index - 1];
+
+            showConfirm("确定删除地址？", function () {
+                ajax({
+                    url: " /user" + GLOBAL.VERSION + "/trade/removeShippingAddressById",
+                    data: JSON.stringify({
+                        shippingAddressId: data.shippingAddressId
+                    }),
+                    success: function (res) {
+                        if (res.success) {
+                            layer.closeAll();
+                            layer.msg("操作成功！");
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        } else {
+                            layer.msg("数据异常！");
+                        }
+                    }
+                });
+            })
+        });
+
+        // 地址选择切换
+        $address.on("click", ".item", function () {
+            var $this = $(this);
+            if (!$this.hasClass("item-add") && !$this.hasClass("active")) {
+                $this.addClass("active").siblings(".active").removeClass("active");
+            }
+        });
+
+
+        // 点击数量减
+        $("#num-minus").click(function () {
+            var ele = $("#num")[0];
+            var val = $(ele).val();
+            var num = parseInt(val);
+            if (num == 1) {
+                return;
+            }
+            num--;
+            ele.value = num;
+            good_num = num;
+            var _price = num * good_price;
+            good_price_all = _price;
+            $("#price-all").text(_price);
+            $("#num-count").text("" + num + "件");
+            $("#price-count,#price-all-count").text("" + _price + "元");
+        });
+
+        // 点击数量加
+        $("#num-plus").click(function () {
+            var ele = $("#num")[0];
+            var val = $(ele).val();
+            var num = parseInt(val);
+            if (num > inventory) {
+                layer.msg("超过限购值！");
+                return;
+            }
+            num++;
+            ele.value = num;
+            good_num = num;
+            var _price = num * good_price;
+            good_price_all = _price;
+            $("#price-all").text(_price);
+            $("#num-count").text("" + num + "件");
+            $("#price-count,#price-all-count").text("" + _price + "元");
+        });
+
+        // 点击去结算
+        $("#confirm").click(function () {
+            var $btn = $(this);
+            var $address = $("#address .active");
+            if ($address.length == 0) {
+                layer.msg("请选择收货地址！");
+                return;
+            }
+            var addIndex = $address.index();
+            var address = addressDate[addIndex - 1];
+//            console.log({
+//                userMobile: address.mobile,
+//                address: address.address,
+//                userName: address.name,
+//                goodsId: good_goodId,
+//                goodsName: good_name,
+//                goodsNum: good_num,
+//                goodsAllPrice: good_price_all,
+//            });
+            var promotionCode = $.trim($("#promotionCode").val());
+            if(promotionCode && promotionCode.length!=8){
+                layer.msg("请输入正确的8位邀请码！");
+                return;
+            }
+            $btn.attr("disabled", "disabled");
+            var index = loading();
+            var formDate={
+                userMobile: address.mobile,
+                address: address.address,
+                provinceId: address.provinceId,
+                cityId: address.cityId,
+                dstrictId: address.dstrictId,
+                userName: address.name,
+                goodsId: good_goodId,
+                goodsName: good_name,
+                goodsNum: good_num,
+                promotionCode:promotionCode,
+                goodsAllPrice: good_price_all,
+                isPc: 1
+            };
+            var activityCode=localStorage.getItem("activityCode");
+            activityCode && (formDate.activityCode=activityCode);
+            // 创建订单
+            ajax({
+                url: " /user/" + GLOBAL.VERSION + "/trade/uniteCreateOrder",
+                type: "post",
+                data: JSON.stringify(formDate),
+                success: function (res) {
+                    layer.close(index);
+                    if (res.success && res.data) {
+                        location.href = "pay.html?orderNumber=" + res.data.orderNumber;
+                    } else {
+                        $btn.removeAttr("disabled");
+                        layer.msg("数据异常！");
+                    }
+                },
+                error: function () {
+                    $btn.removeAttr("disabled");
+                    layer.close(index);
+                    layer.msg("数据异常！");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
