@@ -1,7 +1,7 @@
 # vue-cli搭建大全搭建大全
   1. 初始化项目
   ```
-  npm install webpack <文件名>
+  vue init webpack <文件名>
   cd <文件名>
   npm run dev启动
 
@@ -15,6 +15,38 @@
   </style>
   如果改变组件中的css样式  比如elementUI
   在定义的类前面 加 /deep/ .class 就可以改变
+  ```
+  * scss语法使用
+  ```
+    1、scss语法定义变量是用 '$' 开头定义比如 !default的是意思是设置默认值，权级最低
+     $widths:220px
+     $widths:220px !default
+     使用直接
+     div {
+       width:$widths
+     }
+
+    2、 scss混合器使用@mixin
+    @mixin borderRadios {
+       border:1px solid #000;
+       border-radius: 5px;
+    }
+    // 引用@mixin混合定义的变量使用@include方法
+    h1{
+       @include borderRadios;
+    }
+
+    3.给混合器传参mixin，接收参数必须以 '$' 开头比如  $normal, $hover, $visited
+    @mixin linkColors($normal,$hover,$visited) {
+       color: $normal;
+       &:hover { color: $hover; }
+       &:visited { color: $visited; }
+    }
+
+   //引用
+   a {
+     @include link-colors(blue, red, green);
+   }
   ```
   3. 修改打开配置，用本地IP打开
     > 3.1 打开config/index.js/dev.port的默认的 'localhost' 改为 '0.0.0.0'
@@ -299,7 +331,7 @@
         count: 0,
       },
       mutations: {
-        // 不要在mutations里面执行异步函数add(当前state,参数)
+        // 不要在mutations里面执行异步函数(当前state,参数)
         add (state, step) {
           state.count += step
         },
@@ -337,11 +369,13 @@
    修改 state中的变量
     mutations: {
       //  mutations只处理同步函数
-      // 不要在mutations里面执行异步函数add(当前state,参数)
-      add (state, step) {    //add自定义处理state中变量的函数带两个参数，第一个参数九=就是上面state，第二个参数，传入的参数
+      // 不要在mutations里面执行异步函数(当前state,参数)
+      add (state, step) {    //add自定义处理state中变量的函数带两个参数，第一个参数就就是上面state，第二个参数，传入的参数
         state.count += step
       },
     },
+    //vue文件中调取使用mutations中的函数有个commit('函数名',参数)
+    this.$store.commit('add', 3)
   ```
  > actions
  ```
@@ -355,6 +389,8 @@
        }, 1000)
      }
    },
+   //vue 文件中调取使用actions中的异步方法有个dispatch('函数名',参数)
+   this.$store.dispatch('addAsybc', 2);
  ```
  > getters
  ```
@@ -369,3 +405,11 @@
  ```
   多模块引用
  ```
+> vuex 中四大模块简易使用
+```
+ vuex中有 mapState,mapMutations,mapActions,mapGetters四个方法，如果vue文件中使用需要调用如下
+ import { mapState, mapState, mapActions, ,mapGetters } from 'vuex'
+
+  mapState, mapGetters放在 computed中...mapState(['定义state中的变量名']),...mapGetters(['定义getter中的变量名'])
+  mapMutations,mapActions放在 methods中 ...mapMutations(['定义的mutations中方法']),...mapActions(['定义actions的变量名']),
+```

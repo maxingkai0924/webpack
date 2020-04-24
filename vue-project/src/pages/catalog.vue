@@ -60,6 +60,7 @@ export default {
         height:60px;
         width:1300px;
         margin: 0 auto;
+        background: #2869ba;
         li{
           height:60px;
           float:left;
