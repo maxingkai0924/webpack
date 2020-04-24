@@ -408,7 +408,7 @@
 > vuex 中四大模块简易使用
 ```
  vuex中有 mapState,mapMutations,mapActions,mapGetters四个方法，如果vue文件中使用需要调用如下
- import { mapState, mapState, mapActions, ,mapGetters } from 'vuex'
+ import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
 
   mapState, mapGetters放在 computed中...mapState(['定义state中的变量名']),...mapGetters(['定义getter中的变量名'])
   mapMutations,mapActions放在 methods中 ...mapMutations(['定义的mutations中方法']),...mapActions(['定义actions的变量名']),
