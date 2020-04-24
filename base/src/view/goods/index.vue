@@ -104,6 +104,17 @@ export default {
     sorry() {
       Toast('暂无后续逻辑~');
     }
+  },
+  mounted() {
+     this.$axios({
+       method: 'get',
+       url: '/sdm/back/index/getMessage',
+       data: {},
+       maxRedirects: 10
+     }).then((res) => {
+		console.log('打印');
+        console.log(res)
+     })
   }
 };
 </script>

@@ -42,7 +42,12 @@ export default {
     [Icon.name]: Icon,
     [Cell.name]: Cell,
     [CellGroup.name]: CellGroup
-  }
+  },
+ data () {
+   return {
+     name: 'login'
+   }
+ },
 };
 </script>
 
