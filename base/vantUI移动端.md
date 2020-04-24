@@ -54,9 +54,10 @@ npm i vant -S
 ```
 
 + vant地址  [https://youzan.github.io/vant/#/zh-CN/quickstart](https://youzan.github.io/vant/#/zh-CN/quickstart)
-+ vant的模板 githup地址 [https://github.com/youzan/vant-demo](https://github.com/youzan/vant-demo)
++ vant的demo模板 githup地址 [https://github.com/youzan/vant-demo](https://github.com/youzan/vant-demo)
 ![](移动端_files/1.png)
-+ 使用 vue-cli3.0以上版本，跨域
+
+## 4 使用 vue-cli3.0以上版本，解决跨域
 ```
   在vue.config.js加上如下代码
   devServer:{
