@@ -20,6 +20,22 @@ var open = require('open');
 //所有的插件组合(基本上包含上面的插件)
 var $ = require('gulp-load-plugins')();
 
+var os = require('os');
+function getIPAdress() {
+    var interfaces = os.networkInterfaces();
+    for (var devName in interfaces) {
+        var iface = interfaces[devName];
+        for (var i = 0; i < iface.length; i++) {
+            var alias = iface[i];
+            if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+                return alias.address;
+            }
+        }
+    }
+}
+const myHost = getIPAdress();
+console.log(myHost);
+
 gulp.task('任务名',function(){
     //配置任务的操作
 });
@@ -27,10 +43,10 @@ gulp.task('任务名',function(){
 //注册压缩js的任务
 gulp.task('js',function(){
     return gulp.src('src/js/**/*.js')  //找到目标源文件，将数据读取到gulp内存中
-    .pipe($.concat('build.js'))          //临时合并文件
+    //.pipe($.concat('build.js'))          //临时合并文件
     .pipe(gulp.dest("dist/js/"))       //输出文件
     .pipe($.uglify())                    //压缩文件
-    .pipe($.rename({suffix:'.min'}))      //重命名
+    //.pipe($.rename({suffix:'.min'}))      //重命名
     .pipe(gulp.dest('dist/js'))
     .pipe($.livereload())                 //监听变化
     .pipe($.connect.reload())
@@ -50,9 +66,9 @@ gulp.task('less',function(){
 //["less"] 当我执行css任务的时候，先执行less依赖
 gulp.task('css',["less"],function(){
     return gulp.src('src/css/**/*.css')
-    .pipe($.concat('build.css'))           
+    // .pipe($.concat('build.css'))           
     .pipe(gulp.dest('dist/css'))
-    .pipe($.rename({suffix:'.min'}))
+    // .pipe($.rename({suffix:'.min'}))
     .pipe($.cleanCss({comPatibility:'ie8'}))
     .pipe(gulp.dest('dist/css'))
     .pipe($.livereload())
@@ -61,15 +77,25 @@ gulp.task('css',["less"],function(){
 
 //注册image任务
 gulp.task('images',function(){
-    gulp.src('src//img/**/*.{png,jpg,gif}')
+    gulp.src('src/img/**/*.{png,jpg,gif}')
     .pipe(gulp.dest('dist/img'))
+    .pipe($.livereload())
+    .pipe($.connect.reload())
+})
+
+//注册image任务
+gulp.task('font',function(){
+    gulp.src('src/fonts/*.{css,eot,js,json,svg,ttf,woff,woff2}')
+    .pipe(gulp.dest('dist/fonts'))
+    .pipe($.livereload())
+    .pipe($.connect.reload())
 })
 
 //注册html任务  collapseWhitespace去掉html的空格
 gulp.task('html',function(){
-    gulp.src('index.html')
+    gulp.src('src/pages/**/*.html')
     .pipe($.htmlmin({collapseWhitespace:true}))
-    .pipe(gulp.dest('dist/'))
+    .pipe(gulp.dest('dist/pages'))
     .pipe($.livereload())
     .pipe($.connect.reload())
 })
@@ -82,7 +108,8 @@ gulp.task('watch',['default'],function(){
     livereload.listen();
 
     //确认监听的目标及其绑定相应的任务
-    gulp.watch('index.html',['html']);
+    gulp.watch('src/fonts/**/*.',['font']);
+    gulp.watch('src/pages/**/*.html',['html']);
     gulp.watch('src/img/**/*.{png,jpg,gif}',['images']); 
     gulp.watch('src/js/*.js',['js']);   
     gulp.watch(['src/css/*.css','src/less/*.less'],['css']);
@@ -94,17 +121,19 @@ gulp.task('server',['default'],function(){
     $.connect.server({
         root:'dist/',       
         livereload:true,    //实时刷新
-        port:'5000'
+        port:'5000',
+        host:`${myHost}`
     });
      
     //自动打开浏览器
-    open('http://localhost:5000/')
+    open(`http://${myHost}:5000/pages/index.html`)
     //确认监听的目标及其绑定相应的任务
-    gulp.watch('index.html',['html']);
+    gulp.watch('src/fonts/**/*.',['font']);
+    gulp.watch('src/pages/**/*.html',['html']);
     gulp.watch('src/img/**/*.{png,jpg,gif}',['images']); 
     gulp.watch('src/js/*.js',['js']);   
     gulp.watch(['src/css/*.css','src/less/*.less'],['css']);
 })
 
 //注册默认任务 启动gulp就可以了
-gulp.task('default',['js','css','html','images']);
+gulp.task('default',['js','css','html','images','font']);
