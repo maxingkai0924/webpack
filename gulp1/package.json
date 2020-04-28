@@ -9,16 +9,31 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2017": "^6.24.1",
     "gulp": "^3.9.1",
+    "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.7.0",
+    "gulp-file-include": "^2.2.2",
     "gulp-htmlmin": "^5.0.1",
     "gulp-less": "^4.0.1",
     "gulp-livereload": "^4.0.2",
     "gulp-load-plugins": "^2.0.3",
     "gulp-rename": "^2.0.0",
     "gulp-uglify": "^3.0.2",
-    "open": "^7.0.3"
+    "gulp-util": "^3.0.8",
+    "gulp-webpack": "^1.5.0",
+    "open": "^7.0.3",
+    "vinyl-named": "^1.1.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "vue": "^2.6.11"
   }
 }

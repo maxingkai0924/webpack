@@ -10,6 +10,7 @@ import animate from 'animate.css'
 import i18n from './i18n/i18n.js'
 import axios from 'axios'
 import qs from 'qs'
+
 // 设置语言
 Vue.prototype.$msgbox = ElementUI.MessageBox
 Vue.prototype.$alert = ElementUI.MessageBox.alert

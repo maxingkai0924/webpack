@@ -17,7 +17,6 @@ export default {
       data: {},
       maxRedirects: 10
     }).then((res) => {
-     
       console.log(res)
     })
   }

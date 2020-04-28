@@ -1,8 +1,68 @@
+ ## 什么是webpack
+ + 本质上，webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module bundler)。当 webpack 处理应用程序时，它会递归地构建一个依赖关系图(dependency graph)，其中包含应用程序需要的每个模块，然后将所有这些模块打包成一个或多个 bundle。
+ + webpack 所有构建工具都是基于node.js平台运行的~模块化默认采用common.js。
+ + 在开始前你需要先理解四个核心概念：
+
+  + 1、入口 (entry)
+  ```
+      可以通过在 webpack 配置中配置 entry 属性，来指定一个入口起点（或多个入口起点）。默认值为 ./src。
+      接下来我们看一个 entry 配置的最简单例子：
+      const { resolve } = require('path');    //node的内置方法path（处理文件路径）
+      module.exports = {
+        //输出文件名
+        filename: "built.js",
+        //resolve 用来拼接绝对路径的方法
+        //_dirname node.js的文件，代表当前文件的目录绝对路径
+        path: resolve(__dirname, 'build')
+      };
+  ```
+  + 2、输出 (output)
+  ```
+   output 属性告诉 webpack 在哪里输出它所创建的 bundles，以及如何命名这些文件，默认值为 ./dist。基本上，整个应用程序结构，都会被编译到你指定的输出路径的文件夹中。你可以通过在配置中指定一个 output 字段，来配置这些处理过程：
+    const { resolve } = require('path');    //node的内置方法path（处理文件路径）
+
+    module.exports = {
+      entry: './path/to/my/entry/file.js',
+      output: {
+        path: resolve(__dirname, 'dist'),
+        filename: 'my-first-webpack.bundle.js'
+      }
+    };
+  ```
+
+  + 3、loader
+  ```
+  loader 可以将所有类型的文件转换为 webpack 能够处理的有效模块
+  配置中，对一个单独的 module 对象定义了 rules 属性，里面包含两个必须属性：test 和 use。这告诉 webpack 编译器
+  module.exports = {
+    module: {
+        rules: [
+          { test: /\.txt$/, use: 'raw-loader' }
+        ]
+      }
+  }
+  ```
+
+  + 4、插件 (plugins)
+  ```
+  loader 被用于转换某些类型的模块，而插件则可以用于执行范围更广的任务。插件的范围包括，从打包优化和压缩，一直到重新定义环境中的变量
+  想要使用一个插件，你只需要 require() 它plugins数组中
+  这时需要通过使用 new 操作符来创建它的一个实例。
+  const HtmlWebpackPlugin = require('html-webpack-plugin'); // 通过 npm 安装
+    module.exports = {
+      plugins: [
+        new HtmlWebpackPlugin({template: './src/index.html'})
+      ]
+  };
+  ```
+
  ## 使用webpack
 * 1、首先初始化包 npm init(依赖node)
 * 2、使用webpack  全局安装 npm i webpack webpack-cli
 * 3、本地安装  npm i webpack webpack-cli  -D
-* 4、 使用webpack的 loader (执行方式，从下往上执行，从右往左)
+* 4、使用webpack的 loader (执行方式，从下往上执行，从右往左)
+* 5、当前目录创建一个webpack.config.js（配置webpack的默认文件）
+* 6、webpack.config.js作用：指示webpack干哪些活当你运行webpack指令时，会加载里面的配置
 ## 使用css样式文件需要loader
 *  1、css-loader将css文件以字符串的形式变成打包的js的文件
 *  2、style-loader 创建一个style标签将js样式资源插入进去，，添加到head中生效

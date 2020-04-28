@@ -12,19 +12,33 @@ export default new Vuex.Store({
     nav: [
       {
         url: '/catalog/home',
-        name: '首页'
+        name: '首页',
+        index: 0
       },
       {
-        url: '/catalog/login',
-        name: '登录页'
+        url: '/catalog/note',
+        name: '个人博客日记',
+        index: 4
       },
       {
-        url: '/catalog/list',
-        name: '列表'
+        url: '/catalog/website',
+        name: '博客网站制作',
+        index: 5
       },
       {
-        url: '/catalog/detail',
-        name: '详情'
+        url: '/catalog/experience',
+        name: '网站设计心得',
+        index: 6
+      },
+      {
+        url: '/catalog/excellent',
+        name: '优秀个人博客',
+        index: 7
+      },
+      {
+        url: '/catalog/about',
+        name: '关于我们',
+        index: 8
       }
     ]
   },

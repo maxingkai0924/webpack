@@ -1,6 +1,20 @@
 <template>
   <div class="box">
-    <h1>{{name}}</h1>
+    <div class="swiper-container">
+       <el-carousel>
+          <el-carousel-item>
+            <img src="../../assets/images/1.jpg" alt="">
+          </el-carousel-item>
+          <el-carousel-item>
+            <img src="../../assets/images/2.jpg" alt="">
+          </el-carousel-item>
+          <el-carousel-item>
+            <img src="../../assets/images/3.jpg" alt="">
+          </el-carousel-item>
+        </el-carousel>
+    </div>
+    <div class="content"></div>
+    <div class="zhanti"></div>
   </div>
 </template>
 
@@ -10,36 +24,37 @@ export default {
     return {
       name: 'home'
     }
+  },
+  mounted () {
   }
 }
 </script>
 
 <style lang="scss" scoped >
-  $width:6.25rem;
-  $colors:red;
-  $fancybox-width: 6.25rem;
-  $fancybox-width: 7.25rem !default;
-  @mixin borderRadios {
-     border:1px solid #000;
-     border-radius: 5px;
+  @mixin commonCss($width) {
+    height:$width;
+    background:#fff;
+    border-radius:4px;
+    margin-top:20px;
   }
-  @mixin linkColors($normal,$hover,$visited) {
-     color: $normal;
-     &:hover { color: $hover; }
-     &:visited { color: $visited; }
-  }
-  .box{
-    width: $fancybox-width;
-    height: $width;
-    background: $colors;
-    h1{
-      font-size: 16px;
-       width:$width;
-       height:$width;
-       background:orange;
-       transform:translate($width,$width);
-       @include borderRadios;
-       @include  linkColors(blue, red, green)
+  .swiper-container{
+    & /deep/.el-carousel{
+      width:615px;
+      height:260px;
+      /deep/ .el-carousel__container{
+        height:260px;
+      }
+      img{
+        width: 100%;
+        display: block;
+        height:260px;
+      }
     }
+  }
+  .content{
+    @include commonCss(310px)
+  }
+  .zhanti{
+    @include commonCss(693px)
   }
 </style>
