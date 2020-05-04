@@ -34,6 +34,7 @@
   ```
   loader 可以将所有类型的文件转换为 webpack 能够处理的有效模块
   配置中，对一个单独的 module 对象定义了 rules 属性，里面包含两个必须属性：test 和 use。这告诉 webpack 编译器
+  不同资源配置不同loader配置
   module.exports = {
     module: {
         rules: [
@@ -65,21 +66,115 @@
 * 6、webpack.config.js作用：指示webpack干哪些活当你运行webpack指令时，会加载里面的配置
 ## 使用css样式文件需要loader
 *  1、css-loader将css文件以字符串的形式变成打包的js的文件
+```
+   npm i style-loader  css-loader -D
+
+    {
+        //test 正则表达式 匹配哪些文件
+         test: /\.css$/,
+        //使用哪些loder进行处理
+        use: [
+          //use执行方式从下往上
+          //创建style标，将js中的样式资源插入进行处理，添加到head中生效
+          'style-loader',
+          //将css文件变成common.js模块进行处理加载到js中，里面内容是字符串
+          'css-loader'
+        ]
+    }
+```
 *  2、style-loader 创建一个style标签将js样式资源插入进去，，添加到head中生效
-*  3、sass-loader node-sass  安装scss   npm i sass-loader node-sass -D
+*  3、sass-loader node-sass
+```
+安装scss   npm i sass-loader node-sass -D
+{
+				//test 正则表达式 匹配哪些文件
+				test: /\.scss$/,
+				//使用哪些loder进行处理
+				//多个loader用use处理,单个loader可以直接写loader:"插件名"
+				use: [
+					//use执行方式从下往上
+					//创建style标，将js中的样式资源插入进行处理，添加到head中生效
+					'style-loader',
+					//将css文件变成common.js模块进行处理加载到js中，里面内容是字符串
+					'css-loader',
+					//将less解析成css文件
+					// 用'less',必须下载less和less-loader两个包
+
+					'sass-loader'
+				]
+			},
+```
 ## 处理css兼容问题loader
 * 所需loader: postcss-loader postcss-preset-env
+
 ## 打包图片资源依赖loader
-* url-loader 处理css中图片的loader
-* file-loader 解析图片
+* url-loader file-loader 下载
+```
+npm i url-loader file-loader -D
+```
 * html-loader 处理html中img图片的loader(然后被url-loader处理)
+```
+    {
+      test:/\.html$/,
+      //处理html里面img标签图片，负责引入图片别url-loader处理
+      loader:'html-loader'
+    }
+```
+* url-loader 处理css中图片的loader
+```
+
+           //使用url-loader 下载两个包 url-loader file-loader 默认处理不了html里面的img
+           test:/\.(jpg|png|gif)$/,
+           loader:'url-loader',
+           //图片大小小于8kb 会被处理成base64
+           //优点：减少请求数量（减轻服务器压力）
+           //缺点：图片体积变大（请求变慢）
+           options:{
+               limit:8*1024,
+               //问题:url-loader默认是用es6模块去解析，而html-loader引入图片是common.js
+               //解析出问题：[object Module]
+                //解决：关闭url-loader的es6的模块化，使用common.js解析
+               esModule:false,
+               //[hash:10]取文件的前十位
+               //[ext]取原来的扩展名
+               name:'[hash:10].[ext]'
+           }
+       },
+```
+* file-loader 解析图片
 * html-loader解析是common.js 而 url-loader是es处理，所以关闭es模块，使用common.js
 ```
-esModule:false
+  {
+      //使用url-loader 下载两个包 url-loader file-loader 默认处理不了html里面的img
+      test:/\.(jpg|png|gif)$/,
+        loader:'url-loader',
+      //图片大小小于8kb 会被处理成base64
+      //优点：减少请求数量（减轻服务器压力）
+      //缺点：图片体积变大（请求变慢）
+      options:{
+        limit:8*1024,
+        //问题:url-loader默认是用es6模块去解析，而html-loader引入图片是common.js
+          //解析出问题：[object Module]
+        //解决：关闭url-loader的es6的模块化，使用common.js解析
+          esModule:false,
+        //[hash:10]取文件的前十位
+        //[ext]取原来的扩展名
+        name:'[hash:10].[ext]'
+      }
+    }
 ```
 ## 打包其他资源loader
 > file-loader
-
+```
+{
+    //打包其他资源 排除 css|js|html
+    exclude:/\.(css|js|html)$/,
+    loader:"file-loader",
+    options:{
+      name:'[hash:10].[ext]'
+    }
+  }
+```
 ## js中loader使用
 * 1、语法检查 eslint-loader eslint 需要安装
 **  在package.json 中 eslintConfig设置 airbnb -->依赖 eslint-config-airbnb-base eslint-plugin-import eslint

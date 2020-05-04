@@ -10,7 +10,7 @@
         </template>
       </ul>
     </div>
-    <div class="center">
+    <div class="center  containe">
       <router-view/>
     </div>
     <div class="footer"></div>
@@ -81,6 +81,7 @@ export default {
       }
     }
     .center{
+      min-height:800px;
       padding:20px 0;
     }
     .footer{
