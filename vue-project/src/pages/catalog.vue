@@ -1,10 +1,11 @@
 <template>
-  <div class="containe">
+  <div class="containe-catalogo">
+    <img src="../assets/top-1.png" alt="" class="top-img">
     <div class="header">
       <ul class="nav">
         <template v-for="(item,index) in nav" >
           <li :key='index'>
-            <a :href="item.url" :class="{active:index===currentIndex}">{{item.name}}</a>
+            <a :href="item.url" :class="{active:item.index===currentIndex}">{{item.name}}</a>
           </li>
         </template>
       </ul>
@@ -12,9 +13,7 @@
     <div class="center">
       <router-view/>
     </div>
-    <div class="footer">
-      <el-button @click='addNav()'>增加菜单</el-button>
-    </div>
+    <div class="footer"></div>
   </div>
 </template>
 
@@ -39,26 +38,26 @@ export default {
     ...mapState(['nav'])
   },
   methods: {
-    ...mapMutations(['setNavlist']),
-    addNav () {
-      let obj = {
-        url: '/',
-        name: '关于我们'
-      }
-      this.setNavlist(obj)
-    }
+    ...mapMutations(['setNavlist'])
   }
 }
 
 </script>
 
 <style lang="scss" scoped>
-  .containe{
+  .containe-catalogo{
+    background:#e9eaed;
+    .top-img{
+      display: block;
+      height: 5px;
+      width:100%;
+      min-width:1200px;
+    }
     .header{
       background:#2869ba;
       .nav{
         height:60px;
-        width:1300px;
+        width:1200px;
         margin: 0 auto;
         background: #2869ba;
         li{
@@ -80,6 +79,14 @@ export default {
           }
         }
       }
+    }
+    .center{
+      padding:20px 0;
+    }
+    .footer{
+      height:155px;
+      background:#373d41;
+      border-top:5px solid #00c1de;
     }
   }
 </style>

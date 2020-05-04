@@ -1,8 +1,8 @@
 <template>
-  <div class="box">
+  <div class="containe">
     <div class="swiper-container">
        <el-carousel>
-          <el-carousel-item>
+          <el-carousel-item name='12'>
             <img src="../../assets/images/1.jpg" alt="">
           </el-carousel-item>
           <el-carousel-item>
@@ -39,6 +39,7 @@ export default {
   }
   .swiper-container{
     & /deep/.el-carousel{
+      border-radius:3px;
       width:615px;
       height:260px;
       /deep/ .el-carousel__container{

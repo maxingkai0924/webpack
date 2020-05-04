@@ -95,5 +95,8 @@ export default {
         max-width: 570px;
         line-height: 180%;
      }
-
+     .containe{
+       width:1200px;
+       margin:0 auto;
+     }
 </style>
