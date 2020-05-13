@@ -19,17 +19,11 @@ var  gutil = require('gulp-util');
 //半自动刷新
 var livereload = require('gulp-livereload');
 
-
 const fileinclude  = require('gulp-file-include');
 
-//使用webpack
-const gulp_webpack = require("gulp-webpack");
+const webpack = require('webpack-stream');
 
-//使用webpack
-const webpack = require("webpack");
-
-var webpack_config = require('./webpack.config.js');
-console.log(webpack_config);
+var webpackConfig = require('./webpack.config.js');
 const named = require('vinyl-named');
 //自动打开浏览器
 var open = require('open');
@@ -66,25 +60,7 @@ gulp.task('js',function(){
    
     // .pipe(gulp.dest("loi/js/"))       //输出文件
     .pipe(named())
-    .pipe(gulp_webpack({
-        resolve: {
-            //  第一项空字符串必不可少，否则报模块错误
-            extensions: ['', '.es6']
-        },
-        watch: false,
-        module: {
-            rules:[
-                {
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    loader: 'babel-loader',
-                    query: {
-                       presets: ['es2017']
-                    }
-                }
-            ]
-        },
-    }))
+    .pipe(webpack(webpackConfig))
     .pipe($.uglify())                    //压缩文件
     .on('error', function(err) {
         gutil.log(gutil.colors.red('[Error]'), err.toString());
