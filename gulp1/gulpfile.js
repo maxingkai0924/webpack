@@ -1,19 +1,4 @@
 var gulp = require('gulp');
-//css/js 文件合并
-var concat = require('gulp-concat');
-//文件重命名
-var rename = require('gulp-rename');
-//js文件压缩
-var uglify= require('gulp-uglify');
-//less插件
-var less = require('gulp-less');
-//压缩css
-var cssClean = require('gulp-clean-css');
-//html文件合并
-var htmlMin = require('gulp-htmlmin');
-
-//全自动刷新
-var connect = require('gulp-connect');
 
 var  gutil = require('gulp-util');
 //半自动刷新

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "gulp server"
+    "start": "gulp server",
+    "build": "gulp"
   },
   "author": "",
   "license": "ISC",
@@ -13,7 +14,7 @@
     "@babel/preset-env": "^7.9.5",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
-    "babel-preset-env": "^1.7.0",
+    "babel-preset-env": "^7.0.0-beta.3",
     "babel-preset-es2017": "^6.24.1",
     "gulp": "^3.9.1",
     "gulp-babel": "^8.0.0",
@@ -36,6 +37,7 @@
     "webpack-stream": "^5.2.1"
   },
   "dependencies": {
+    "jquery": "^3.5.1",
     "vue": "^2.6.11"
   }
 }
