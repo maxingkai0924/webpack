@@ -1,4 +1,19 @@
 var gulp = require('gulp');
+//css/js 文件合并
+var concat = require('gulp-concat');
+//文件重命名
+var rename = require('gulp-rename');
+//js文件压缩
+var uglify= require('gulp-uglify');
+//less插件
+var less = require('gulp-less');
+//压缩css
+var cssClean = require('gulp-clean-css');
+//html文件合并
+var htmlMin = require('gulp-htmlmin');
+
+//全自动刷新
+var connect = require('gulp-connect');
 
 var  gutil = require('gulp-util');
 //半自动刷新
@@ -7,6 +22,8 @@ var livereload = require('gulp-livereload');
 const fileinclude  = require('gulp-file-include');
 
 const webpack = require('webpack-stream');
+
+const babel = require("gulp-babel");
 
 var webpackConfig = require('./webpack.config.js');
 const named = require('vinyl-named');
@@ -46,7 +63,8 @@ gulp.task('js',function(){
     // .pipe(gulp.dest("loi/js/"))       //输出文件
     .pipe(named())
     .pipe(webpack(webpackConfig))
-    .pipe($.uglify())                    //压缩文件
+    .pipe(babel())
+    //.pipe($.uglify({compress:{properties:false}, output:{'quote_keys':true}}))                    //压缩文件
     .on('error', function(err) {
         gutil.log(gutil.colors.red('[Error]'), err.toString());
     })

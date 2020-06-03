@@ -9,11 +9,7 @@
       接下来我们看一个 entry 配置的最简单例子：
       const { resolve } = require('path');    //node的内置方法path（处理文件路径）
       module.exports = {
-        //输出文件名
-        filename: "built.js",
-        //resolve 用来拼接绝对路径的方法
-        //_dirname node.js的文件，代表当前文件的目录绝对路径
-        path: resolve(__dirname, 'build')
+        entry: './path/to/my/entry/file.js'
       };
   ```
   + 2、输出 (output)
@@ -22,7 +18,6 @@
     const { resolve } = require('path');    //node的内置方法path（处理文件路径）
 
     module.exports = {
-      entry: './path/to/my/entry/file.js',
       output: {
         path: resolve(__dirname, 'dist'),
         filename: 'my-first-webpack.bundle.js'
