@@ -161,12 +161,12 @@ gulp.task('server',['default'],function(){
     $.connect.server({
         root:'loi/',       
         livereload:true,    //实时刷新
-        port:'5000',
+        // port:'5000',
         host:`${myHost}`
     });
      
     //自动打开浏览器
-    open(`http://${myHost}:5000`)
+    open(`http://${myHost}:8080`)
     //确认监听的目标及其绑定相应的任务
     gulp.watch('src/fonts/**/*.{css,eot,js,json,svg,ttf,woff,woff2}',['font']);
     gulp.watch('src/*.html',['index']);
