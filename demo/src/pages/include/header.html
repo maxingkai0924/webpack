@@ -1,0 +1,24 @@
+<header>
+    <div class="contine">
+        <div class="btnGroup">
+            <button class="login">
+                <a href="/pages/login.html"><i class="iconfont ren"></i> Login</a>
+            </button>
+            <button class="register">
+                <a href="/pages/register.html"><i class="iconfont bianji"></i> Register</a>
+            </button>
+        </div>
+    </div>
+    <nav>
+        <ul>
+			<li class="navimg"><a href="/"><img src="../assets/img/LOGO-.png" ></a></li>
+            <li  @@if (context.active==='index' ) { class="active navlist" } class="navlist"><a href="/">Home</a></li>
+            <li  @@if (context.active==='news' ) { class="active navlist" } class="navlist"><a href="/pages/news.html">News</a></li>
+            <li  @@if (context.active==='training' ) { class="active navlist" } class="navlist"><a href="/pages/training.html">Training Course</a></li>
+            <li  @@if (context.active==='headquarters' ) { class="active navlist" } class="navlist"><a href="https://www.ioinst.org/" target="_blank">IOI Headquarters</a></li>
+            <li  @@if (context.active==='alumni' ) { class="active navlist"} class="navlist"><a href="/pages/alumni.html">Alumni</a></li>
+            <li  @@if (context.active==='technological' ) { class="active navlist" } class="navlist"><a href="/pages/technological.html">Major Events</a></li>
+            <li  @@if (context.active==='aboutUs' ) { class="active navlist" } class="navlist"><a href="/pages/aboutUs.html">About Us</a></li>
+        </ul>
+    </nav>
+</header>

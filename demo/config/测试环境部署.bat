@@ -1,0 +1,2 @@
+echo on
+rd /s /q \\192.168.0.119\e\www\share\assets && rd /s /q  \\192.168.0.119\e\www\share\js && rd /s /q \\192.168.0.119\e\www\share\css && rd /s /q  \\192.168.0.119\e\www\share\pages && node test_env.js && npm run build && xcopy ..\share \\192.168.0.119\e\www\share /s /e /c /y /h /r && echo '---- successful!-----'

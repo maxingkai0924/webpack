@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @@include('pages/include/seo.html')
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    @@include('pages/include/title.html')
+    <link rel="stylesheet" href="./css/home.css">
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="wrap-header">
+            @@include('pages/include/header.html',{
+                "active": "index"
+            })
+        </div>
+        <div class="bg-img">
+            <img src="../assets/img/bg-2.jpg" alt="">
+        </div>
+        <main v-cloak>
+           <div class="left">
+               <div class="news">
+                   <h1>News</h1>
+                   <div class="content">
+                       <div class="content-left" @click="jumpDetail(newsData[0])">                    
+                           <template v-for='(item, index) in newsData'>
+                               <div :key='index' v-if='index<1'>
+                                    <div class="img-box">
+                                        <img :src="item.cover" alt="">
+                                    </div>
+                                    <p  class="content-left-title" :title='item.title'>{{item.title}}</p>
+                                    <p  class="content-left-text">{{item.brief|brief}}</p>
+                               </div>
+                           </template>
+                       </div>
+                       <div class="content-right">
+                           <ul>
+                                <template v-for='(item, index) in newsData'>
+                                    <li :key='index' v-if='index<4' @click="jumpDetail(item)"  :title='item.title'>
+                                        <a href="javascript:;">{{item.publishTime}}</a>
+                                        <a href='javascript:;' class="content-right-text">{{item.title}}</a>
+                                    </li>
+                                </template>
+                           </ul>
+                       </div>
+                   </div>
+               </div>
+               <div class="alumni">
+                   <h1>Alumni Snapshot</h1>
+                   <div class="img-box" @click="jump('/pages/alumni.html')" >
+                        <img src="../assets/img/index_03.jpg" alt="index">
+                   </div>          
+               </div>
+           </div>
+           <div class="right">
+               <div class="training">
+                   <img src="../assets/img/peixun.jpg" alt="">
+                   <div class="training-box">
+                       <h1>Training Announcement</h1>
+                       <button @click="jump('/pages/training.html')">Learn More</button>
+                   </div>
+               </div>
+               <div class="about">
+                    <h1>About Us</h1>
+                    <div @click="jump('/pages/aboutUs.html')" v-html='aboutData'></div>
+               </div>
+           </div>
+        </main>
+        <div class="wrap-footer">
+            @@include('pages/include/footer.html')
+        </div>
+    </div>
+
+
+</body>
+
+
+<script src="/js/home.js"></script>
+
+</html>
