@@ -24,20 +24,8 @@
     "data":[
         {
             "name":"URL",
-            "value":"http://58.56.42.50:8101/"
+            "value":""
         },
-        {
-            "name":"SITEID",
-            "value":"1a9af24949184a37847106eeda384aa1"
-        },
-        {
-            "name":"fontCssUrl",
-            "value":"//at.alicdn.com/t/font_1792196_ik88ibhhf8.css"
-        },
-        {
-            "name":"fontJsUrl",
-            "value":"//at.alicdn.com/t/font_1792196_ufbixlxktpl.js"
-        }
     ]
 }
 ```
@@ -49,6 +37,3 @@
 |fontCssUrl|阿里字体图标公共样式|css| 是|
 |fontJsUrl|阿里字体图标公共js|js|是
 
-#### 注意：如果打包发版后的urls.json文件需要修改
-1. 禁止修改打包后name对应值 
-2. 只可修改value对应的值，修改之前也得慎重
