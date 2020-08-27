@@ -10,7 +10,7 @@
         </template>
       </ul>
     </div>
-    <div class="center  containe">
+    <div class="center containe">
       <router-view/>
     </div>
     <div class="footer"></div>
